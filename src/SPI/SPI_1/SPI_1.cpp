@@ -1,6 +1,7 @@
 #include "SPI_1.h"
 namespace Spi_1
 {
+  
   SPI_TypeDef *_SPIx;
   int _spi_mode;
   int _spi_work_mode;
@@ -9,12 +10,12 @@ namespace Spi_1
   int _data_size;
   int _baud_rate;
   int _first_bit;
-  uint16_t _data;
-  uint16_t _rx_buffer[8];
+  int _data;
+  int _rx_buffer[8];
   uint16_t _cur_rx_read;
   uint16_t _cur_rx_write;
   uint16_t _buf_size;
-  
+    
   void spi_init(int mode, int work_mode, int direction, int dataSize, int baudRate, int firstBit)
   {
     _spi_num = spi_1;
@@ -104,10 +105,13 @@ namespace Spi_1
   {
     if(_spi_work_mode == simple)
     {
+      ENTER_CRITICAL_SECTION();
       _SPIx->DR = 0; 
       
       //waiting new data in rx buffer
       while(!(_SPIx->SR & SPI_SR_RXNE));
+      
+      EXIT_CRITICAL_SECTION();
       
       return _SPIx->DR;
     }
@@ -128,7 +132,6 @@ namespace Spi_1
       return _data;
     }
   }
-  
   uint8_t available()
   {
     return _buf_size;
@@ -158,5 +161,3 @@ extern "C"
     }
   } 
 }  
-
-

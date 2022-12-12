@@ -3,8 +3,8 @@
 
 namespace usart3
 {
-	void usart3Init();
-	void write(uint8_t);
+	void usart3Init(uint32_t speed, uint8_t word_length, float stop_bits);
+	void write(uint8_t _byte);
 	uint16_t read();
 	uint16_t available();
 	extern volatile uint8_t tx[8];

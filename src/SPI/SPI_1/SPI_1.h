@@ -19,8 +19,8 @@ namespace Spi_1
     extern int _data_size;
     extern int _baud_rate;
     extern int _first_bit;
-    extern uint16_t _data;
-    extern uint16_t _rx_buffer[8];
+    extern int _data;
+    extern int _rx_buffer[8];
     extern uint16_t _cur_rx_read;
     extern uint16_t _cur_rx_write;
     extern uint16_t _buf_size;

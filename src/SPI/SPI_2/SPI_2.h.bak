@@ -9,7 +9,7 @@ namespace Spi_2
     void spi_deinit();
     void send(uint16_t data);
     uint16_t read();
-    uint8_t available();
+    uint16_t IT_read_data();
     extern SPI_TypeDef *_SPIx;
     extern int _spi_mode;
     extern int _spi_work_mode;

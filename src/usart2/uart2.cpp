@@ -1,45 +1,45 @@
-#include "usart3.h"
+#include "usart2.h"
 
 extern "C"
 {
-	void USART3_IRQHandler(void)
+	void USART2_IRQHandler(void)
 	{
-		volatile uint8_t data = USART3->SR;
+		volatile uint8_t data = USART2->SR;
 		if(data & USART_SR_RXNE)
 		{
-			usart3::rx[usart3::_rxCnt] = USART3->DR;
-			usart3::_rxCnt++;
-			if(usart3::_rxCnt == 8)
+			usart2::rx[usart2::_rxCnt] = USART2->DR;
+			usart2::_rxCnt++;
+			if(usart2::_rxCnt == 8)
 			{
-				usart3::_rxCnt = 0;
+				usart2::_rxCnt = 0;
 			}
 		}
 		if(data &USART_SR_TC)
 		{
-			USART_ClearITPendingBit(USART3, USART_IT_TC);
-			if(usart3::_txCnt != 0)
+			USART_ClearITPendingBit(USART2, USART_IT_TC);
+			if(usart2::_txCnt != 0)
 			{
-				(USART3->DR) = usart3::tx[usart3::_sendCnt];
-				usart3::_sendCnt++;
-				if(usart3::_sendCnt == 8)
+				(USART2->DR) = usart2::tx[usart2::_sendCnt];
+				usart2::_sendCnt++;
+				if(usart2::_sendCnt == 8)
 				{
-					usart3::_sendCnt = 0;
+					usart2::_sendCnt = 0;
 				}
 			}
 			else
 			{
-				usart3::flag = 1;
+				usart2::flag = 1;
 			}
 		}
-		if(USART3->SR & USART_SR_ORE)
+		if(USART2 -> SR & USART_SR_ORE)
 		{
-			uint8_t a = USART3 -> DR;
+			uint8_t a = USART2 -> DR;
 			(void)a;
 		}
 	}
 }
 
-namespace usart3
+namespace usart2
 {
   volatile uint8_t tx[8];
   volatile uint8_t rx[8];
@@ -49,8 +49,8 @@ namespace usart3
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
 	
-	void usart3Init(uint32_t speed, uint8_t word_length, float stop_bits)
-	{
+	void usart2Init(uint32_t speed, uint8_t word_length, float stop_bits)
+		{
 		flag = 1;
 		_txCnt = 0;
 		_rxCnt = 0;
@@ -59,11 +59,9 @@ namespace usart3
       
     rx[0] = 0;  
 
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 		USART_InitTypeDef u;
 		u.USART_BaudRate = speed;
-    
-    
     
     if(word_length == 9) u.USART_WordLength = USART_WordLength_9b;
     else u.USART_WordLength = USART_WordLength_8b;
@@ -72,16 +70,16 @@ namespace usart3
     else if(stop_bits == 0.5) u.USART_StopBits = USART_StopBits_0_5;
     else if(stop_bits == 1.5) u.USART_StopBits = USART_StopBits_1_5;
     else u.USART_StopBits = USART_StopBits_1;
-    
+      
 		u.USART_Parity = USART_Parity_No;
 		u.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 		u.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-		USART_Init(USART3, &u);
-		USART_ITConfig(USART3, USART_IT_TC, ENABLE);
-		USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
-		USART_Cmd(USART3, ENABLE);
-		NVIC_SetPriority(USART3_IRQn, 0);
-		NVIC_EnableIRQ(USART3_IRQn);
+		USART_Init(USART2, &u);
+		USART_ITConfig(USART2, USART_IT_TC, ENABLE);
+		USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+		USART_Cmd(USART2, ENABLE);
+		NVIC_SetPriority(USART2_IRQn, 0);
+		NVIC_EnableIRQ(USART2_IRQn);
 	}  
 		 
 	uint16_t read()
@@ -122,7 +120,7 @@ namespace usart3
 		else
 		{
 		 flag = 0;
-		 (USART3->DR) = _byte;
+		 (USART2->DR) = _byte;
 		}
 		EXIT_CRITICAL_SECTION();
 	}

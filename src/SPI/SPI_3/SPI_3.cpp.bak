@@ -155,7 +155,7 @@ extern "C"
       if(Spi_3::_cur_rx_write == 7) Spi_3::_cur_rx_write = 0;
       else Spi_3::_cur_rx_write++;
       
-      if(Spi_3::_buf_size_extern < 7) Spi_3::_buf_size_extern++;
+      if(Spi_3::_buf_size < 7) Spi_3::_buf_size++;
     }
   } 
 }

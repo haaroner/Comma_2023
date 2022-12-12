@@ -49,7 +49,7 @@ namespace usart6
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
 	
-	void usart6Init()
+    void usart6Init(uint32_t speed, uint8_t word_length, float stop_bits)
 		{
 		flag = 1;
 		_txCnt = 0;
@@ -59,7 +59,15 @@ namespace usart6
 
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);
 		USART_InitTypeDef u;
-		u.USART_BaudRate = 115200;
+		u.USART_BaudRate = speed;
+    
+    if(word_length == 9) u.USART_WordLength = USART_WordLength_9b;
+    else u.USART_WordLength = USART_WordLength_8b;
+
+    if(stop_bits == 2) u.USART_StopBits = USART_StopBits_2;
+    else if(stop_bits == 0.5) u.USART_StopBits = USART_StopBits_0_5;
+    else if(stop_bits == 1.5) u.USART_StopBits = USART_StopBits_1_5;
+    else u.USART_StopBits = USART_StopBits_1;
 		u.USART_WordLength = USART_WordLength_8b;
 		u.USART_StopBits = USART_StopBits_1;
 		u.USART_Parity = USART_Parity_No;

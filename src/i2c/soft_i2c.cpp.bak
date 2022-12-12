@@ -193,6 +193,28 @@ bool soft_i2c::send(uint8_t package)
 	return true;
 }
 
+void soft_i2c::sendByte(uint8_t byte)
+{
+  sclLow();
+  delay();
+  uint8_t a = 0x80;
+  while (a > 0)
+  {
+    if(byte & a)
+      sdaHigh();
+    else
+      sdaLow();
+    delay();
+    sclHigh();
+    delay();
+    sclLow();
+    delay();
+    sdaLow();
+    delay();
+    a = a >> 1;
+  }
+}
+
 bool soft_i2c::readAch()
 {
 	sclLow();

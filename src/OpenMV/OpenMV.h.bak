@@ -1,6 +1,6 @@
 #pragma once
 #include "project_config.h"
-#include "usart3.h"
+//#include "usart3.h"
 #include "pin_setup.h"
 
 
@@ -47,6 +47,7 @@ class camera
 		bool finaly;
 		bool read;
     bool _received;
+    bool _yellow_first_receive, _blue_first_receive;
 		uint8_t data[5];
 		uint8_t crc8(uint8_t* data, int len);
     uint8_t _state;

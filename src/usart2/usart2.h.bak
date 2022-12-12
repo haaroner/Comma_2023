@@ -1,10 +1,11 @@
 #pragma once
 #include "project_config.h"
+#include "UART.h"
 
-namespace usart6
+namespace usart2
 {
-	void usart6Init(uint32_t speed, uint8_t word_length, float stop_bits);
-	void write(uint8_t _byte);
+	void usart2Init(uint32_t speed, uint8_t word_length, uint8_t stop_bits);
+	void write(uint8_t);
 	uint16_t read();
 	uint16_t available();
 	extern volatile uint8_t tx[8];

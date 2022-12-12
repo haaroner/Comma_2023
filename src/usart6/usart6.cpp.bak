@@ -49,7 +49,7 @@ namespace usart6
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
 	
-	void usart6Init()
+    void usart6Init()
 		{
 		flag = 1;
 		_txCnt = 0;
@@ -91,6 +91,7 @@ namespace usart6
 	{  
 		uint16_t size;
 		ENTER_CRITICAL_SECTION();
+
 
 		size = _rxCnt - _readCnt;
 		EXIT_CRITICAL_SECTION();

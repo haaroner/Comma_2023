@@ -9,8 +9,8 @@ namespace Spi_2
    int _data_size;
    int _baud_rate;
    int _first_bit;
-   uint16_t _data;
-   uint16_t _rx_buffer[8];
+   int _data;
+   int _rx_buffer[8];
    uint16_t _cur_rx_read;
    uint16_t _cur_rx_write;
    uint16_t _buf_size;
@@ -127,11 +127,6 @@ namespace Spi_2
       return _data;
     }
   }
-  
-  uint8_t available()
-  {
-    return _buf_size;
-  } 
 }
 
 extern "C"

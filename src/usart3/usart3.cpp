@@ -49,8 +49,8 @@ namespace usart3
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
 	
-	void usart3Init()
-		{
+	void usart3Init(uint32_t speed, uint8_t word_length, float stop_bits)
+	{
 		flag = 1;
 		_txCnt = 0;
 		_rxCnt = 0;
@@ -61,9 +61,16 @@ namespace usart3
 
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 		USART_InitTypeDef u;
-		u.USART_BaudRate = 460800;
-		u.USART_WordLength = USART_WordLength_8b;
-		u.USART_StopBits = USART_StopBits_1;
+		u.USART_BaudRate = speed;
+    
+    if(word_length == 9) u.USART_WordLength = USART_WordLength_9b;
+    else u.USART_WordLength = USART_WordLength_8b;
+
+    if(stop_bits == 2) u.USART_StopBits = USART_StopBits_2;
+    else if(stop_bits == 0.5) u.USART_StopBits = USART_StopBits_0_5;
+    else if(stop_bits == 1.5) u.USART_StopBits = USART_StopBits_1_5;
+    else u.USART_StopBits = USART_StopBits_1;
+    
 		u.USART_Parity = USART_Parity_No;
 		u.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 		u.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
