@@ -26,6 +26,8 @@
 ".\objects\spi_1.o"
 ".\objects\spi_2.o"
 ".\objects\spi_3.o"
+".\objects\uart2.o"
+".\objects\ssd1306.o"
 --strict --scatter ".\Objects\aaa.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

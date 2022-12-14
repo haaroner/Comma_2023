@@ -105,10 +105,13 @@ namespace Spi_1
   {
     if(_spi_work_mode == simple)
     {
+      ENTER_CRITICAL_SECTION();
       _SPIx->DR = 0; 
       
       //waiting new data in rx buffer
       while(!(_SPIx->SR & SPI_SR_RXNE));
+      
+      EXIT_CRITICAL_SECTION();
       
       return _SPIx->DR;
     }

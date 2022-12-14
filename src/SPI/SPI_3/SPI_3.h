@@ -4,7 +4,6 @@
 #include "pin_setup.h"
 #include "SPI.h"
 
-
 namespace Spi_3
 {
     void spi_init(int mode, int work_mode, int direction, int dataSize, int baudRate, int firstBit);

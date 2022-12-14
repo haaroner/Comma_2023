@@ -250,12 +250,12 @@ public:
         calibrate_acc_gyro_impl();
     }
     
-    void calibrateGyro(uint16_t delay,uint16_t duration)
+    void calibrateGyro(uint16_t delay, uint32_t duration)
     {
       float _gx = 0, _gy = 0, _gz = 0;
       _gx_offset = 0, _gy_offset = 0, _gz_offset = 0;
       
-      if(delay < 100) delay = 500;
+      if(delay <= 100) delay = 500;
       time_service::delay_ms(delay);
       
       if(duration < 500) duration = 500;

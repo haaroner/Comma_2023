@@ -49,7 +49,7 @@ namespace usart2
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
 	
-	void usart2Init(uint32_t speed, uint8_t word_length, uint8_t stop_bits)
+	void usart2Init(uint32_t speed, uint8_t word_length, float stop_bits)
 		{
 		flag = 1;
 		_txCnt = 0;

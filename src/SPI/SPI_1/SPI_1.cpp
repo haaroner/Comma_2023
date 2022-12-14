@@ -96,9 +96,11 @@ namespace Spi_1
   {
     //waiting when the tx buffer will be empty
     //TXE - buffer is empty BSY - all data have been sent succesfully
+    ENTER_CRITICAL_SECTION();
     while(!(_SPIx->SR & SPI_SR_TXE));
 
     _SPIx->DR = data;
+    EXIT_CRITICAL_SECTION();
   } 
 
   uint16_t read()

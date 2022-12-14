@@ -21,13 +21,82 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.8.0
 Dialog DLL:      TCM.DLL V1.48.0.0
  
 <h2>Project:</h2>
-C:\Users\Clown\Desktop\bozhe_amin\aaa.uvprojx
-Project File Date:  12/03/2022
+C:\Users\Clown\Desktop\GIT\Comma_2022\aaa.uvprojx
+Project File Date:  12/12/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\keil\sys_files\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\aaa.axf" - 0 Error(s), 0 Warning(s).
+compiling SSD1306.cpp...
+compiling main.cpp...
+.\src\MPU9250\QuaternionFilter.h(40): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          GyroMeasError = PI * (40.0f / 180.0f);     // gyroscope measurement error in rads/s (start at 40 deg/s)
+.\src\MPU9250\QuaternionFilter.h(41): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          GyroMeasDrift = PI * (0.0f / 180.0f);      // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
+.\src\MPU9250\QuaternionFilter.h(93): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          float recipNorm = 1.0 / sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+.\src\MPU9250\QuaternionFilter.h(104): warning:  #550-D: variable "real_time"  was set but never used
+    uint32_t real_time;
+.\src\MPU9250\QuaternionFilter.h(215): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          if (tmp > 0.0) {
+.\src\MPU9250\QuaternionFilter.h(217): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              recipNorm = 1.0 / sqrt(tmp);
+.\src\MPU9250\QuaternionFilter.h(263): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          recipNorm = 1.0 / sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+.\src\MPU9250\MPU9250.h(529): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          mag_bias_factory[0] = (float)(raw_data[0] - 128) / 256. + 1.;  // Return x-axis sensitivity adjustment values, etc.
+.\src\MPU9250\MPU9250.h(530): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          mag_bias_factory[1] = (float)(raw_data[1] - 128) / 256. + 1.;
+.\src\MPU9250\MPU9250.h(531): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          mag_bias_factory[2] = (float)(raw_data[2] - 128) / 256. + 1.;
+.\src\MPU9250\MPU9250.h(571): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          rpy[0] *= 180.0f / PI;
+.\src\MPU9250\MPU9250.h(572): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          rpy[1] *= 180.0f / PI;
+.\src\MPU9250\MPU9250.h(573): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          rpy[2] *= 180.0f / PI;
+.\src\MPU9250\MPU9250.h(595): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          temperature = ((float)temperature_count) / 333.87 + 21.0;  // Temperature in degrees Centigrade
+.\src\MPU9250\MPU9250.h(598): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          g[0] = ((float)raw_acc_gyro_data[4] * gyro_resolution) * DEG_TO_RAD - _gx_offset;  // get actual gyro value, this depends on scale being set
+.\src\MPU9250\MPU9250.h(599): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          g[1] = ((float)raw_acc_gyro_data[5] * gyro_resolution) * DEG_TO_RAD - _gy_offset;
+.\src\MPU9250\MPU9250.h(600): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          g[2] = ((float)raw_acc_gyro_data[6] * gyro_resolution) * DEG_TO_RAD - _gz_offset;
+.\src\MPU9250\MPU9250.h(899): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          avg_rad /= 3.0;
+.\src\MPU9250\MPU9250.h(976): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[0] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[0] - 1.0)));  // FT[Xa] factory trim calculation
+.\src\MPU9250\MPU9250.h(977): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[1] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[1] - 1.0)));  // FT[Ya] factory trim calculation
+.\src\MPU9250\MPU9250.h(978): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[2] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[2] - 1.0)));  // FT[Za] factory trim calculation
+.\src\MPU9250\MPU9250.h(979): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[3] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[3] - 1.0)));  // FT[Xg] factory trim calculation
+.\src\MPU9250\MPU9250.h(980): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[4] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[4] - 1.0)));  // FT[Yg] factory trim calculation
+.\src\MPU9250\MPU9250.h(981): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          factoryTrim[5] = (float)(2620 / 1 << FS) * (pow(1.01, ((float)self_test_data[5] - 1.0)));  // FT[Zg] factory trim calculation
+.\src\MPU9250\MPU9250.h(986): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              self_test_result[i] = 100.0 * ((float)(aSTAvg[i] - aAvg[i])) / factoryTrim[i] - 100.;          // Report percent differences
+.\src\MPU9250\MPU9250.h(987): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              self_test_result[i + 3] = 100.0 * ((float)(gSTAvg[i] - gAvg[i])) / factoryTrim[i + 3] - 100.;  // Report percent differences
+.\src\ball_detour\ball_detour.h(38): warning:  #1-D: last line of file ends without a newline
+  }
+.\src\UART\UART.h(23): warning:  #1-D: last line of file ends without a newline
+  #endif
+.\src\bluetooth\hc-05\hc-05.h(90): warning:  #1-D: last line of file ends without a newline
+  };
+.\src\bluetooth\hc-05\hc-05.h(66): warning:  #940-D: missing return statement at end of non-void function "hc_05::read" 
+      }
+main.cpp(146): warning:  #111-D: statement is unreachable
+    time_service::delay_ms(30000);
+main.cpp(295): warning:  #1-D: last line of file ends without a newline
+  }
+main.cpp: 32 warnings, 0 errors
+linking...
+Program Size: Code=14080 RO-data=488 RW-data=236 ZI-data=6068  
+".\Objects\aaa.axf" - 0 Error(s), 32 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -40,7 +109,7 @@ Package Vendor: Keil
   D:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

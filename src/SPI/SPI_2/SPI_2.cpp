@@ -94,19 +94,24 @@ namespace Spi_2
   {
     //waiting when the tx buffer will be empty
     //TXE - buffer is empty BSY - all data have been sent succesfully
+    ENTER_CRITICAL_SECTION();
     while(!(_SPIx->SR & SPI_SR_TXE));
 
     _SPIx->DR = data;
+    EXIT_CRITICAL_SECTION();
   } 
 
   uint16_t read()
   {
     if(_spi_work_mode == simple)
     {
+      ENTER_CRITICAL_SECTION();
       _SPIx->DR = 0; 
       
       //waiting new data in rx buffer
       while(!(_SPIx->SR & SPI_SR_RXNE));
+      
+      EXIT_CRITICAL_SECTION();
       
       return _SPIx->DR;
     }
@@ -114,7 +119,7 @@ namespace Spi_2
     {
       if(_buf_size > 0)
       {
-       _data = _rx_buffer[_cur_rx_read];
+        _data = _rx_buffer[_cur_rx_read];
         if(_cur_rx_read < 7) _cur_rx_read++;
         else _cur_rx_read = 0;
         
@@ -126,6 +131,10 @@ namespace Spi_2
       }
       return _data;
     }
+  }
+  uint8_t available()
+  {
+    return _buf_size;
   }
 }
 
