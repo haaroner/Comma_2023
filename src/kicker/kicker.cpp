@@ -39,6 +39,10 @@ void kicker::check(uint32_t _actual_time)
 		}
 		ready = false;
 	}
+  else if(state == 2)
+  {
+    _discharge.setBit();
+  }
 }
 
 void kicker::keck()
@@ -49,3 +53,11 @@ void kicker::keck()
 		_tim = _time;
 	}
 }
+void kicker::discharge()
+{
+  _charge.resetBit();
+  if(state != 2)
+    time_service::delay_ms(100);
+  state = 2;
+}
+

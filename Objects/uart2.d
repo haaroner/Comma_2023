@@ -39,4 +39,5 @@
 .\objects\uart2.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\uart2.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\uart2.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
+.\objects\uart2.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\uart2.o: .\src\UART\UART.h

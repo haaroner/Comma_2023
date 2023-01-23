@@ -10,7 +10,7 @@ class motors
 					Motor& m3, 
 					Motor& m4);
 	void moveMotor(int32_t power);
-	void stopRobot();
+	void stopRobot(uint16_t power);
 	void moveRobot(double _maxPower,
 										 double _maxPower_angle,
 										 double _angle,

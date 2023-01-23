@@ -87,10 +87,11 @@ void camera::getData()
   }
 }
 
-void camera::calculate_pos(int16_t angle)
+void camera::calculate_pos(int16_t angle, bool my_gate)
 {
   if(_received)
   {
+    angle = lead_to_degree_borders(angle);
     _yellow_angle = angle + _yellow_angle;
     _blue_angle = angle + _blue_angle;
     _yellow_angle = lead_to_degree_borders(_yellow_angle);
@@ -109,7 +110,7 @@ void camera::calculate_pos(int16_t angle)
       else 
         _yellow_angle = 0;
     }
-    if(_yellow_angle > 270 or _yellow_angle < 90)
+    if(my_gate == false)
     {
        _front_angle = _yellow_angle;
        _front_distance = _yellow_distance;
@@ -158,6 +159,10 @@ void camera::calculate_pos(int16_t angle)
     
     _x = int(ceil(double(_x))) * -1;
     _y = int(ceil(double(_y)));
+    
+    //_front_angle -= 180;
+    //_backward_angle -= 180;
+    
     _received = false;
   }
 }
@@ -174,11 +179,22 @@ int16_t camera::get_y()
 
 int16_t camera::get_forward_angle()
 {
+  if(_front_angle < -180)
+      _front_angle += 360;
+  else if(_front_angle > 180)
+      _front_angle -= 360;
+  
   return _front_angle;
 }
 
 int16_t camera::get_backward_angle()
 {
+  
+  if(_backward_angle < -180)
+      _backward_angle += 360;
+    else if(_backward_angle > 180)
+      _backward_angle -= 360;
+    
   return _backward_angle;
 }
 

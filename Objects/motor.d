@@ -39,5 +39,6 @@
 .\objects\motor.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\motor.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\motor.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
+.\objects\motor.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\motor.o: .\src\pin_setup\pin_setup.h
 .\objects\motor.o: .\src\main\project_config.h

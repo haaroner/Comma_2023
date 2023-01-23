@@ -2,6 +2,7 @@
 
 #include "project_config.h"
 #include "pin_setup.h"
+#include "time_service.h"
 
 class kicker
 {
@@ -10,6 +11,7 @@ class kicker
 	
 	void check(uint32_t _actual_time);
 	void keck();
+  void discharge();
 	
 	private:
 		pin _charge;

@@ -61,6 +61,7 @@ namespace usart3
 
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 		USART_InitTypeDef u;
+    
 		u.USART_BaudRate = speed;
     
     if(word_length == 9) u.USART_WordLength = USART_WordLength_9b;

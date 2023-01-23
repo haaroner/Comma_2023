@@ -26,10 +26,10 @@ void motors::stopRobot()
 	_m4.blockMotor(250);
 }
 
-void motors::moveRobot(int _maxPower,
-										 int _maxPower_angle,
-										 int _angle,
-										 int _inc)
+void motors::moveRobot(double _maxPower,
+										 double _maxPower_angle,
+										 double _angle,
+										 double _inc)
 {
 	if(_inc > _maxPower_angle)
 		_inc =  _maxPower_angle;

@@ -11,6 +11,8 @@ namespace time_service
 	void init();
 	void stopTime(void);
 	void startTime(void);
-	void delay_ms(float delta);
+  void startTime_DOT(void);
+	void delay_ms(uint32_t delta);
+  void delay_micros(uint32_t delta);
 }
 //#endif TIME_SERVICE_H

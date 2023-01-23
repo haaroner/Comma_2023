@@ -7,6 +7,7 @@
 
 pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 {
+  _is_tim_configured = false;
 	if(pin_gpio == 'A') _GPIOx = GPIOA;
 	else if(pin_gpio == 'B') _GPIOx = GPIOB;
 	else if(pin_gpio == 'C') _GPIOx = GPIOC;
@@ -89,7 +90,7 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		else if(function == 812) _AFGPIO = GPIO_AF_TIM12;
 		else if(function == 813) _AFGPIO = GPIO_AF_TIM13;
 		else if(function == 814) _AFGPIO = GPIO_AF_TIM14;
-		
+		_is_tim_configured = true;
 	}
   else if(function == 91) //spi1
 	{
@@ -115,6 +116,14 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
 		_AFGPIO = GPIO_AF_SPI3;
 	}
+  else if(function == 11) // adc
+  {
+    _modeGPIO = GPIO_Mode_AN;
+    _speedGPIO = GPIO_Speed_100MHz;
+    _typeGPIO = GPIO_OType_PP;
+		_pupdGpio = GPIO_PuPd_NOPULL;
+		_AFGPIO = GPIO_AF_I2C3;
+  }
 	else
 	{
 		_modeGPIO = GPIO_Mode_OUT;
@@ -154,12 +163,25 @@ void pin::pinInit()
 
 void pin::setBit()
 {
-GPIO_SetBits(_GPIOx, _pinNumber);
+  GPIO_SetBits(_GPIOx, _pinNumber);
 }
 
 void pin::resetBit()
 {
-GPIO_ResetBits(_GPIOx, _pinNumber);
+  GPIO_ResetBits(_GPIOx, _pinNumber);
+}
+
+void pin::write(bool _data)
+{
+  if(_data)
+    GPIO_SetBits(_GPIOx, _pinNumber);
+  else
+    GPIO_ResetBits(_GPIOx, _pinNumber);
+}
+
+uint8_t pin::read()
+{
+  return getGPIOx() -> IDR & getPinNumber();
 }
 
 GPIO_TypeDef* pin::getGPIOx()
@@ -172,7 +194,7 @@ uint16_t pin::getPinNumber()
 	return _pinNumber;
 }
 
-void pin::pwmInit(uint32_t RCC_TIMx,uint16_t _prescaler, uint32_t _period, uint32_t  _start_pulse, uint8_t channel, TIM_TypeDef* TIMx)
+void pin::pwmInit(uint32_t RCC_TIMx,uint16_t _prescaler, uint32_t _period, uint32_t  _start_pulse, uint8_t channel, TIM_TypeDef* TIMx, bool pwm_en)
 {
 	_TIMx = TIMx;
 	_channel = channel;
@@ -192,9 +214,9 @@ void pin::pwmInit(uint32_t RCC_TIMx,uint16_t _prescaler, uint32_t _period, uint3
 	else if(_TIMx == TIM14) RCC_APB1PeriphClockCmd(RCC_TIMx, ENABLE);
 	
 	TIM_TimeBaseInitTypeDef time;
-	time.TIM_Prescaler = 1; 
+  time.TIM_Prescaler = _prescaler; 
 	time.TIM_CounterMode = TIM_CounterMode_Up;
-	time.TIM_Period = 4096;
+	time.TIM_Period = _period;
 	time.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseInit(_TIMx, &time);
 	TIM_Cmd(_TIMx,ENABLE);
@@ -213,7 +235,8 @@ void pin::pwmInit(uint32_t RCC_TIMx,uint16_t _prescaler, uint32_t _period, uint3
 	}
 	
 	TIM_OCInitTypeDef ch;
-	ch.TIM_OCMode = TIM_OCMode_PWM1;
+  if(pwm_en == 1) ch.TIM_OCMode = TIM_OCMode_PWM1;
+  else ch.TIM_OCMode = TIM_OCMode_Timing;
 	ch.TIM_OutputState = TIM_OutputState_Enable;
 	if(_TIMx != TIM1)ch.TIM_OutputNState = TIM_OutputNState_Disable;
 		else ch.TIM_OutputNState = TIM_OutputNState_Enable;
@@ -270,4 +293,18 @@ if(_channel == CHANNEL1)
 	}
 }
 
+TIM_TypeDef* pin::getTimerx()
+{
+  if(_is_tim_configured)
+    return _TIMx;
+  else 
+    return NULL; 
+}
 
+uint8_t pin::getChannel()
+{
+  if(_is_tim_configured)
+    return _channel;
+  else
+    return NULL;
+}

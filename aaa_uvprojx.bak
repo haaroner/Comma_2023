@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F407xx,STM32F40_41xxx, USE_FULL_ASSERT, USE_STDPERIPH_DRIVER, HSE_VALUE = 12000000</Define>
+              <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\MPU9250;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05</IncludePath>
+              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\MPU9250;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05;.\src\Display\SSD1306;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\TSSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -412,7 +412,12 @@
             <File>
               <FileName>retarget.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\external\retarget.cpp</FilePath>
+              <FilePath>.\src\main\retarget.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>libs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\libs.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -476,6 +481,11 @@
               <FileName>stm32f4xx_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\spl4\stm32f4xx_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_dma.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -736,6 +746,91 @@
               <FileName>SSD1306.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\SSD1306\SSD1306.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>dribler</GroupName>
+          <Files>
+            <File>
+              <FileName>dribler.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\dribler\dribler.h</FilePath>
+            </File>
+            <File>
+              <FileName>dribler.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\dribler\dribler.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Maths</GroupName>
+          <Files>
+            <File>
+              <FileName>ball_detour.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\ball_detour\ball_detour.h</FilePath>
+            </File>
+            <File>
+              <FileName>robot_math.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robot_math\robot_math.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Bounds</GroupName>
+          <Files>
+            <File>
+              <FileName>Bounds.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Bounds.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ADC</GroupName>
+          <Files>
+            <File>
+              <FileName>adc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\adc\adc.h</FilePath>
+            </File>
+            <File>
+              <FileName>adc.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\adc\adc.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>DMA</GroupName>
+          <Files>
+            <File>
+              <FileName>dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\dma\dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>dma.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\dma\dma.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>TSSP</GroupName>
+          <Files>
+            <File>
+              <FileName>TSSP.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\TSSP\TSSP.h</FilePath>
+            </File>
+            <File>
+              <FileName>TSSP.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\TSSP\TSSP.cpp</FilePath>
             </File>
           </Files>
         </Group>

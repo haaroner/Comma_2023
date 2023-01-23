@@ -63,8 +63,6 @@ namespace usart3
 		USART_InitTypeDef u;
 		u.USART_BaudRate = speed;
     
-    
-    
     if(word_length == 9) u.USART_WordLength = USART_WordLength_9b;
     else u.USART_WordLength = USART_WordLength_8b;
 

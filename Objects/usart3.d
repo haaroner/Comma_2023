@@ -39,3 +39,4 @@
 .\objects\usart3.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\usart3.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\usart3.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
+.\objects\usart3.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h

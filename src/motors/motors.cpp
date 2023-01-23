@@ -18,12 +18,13 @@ void motors::moveMotor(int32_t power)
 		_m4.motorMove(power);//blue right
 }
 
-void motors::stopRobot()
+void motors::stopRobot(uint16_t _power)
 {
-	_m1.blockMotor(250);
-	_m2.blockMotor(250);
-	_m3.blockMotor(250);
-	_m4.blockMotor(250);
+  if(_power > 3000) _power = 3000;
+	_m1.blockMotor(_power);
+	_m2.blockMotor(_power);
+	_m3.blockMotor(_power);
+	_m4.blockMotor(_power);
 }
 
 void motors::moveRobot(double _maxPower,

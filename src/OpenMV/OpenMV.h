@@ -10,7 +10,7 @@ class camera
 		camera(pin &tx, pin &rx);
 		void getData();
     uint16_t lead_to_degree_borders(int num);
-    void calculate_pos(int16_t angle);
+    void calculate_pos(int16_t angle, bool my_gate);
 		int16_t get_x();
 		int16_t get_y();
     int16_t get_forward_angle();

@@ -11,10 +11,10 @@ class motors
 					Motor& m4);
 	void moveMotor(int32_t power);
 	void stopRobot();
-	void moveRobot(int _maxPower,
-										 int _maxPower_angle,
-										 int _angle,
-										 int _inc);
+	void moveRobot(double _maxPower,
+										 double _maxPower_angle,
+										 double _angle,
+										 double _inc);
                      
 	private:
 		Motor _m1;

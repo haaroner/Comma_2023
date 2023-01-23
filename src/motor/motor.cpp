@@ -10,6 +10,7 @@
 #define tim3 83
 #define tim4 84
 #define tim5 85
+#define tim7 87
 #define tim8 88
 #define tim9 89
 #define tim10 810
@@ -30,7 +31,7 @@ Motor::Motor(char pin_gpio1, uint8_t pin_num1, uint16_t _tim1, uint8_t channel1,
 	else if(_tim1 == tim4) {_TIMx1 = TIM4; _RCC_TIMx1 = RCC_APB1ENR_TIM4EN;}
 	else if(_tim1 == tim5) {_TIMx1 = TIM5; _RCC_TIMx1 = RCC_APB1ENR_TIM5EN;}
 	//else if(_tim1 == tim6) {_TIMx1 = TIM6; _RCC_TIMx1 = RCC_APB1ENR_TIM6EN;}
-	//else if(_tim1 == tim7) {_TIMx1 = TIM7; _RCC_TIMx1 = RCC_APB1ENR_TIM7EN;}
+	else if(_tim1 == tim7) {_TIMx1 = TIM7; _RCC_TIMx1 = RCC_APB1ENR_TIM7EN;}
 	else if(_tim1 == tim8) {_TIMx1 = TIM8; _RCC_TIMx1 = RCC_APB2ENR_TIM8EN;}
 	else if(_tim1 == tim9) {_TIMx1 = TIM9; _RCC_TIMx1 = RCC_APB2ENR_TIM9EN;}
 	else if(_tim1 == tim10) {_TIMx1 = TIM10; _RCC_TIMx1 = RCC_APB2ENR_TIM10EN;}
@@ -45,7 +46,7 @@ Motor::Motor(char pin_gpio1, uint8_t pin_num1, uint16_t _tim1, uint8_t channel1,
 	else if(_tim2 == tim4) {_TIMx2 = TIM4; _RCC_TIMx2 = RCC_APB1ENR_TIM4EN;}
 	else if(_tim2 == tim5) {_TIMx2 = TIM5; _RCC_TIMx2 = RCC_APB1ENR_TIM5EN;}
 	//else if(_tim2 == tim6) {_TIMx2 = TIM6; _RCC_TIMx2 = RCC_APB1ENR_TIM6EN;}
-	//else if(_tim2 == tim7) {_TIMx2 = TIM7; _RCC_TIMx2 = RCC_APB1ENR_TIM7EN;}
+	else if(_tim2 == tim7) {_TIMx2 = TIM7; _RCC_TIMx2 = RCC_APB1ENR_TIM7EN;}
 	else if(_tim2 == tim8) {_TIMx2 = TIM8; _RCC_TIMx2 = RCC_APB2ENR_TIM8EN;}
 	else if(_tim2 == tim9) {_TIMx2 = TIM9; _RCC_TIMx2 = RCC_APB2ENR_TIM9EN;}
 	else if(_tim2 == tim10) {_TIMx2 = TIM10; _RCC_TIMx2 = RCC_APB2ENR_TIM10EN;}
@@ -54,8 +55,8 @@ Motor::Motor(char pin_gpio1, uint8_t pin_num1, uint16_t _tim1, uint8_t channel1,
 	else if(_tim2 == tim13) {_TIMx2 = TIM13; _RCC_TIMx2 = RCC_APB1ENR_TIM13EN;}
 	else if(_tim2 == tim14) {_TIMx2 = TIM14; _RCC_TIMx2 = RCC_APB1ENR_TIM14EN;}
 	
-	_p1.pwmInit(_RCC_TIMx1, 2, 4096, 0, channel1, _TIMx1);	
-	_p2.pwmInit(_RCC_TIMx2, 2, 4096, 0, channel2, _TIMx2);
+	_p1.pwmInit(_RCC_TIMx1, 2, 4096, 0, channel1, _TIMx1, 1);	
+	_p2.pwmInit(_RCC_TIMx2, 2, 4096, 0, channel2, _TIMx2, 1);
 }
 
 void Motor::motorMove(double pupower)

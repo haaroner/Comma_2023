@@ -38,6 +38,8 @@
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
+.\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: .\src\main\libs.h
 .\objects\main.o: .\src\pin_setup\pin_setup.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\motor\motor.h
@@ -57,6 +59,8 @@
 .\objects\main.o: .\src\OpenMV\OpenMv.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\kicker\kicker.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\time_service\time_service.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\MPU9250\MPU9250.h
 .\objects\main.o: .\src\main\project_config.h
@@ -86,4 +90,13 @@
 .\objects\main.o: .\src\SPI\SPI_2\SPI_2.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: .\src\robot_math\robot_math.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\dribler\dribler.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\time_service\time_service.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\adc\adc.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\dma\dma.h
+.\objects\main.o: .\src\main\project_config.h
