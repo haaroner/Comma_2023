@@ -67,27 +67,25 @@ namespace Spi_2
     if(_first_bit == msb) _spi.SPI_FirstBit = SPI_FirstBit_MSB;
     else if(_first_bit == lsb) _spi.SPI_FirstBit = SPI_FirstBit_LSB;
     
-    if(_spi_mode == master_mode)
-    {
-      _SPIx->CR1 |= SPI_CR1_SSM;
-      _SPIx->CR1 |= SPI_CR1_SSI;
-    }
+//    if(_spi_mode == master_mode)
+//    {
+//      SPI2->CR1 |= SPI_CR1_SSM;
+//      _SPIx->CR1 |= SPI_CR1_SSI;
+//    }
     
-    SPI_Init(_SPIx, &_spi); //init spi
+    SPI_Init(SPI2, &_spi); //init spi
     if(_spi_work_mode == interruption)
     {
-      SPI_ITConfig(_SPIx, SPI_I2S_IT_RXNE, ENABLE);//configure interrupt to the empty rx buffer
-      if(_spi_num == spi_1) NVIC_EnableIRQ(SPI1_IRQn);
-      else if(_spi_num == spi_2) NVIC_EnableIRQ(SPI2_IRQn);
-      else if(_spi_num == spi_3) NVIC_EnableIRQ(SPI3_IRQn);
+      SPI_ITConfig(SPI2, SPI_I2S_IT_RXNE, ENABLE);//configure interrupt to the empty rx buffer
+      NVIC_EnableIRQ(SPI2_IRQn);
     }
     
-    SPI_Cmd(_SPIx, ENABLE); 
+    SPI_Cmd(SPI2, ENABLE); 
   }
 
   void spi_deinit()
   {
-    SPI_I2S_DeInit(_SPIx); //deinit spi
+    SPI_I2S_DeInit(SPI2); //deinit spi
   }
 
   void send(uint16_t data)
@@ -95,9 +93,9 @@ namespace Spi_2
     //waiting when the tx buffer will be empty
     //TXE - buffer is empty BSY - all data have been sent succesfully
     ENTER_CRITICAL_SECTION();
-    while(!(_SPIx->SR & SPI_SR_TXE));
+    while(!(SPI2->SR & SPI_SR_TXE));
 
-    _SPIx->DR = data;
+    SPI2->DR = data;
     EXIT_CRITICAL_SECTION();
   } 
 
@@ -106,14 +104,14 @@ namespace Spi_2
     if(_spi_work_mode == simple)
     {
       ENTER_CRITICAL_SECTION();
-      _SPIx->DR = 0; 
+      //SPI2->DR = 0; 
       
       //waiting new data in rx buffer
-      while(!(_SPIx->SR & SPI_SR_RXNE));
+      while(!(SPI2->SR & SPI_SR_RXNE));
       
       EXIT_CRITICAL_SECTION();
       
-      return _SPIx->DR;
+      return SPI2->DR;
     }
     else if(_spi_work_mode == interruption)
     {
@@ -145,7 +143,7 @@ extern "C"
     uint16_t it_data;
     if (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE))
     {
-      SPI2->DR = 0; 
+      //SPI2->DR = 0; 
     
       //waiting new data in rx buffer
       while(!(SPI2->SR & SPI_SR_RXNE));

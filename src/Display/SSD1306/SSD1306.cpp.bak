@@ -115,32 +115,18 @@ void SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
 
 // constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset
-SSD1306::SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &PWR_EN, pin &SCK, pin &MOSI): _DC(DC),
+SSD1306::SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &SCK, pin &MOSI): _DC(DC),
                                                                                                  _RST(RST),
                                                                                                  _CS(CS),
-                                                                                                 _PWR_EN(PWR_EN),
                                                                                                  _SCK(SCK),
                                                                                                  _MOSI(MOSI)
 {
 	spiNum = spi_num;
   hwSPI = true;
 	
-	_PWR_EN.setBit();
 //	initPin(PWR_EN, OUTPUTPP);
 //	setPin(PWR_EN, 1);
 	
-}
-
-void SSD1306::switchOff()
-{
-  _PWR_EN.resetBit();
-	//setPin(pwr_en, 0);
-}
-
-void SSD1306::switchOn()
-{
-  _PWR_EN.setBit();
-	//setPin(pwr_en, 1);
 }
 
 void SSD1306::draw()
@@ -158,9 +144,9 @@ void SSD1306::begin(uint8_t vccstate, bool reset) {
   //initPin(cs, OUTPUTPP);
 
 	//initSPI(spiNum, MASTER, 8, 2, cs, sck, -1, mosi);
-  if(spiNum == 1) Spi_1::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
-  else if(spiNum == 2) Spi_2::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
-  else if(spiNum == 3) Spi_3::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
+  if(spiNum == 1) Spi_1::spi_init(master_mode, simple, TxOnly, d8b, b2r, lsb);
+  else if(spiNum == 2) Spi_2::spi_init(master_mode, simple, TxOnly, d8b, b2r, lsb);
+  else if(spiNum == 3) Spi_3::spi_init(master_mode, simple, TxOnly, d8b, b2r, lsb);
   
   // Setup reset pin direction (used by both SPI and I2C)
   //initPin(rst, OUTPUTPP);
@@ -385,7 +371,7 @@ void SSD1306::display() {
   
   _CS.setBit();
   _DC.setBit();
-  
+  _CS.resetBit();
 //  setPin(cs, HIGH);
 //  setPin(dc, HIGH);
 //  setPin(cs, LOW);
@@ -395,7 +381,8 @@ void SSD1306::display() {
     fastSPIwrite(buffer[i]);
   }
 
-  setPin(cs, HIGH);
+  _CS.setBit();
+  //setPin(cs, HIGH);
   
 }
 
@@ -418,16 +405,20 @@ void SSD1306::display(uint8_t *buf) {
 
 
   // SPI
-
-  setPin(cs, HIGH);
-  setPin(dc, HIGH);
-  setPin(cs, LOW);
+  
+  _CS.setBit();
+  _DC.setBit();
+  _CS.resetBit();
+//  setPin(cs, HIGH);
+//  setPin(dc, HIGH);
+//  setPin(cs, LOW);
 	
   for (uint16_t i=0; i<(SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8); i++) {
     fastSPIwrite(buf[i]);
   }
 
-  setPin(cs, HIGH);
+  _CS.setBit();
+  //setPin(cs, HIGH);
   
 }
 
@@ -436,12 +427,18 @@ void SSD1306::clear(void) {
   memset(buffer, 0, (SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8));
 }
 
-
-inline void SSD1306::fastSPIwrite(uint8_t d) {
-
-	writeSPI(spiNum, d);
-  
+inline void SSD1306::fastSPIwrite(uint8_t d) 
+{
+	writeSPI(d);  
 }
+
+void SSD1306::writeSPI(uint8_t _data)
+{
+  if(spiNum == 1) Spi_1::send(_data);
+  else if(spiNum == 2) Spi_2::send(_data);
+  else if(spiNum == 3) Spi_3::send(_data);
+}
+
 
 void SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
   bool bSwap = false;
@@ -546,9 +543,9 @@ void SSD1306::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color) {
 }
 
 
-SSD1306::SSD1306()
-{
-}
+//SSD1306::SSD1306()
+//{
+//}
 
 void SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h, uint16_t color) {
 
@@ -662,3 +659,4 @@ void SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h, uint16_
       case INVERSE: *pBuf ^=  mask;  break;
     }
   }
+}

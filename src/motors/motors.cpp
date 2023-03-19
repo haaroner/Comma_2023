@@ -36,28 +36,27 @@ void motors::moveRobot(double _maxPower,
 		_inc =  _maxPower_angle;
 	else if(_inc < -_maxPower_angle)
 		_inc =  -_maxPower_angle;
-	_angle += 180;
-	ang = (double(_angle) + 135)/57.3;
+  
+	ang = (_angle + 135) * DEG2RAD;
 	opowers = _maxPower * cos(ang);
 	opowers += _inc;
 	_m1.motorMove(opowers);
 	
-	ang = (double(_angle) - 135)/57.3;
+	ang = (_angle - 135) * DEG2RAD;
 	opowers = _maxPower * -cos(ang);
 	opowers += _inc;
 	_m2.motorMove(-opowers);
 
 	
-	ang = (double(_angle) + 45)/57.3;
+	ang = (_angle + 45) * DEG2RAD;
 	opowers = _maxPower * cos(ang);
 	opowers -= _inc;
 	_m3.motorMove(-opowers);
 
 	
-	ang = (double(_angle) - 45)/57.3;
+	ang = (_angle - 45) * DEG2RAD;
 	opowers = _maxPower * cos(ang);
 	opowers += _inc;
 	_m4.motorMove(opowers);
 }
-
 // you are clown

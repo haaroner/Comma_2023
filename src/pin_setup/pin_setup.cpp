@@ -7,6 +7,7 @@
 
 pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 {
+  _function = function;
   _is_tim_configured = false;
 	if(pin_gpio == 'A') _GPIOx = GPIOA;
 	else if(pin_gpio == 'B') _GPIOx = GPIOB;
@@ -35,18 +36,18 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 	else if(pin_num == 14)  {_pinNumber = GPIO_Pin_14; _pinSourceGPIO = GPIO_PinSource14;}
 	else if(pin_num == 15)  {_pinNumber = GPIO_Pin_15; _pinSourceGPIO = GPIO_PinSource15;}
 	
-	if(function == 01 || function == 02 || function == 03 || function == 04)//usart(1, 2, 3, 6)
+	if(function == uart1 || function == uart2 || function == uart3 || function == uart6)//uarts(1, 2, 3, 6)
 	{
 		_modeGPIO = GPIO_Mode_AF;
 		_speedGPIO = GPIO_Speed_100MHz;
 		_typeGPIO = GPIO_OType_PP;
 		_pupdGpio = GPIO_PuPd_NOPULL;
-		if(function == 01) _AFGPIO = GPIO_AF_USART1;
-		if(function == 02) _AFGPIO = GPIO_AF_USART2;
-		if(function == 03) _AFGPIO = GPIO_AF_USART3;
-		if(function == 04) _AFGPIO = GPIO_AF_USART6;
+		if(function == uart1) _AFGPIO = GPIO_AF_USART1;
+		if(function == uart2) _AFGPIO = GPIO_AF_USART2;
+		if(function == uart3) _AFGPIO = GPIO_AF_USART3;
+		if(function == uart6) _AFGPIO = GPIO_AF_USART6;
 	}
-	else if(function == 05) //i2c
+	else if(function == i2c) //i2c
 	{
 		_modeGPIO = GPIO_Mode_OUT;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -54,7 +55,7 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_UP;
 		_AFGPIO = GPIO_AF_I2C3;
 	}
-	else if(function == 06)//read with pupd_UP
+	else if(function == read_UP)//read with pupd_UP
 	{
 		_modeGPIO = GPIO_Mode_IN;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -62,7 +63,7 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_UP;
 		_AFGPIO = GPIO_AF_I2C3;
 	}
-	else if(function == 07)//write
+	else if(function == read_UP)//write
 	{
 		_modeGPIO = GPIO_Mode_OUT;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -70,29 +71,45 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
 		_AFGPIO = GPIO_AF_I2C3;
 	}
-	else if(function == 81 || function == 82 || function == 83 || function == 84 || function == 85 || 
-		function == 86 || function == 87 || function == 88 || function == 89 || function == 810 || function == 811 ||
-	function == 812 || function == 813 || function == 814)
+  else if(function == write_UP)//write_UP
+	{
+		_modeGPIO = GPIO_Mode_OUT;
+		_speedGPIO = GPIO_Speed_100MHz;
+		_typeGPIO = GPIO_OType_PP;
+		_pupdGpio = GPIO_PuPd_UP;
+		_AFGPIO = GPIO_AF_I2C3;
+	}
+  else if(function == read_DOWN) //read_DOWN
+  {
+		_modeGPIO = GPIO_Mode_OUT;
+		_speedGPIO = GPIO_Speed_100MHz;
+		_typeGPIO = GPIO_OType_PP;
+		_pupdGpio = GPIO_PuPd_DOWN;
+		_AFGPIO = GPIO_AF_I2C3; 
+  }
+	else if(function == tim1 || function == tim2 || function == tim3 || function == tim4 || function == tim5 || 
+		function == tim6 || function == tim7 || function == tim8 || function == tim9 || function == tim10 || function == tim11 ||
+	function == tim12 || function == tim13 || function == tim14)
 	{
 		_modeGPIO = GPIO_Mode_AF;
 		_speedGPIO = GPIO_Speed_100MHz;
 		_typeGPIO = GPIO_OType_PP;
 		_pupdGpio = GPIO_PuPd_NOPULL;
-		if(function == 81) _AFGPIO = GPIO_AF_TIM1;
-		else if(function == 82) _AFGPIO = GPIO_AF_TIM2;
-		else if(function == 83) _AFGPIO = GPIO_AF_TIM3;
-		else if(function == 84) _AFGPIO = GPIO_AF_TIM4;
-		else if(function == 85) _AFGPIO = GPIO_AF_TIM5;
-		else if(function == 88) _AFGPIO = GPIO_AF_TIM8;
-		else if(function == 89) _AFGPIO = GPIO_AF_TIM9;
-		else if(function == 810) _AFGPIO = GPIO_AF_TIM10;
-		else if(function == 811) _AFGPIO = GPIO_AF_TIM11;
-		else if(function == 812) _AFGPIO = GPIO_AF_TIM12;
-		else if(function == 813) _AFGPIO = GPIO_AF_TIM13;
-		else if(function == 814) _AFGPIO = GPIO_AF_TIM14;
+		if(function == tim1) _AFGPIO = GPIO_AF_TIM1;
+		else if(function == tim2) _AFGPIO = GPIO_AF_TIM2;
+		else if(function == tim3) _AFGPIO = GPIO_AF_TIM3;
+		else if(function == tim4) _AFGPIO = GPIO_AF_TIM4;
+		else if(function == tim5) _AFGPIO = GPIO_AF_TIM5;
+		else if(function == tim8) _AFGPIO = GPIO_AF_TIM8;
+		else if(function == tim9) _AFGPIO = GPIO_AF_TIM9;
+		else if(function == tim10) _AFGPIO = GPIO_AF_TIM10;
+		else if(function == tim11) _AFGPIO = GPIO_AF_TIM11;
+		else if(function == tim12) _AFGPIO = GPIO_AF_TIM12;
+		else if(function == tim13) _AFGPIO = GPIO_AF_TIM13;
+		else if(function == tim14) _AFGPIO = GPIO_AF_TIM14;
 		_is_tim_configured = true;
 	}
-  else if(function == 91) //spi1
+  else if(function == spi1) //spi1
 	{
 		_modeGPIO = GPIO_Mode_AF;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -100,15 +117,15 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
 		_AFGPIO = GPIO_AF_SPI1;
 	}
-  else if(function == 92) //spi2
+  else if(function == spi2) //spi2
 	{
 		_modeGPIO = GPIO_Mode_AF;
 		_speedGPIO = GPIO_Speed_100MHz;
 		_typeGPIO = GPIO_OType_PP;
-		_pupdGpio = GPIO_PuPd_NOPULL;
+		_pupdGpio = GPIO_PuPd_DOWN;
 		_AFGPIO = GPIO_AF_SPI2;
 	}
-  else if(function == 93) //spi3
+  else if(function == spi3) //spi3
 	{
 		_modeGPIO = GPIO_Mode_AF;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -116,15 +133,15 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
 		_AFGPIO = GPIO_AF_SPI3;
 	}
-  else if(function == 11) // adc
+  else if(function == adc) // adc
   {
     _modeGPIO = GPIO_Mode_AN;
     _speedGPIO = GPIO_Speed_100MHz;
     _typeGPIO = GPIO_OType_PP;
 		_pupdGpio = GPIO_PuPd_NOPULL;
-		_AFGPIO = GPIO_AF_I2C3;
+		_AFGPIO = GPIO_AF_TIM3;
   }
-	else
+	else if(function == write_)
 	{
 		_modeGPIO = GPIO_Mode_OUT;
 		_speedGPIO = GPIO_Speed_100MHz;
@@ -132,7 +149,26 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
 		_AFGPIO = GPIO_AF_I2C3;
 	}
-	pin::pinInit();
+  else if(function == read_)
+	{
+		_modeGPIO = GPIO_Mode_IN;
+		_speedGPIO = GPIO_Speed_100MHz;
+		_typeGPIO = GPIO_OType_PP;
+		_pupdGpio = GPIO_PuPd_NOPULL;
+		_AFGPIO = GPIO_AF_I2C3;
+	}
+  else if(function == dribler_)
+  {
+    _modeGPIO = GPIO_Mode_AF;
+		_speedGPIO = GPIO_Speed_100MHz;
+		_typeGPIO = GPIO_OType_PP;
+		_pupdGpio = GPIO_PuPd_NOPULL;
+    _AFGPIO = GPIO_AF_TIM3;
+    pin::pinInit();
+    pin::pwmInit(RCC_APB1ENR_TIM3EN, 159, 2000, 0, 3, TIM3, 1);
+    
+  }
+  if(function != dribler_) pin::pinInit();
 }
 
 void pin::pinInit()

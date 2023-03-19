@@ -10,8 +10,7 @@ Adc::Adc(ADC_TypeDef* ADCx,
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
 	m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADCx;
-    //m_numberOfChannels
-    cur = 1;
+  cur = 1;
 }
 
 void Adc::adcInit()
@@ -20,7 +19,7 @@ void Adc::adcInit()
 	RCC_APB2PeriphClockCmd(m_RCC_APB2Periph_ADCx, ENABLE);
 	ADC_CommonInitTypeDef cADC;
 	cADC.ADC_Mode = ADC_Mode_Independent;
-	cADC.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
+	cADC.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;//!!!
 	cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;
 	cADC.ADC_Prescaler = ADC_Prescaler_Div2;
 	

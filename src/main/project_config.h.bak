@@ -7,3 +7,4 @@
 #include "stm32f4xx_dma.h"
 #include "stm32f4xx_usart.h"
 #include "math.h"
+#include "string.h"

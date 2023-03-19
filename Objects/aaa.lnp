@@ -33,6 +33,10 @@
 ".\objects\adc.o"
 ".\objects\dma.o"
 ".\objects\tssp.o"
+".\objects\voltmeter.o"
+".\objects\line.o"
+".\objects\mpu9250_spi.o"
+".\objects\spi_dot.o"
 --strict --scatter ".\Objects\aaa.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

@@ -40,3 +40,5 @@
 .\objects\time_service.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\time_service.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\time_service.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\time_service.o: .\src\main\tools.h
+.\objects\time_service.o: .\src\main\tools.h

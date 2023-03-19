@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\MPU9250;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05;.\src\Display\SSD1306;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\TSSP</IncludePath>
+              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\MPU9250;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05;.\src\Display\SSD1306;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\TSSP;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\Field</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -418,6 +418,11 @@
               <FileName>libs.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\main\libs.h</FilePath>
+            </File>
+            <File>
+              <FileName>tools.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\tools.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -598,14 +603,14 @@
           <GroupName>i2c</GroupName>
           <Files>
             <File>
-              <FileName>soft_i2c.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\i2c\soft_i2c.h</FilePath>
-            </File>
-            <File>
               <FileName>soft_i2c.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\i2c\soft_i2c.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>soft_i2c.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\i2c\soft_i2c.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -831,6 +836,96 @@
               <FileName>TSSP.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\TSSP\TSSP.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>voltmeter</GroupName>
+          <Files>
+            <File>
+              <FileName>voltmeter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\voltmeter\voltmeter.h</FilePath>
+            </File>
+            <File>
+              <FileName>voltmeter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\voltmeter\voltmeter.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>line</GroupName>
+          <Files>
+            <File>
+              <FileName>line.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\line\line.h</FilePath>
+            </File>
+            <File>
+              <FileName>line.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\line\line.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>robots</GroupName>
+          <Files>
+            <File>
+              <FileName>robots.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robots\robots.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MPU9250_spi</GroupName>
+          <Files>
+            <File>
+              <FileName>mpu9250_spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\mpu9250_spi\mpu9250_spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>mpu9250_spi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\mpu9250_spi\mpu9250_spi.h</FilePath>
+            </File>
+            <File>
+              <FileName>IMU_SPI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\IMU_SPI.h</FilePath>
+            </File>
+            <File>
+              <FileName>mpu9250_registers_spi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\mpu9250_spi\mpu9250_registers_spi.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SPI_DOT</GroupName>
+          <Files>
+            <File>
+              <FileName>SPI2_DOT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\SPI_DOT\SPI2_DOT.h</FilePath>
+            </File>
+            <File>
+              <FileName>SPI_DOT.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\SPI_DOT.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Field</GroupName>
+          <Files>
+            <File>
+              <FileName>Field.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Field\Field.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -40,5 +40,17 @@
 .\objects\tssp.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\tssp.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\tssp.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\tssp.o: .\src\main\tools.h
+.\objects\tssp.o: .\src\main\tools.h
 .\objects\tssp.o: .\src\pin_setup\pin_setup.h
 .\objects\tssp.o: .\src\main\project_config.h
+.\objects\tssp.o: .\src\main\tools.h
+.\objects\tssp.o: .\src\time_service\time_service.h
+.\objects\tssp.o: .\src\main\project_config.h
+.\objects\tssp.o: .\src\main\tools.h
+.\objects\tssp.o: .\src\dma\dma.h
+.\objects\tssp.o: .\src\main\project_config.h
+.\objects\tssp.o: .\src\main\tools.h
+.\objects\tssp.o: .\src\adc\adc.h
+.\objects\tssp.o: .\src\main\project_config.h
+.\objects\tssp.o: .\src\main\tools.h

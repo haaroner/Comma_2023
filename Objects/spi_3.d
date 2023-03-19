@@ -40,6 +40,9 @@
 .\objects\spi_3.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\spi_3.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\spi_3.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\spi_3.o: .\src\main\tools.h
+.\objects\spi_3.o: .\src\main\tools.h
 .\objects\spi_3.o: .\src\pin_setup\pin_setup.h
 .\objects\spi_3.o: .\src\main\project_config.h
+.\objects\spi_3.o: .\src\main\tools.h
 .\objects\spi_3.o: .\src\SPI\SPI.h

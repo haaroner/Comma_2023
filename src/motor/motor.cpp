@@ -5,20 +5,6 @@
 #define CHANNEL3 3
 #define CHANNEL4 4
 
-#define tim1 81
-#define tim2 82
-#define tim3 83
-#define tim4 84
-#define tim5 85
-#define tim7 87
-#define tim8 88
-#define tim9 89
-#define tim10 810
-#define tim11 811
-#define tim12 812
-#define tim13 813
-#define tim14 814
-
 Motor::Motor(char pin_gpio1, uint8_t pin_num1, uint16_t _tim1, uint8_t channel1, 
 							char pin_gpio2, uint8_t pin_num2, uint16_t _tim2, uint8_t channel2): _p1(pin_gpio1, pin_num1, _tim1), 
 								_p2(pin_gpio2, pin_num2, _tim2)

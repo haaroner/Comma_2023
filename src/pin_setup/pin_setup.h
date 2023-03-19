@@ -1,7 +1,39 @@
 #pragma once
 #include "project_config.h"
 
-
+enum pin_function
+{
+  read_,
+  read_UP,
+  read_DOWN,
+  write_,
+  write_UP,
+  write_DOWN,
+  uart1,
+  uart2,
+  uart3,
+  uart6,
+  i2c, 
+  spi1,
+  spi2,
+  spi3,
+  adc,
+  tim1,
+  tim2,
+  tim3,
+  tim4,
+  tim5,
+  tim6,
+  tim7,
+  tim8,
+  tim9,
+  tim10,
+  tim11,
+  tim12,
+  tim13,
+  tim14,
+  dribler_
+};
 
 class pin
 {

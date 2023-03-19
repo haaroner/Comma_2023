@@ -2,18 +2,15 @@
 
 Adc::Adc(ADC_TypeDef* ADCx,
 				 uint8_t numberOfChannels,
-				uint8_t curChannel,          
-			 	 uint8_t ADC_Channel_x,
+          uint8_t curChannel,          
 				 uint32_t RCC_APB2Periph_ADCx,
 				 pin &sig):m_sig(sig)
 {
 	m_numberOfChannels = numberOfChannels;
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
-	m_ADC_Channel_x = ADC_Channel_x;
 	m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADCx;
-    //m_numberOfChannels
-    cur = 1;
+  cur = 1;
 }
 
 void Adc::adcInit()

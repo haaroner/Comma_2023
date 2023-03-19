@@ -39,9 +39,14 @@
 .\objects\dribler.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\dribler.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\dribler.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\dribler.o: .\src\main\tools.h
+.\objects\dribler.o: .\src\main\tools.h
 .\objects\dribler.o: src\dribler\dribler.h
 .\objects\dribler.o: .\src\main\project_config.h
+.\objects\dribler.o: .\src\main\tools.h
 .\objects\dribler.o: .\src\pin_setup\pin_setup.h
 .\objects\dribler.o: .\src\main\project_config.h
+.\objects\dribler.o: .\src\main\tools.h
 .\objects\dribler.o: .\src\time_service\time_service.h
 .\objects\dribler.o: .\src\main\project_config.h
+.\objects\dribler.o: .\src\main\tools.h

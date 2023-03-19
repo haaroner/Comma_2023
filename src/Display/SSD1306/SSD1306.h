@@ -87,12 +87,9 @@
 class SSD1306
 {
   public:
-    SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &PWR_EN, pin &SCK, pin &MOSI);
+    SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &SCK, pin &MOSI);
   
     SSD1306(void);
-
-	void switchOn(void);
-	void switchOff(void);
  
 	void draw(void);
 	
@@ -135,7 +132,6 @@ class SSD1306
   pin _DC;
   pin _RST;
   pin _CS;
-  pin _PWR_EN;
   pin _SCK;
   pin _MOSI;
 };

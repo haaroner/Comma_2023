@@ -115,32 +115,18 @@ void SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
 
 // constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset
-SSD1306::SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &PWR_EN, pin &SCK, pin &MOSI): _DC(DC),
+SSD1306::SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &SCK, pin &MOSI): _DC(DC),
                                                                                                  _RST(RST),
                                                                                                  _CS(CS),
-                                                                                                 _PWR_EN(PWR_EN),
                                                                                                  _SCK(SCK),
                                                                                                  _MOSI(MOSI)
 {
 	spiNum = spi_num;
   hwSPI = true;
 	
-	_PWR_EN.setBit();
 //	initPin(PWR_EN, OUTPUTPP);
 //	setPin(PWR_EN, 1);
 	
-}
-
-void SSD1306::switchOff()
-{
-  _PWR_EN.resetBit();
-	//setPin(pwr_en, 0);
-}
-
-void SSD1306::switchOn()
-{
-  _PWR_EN.setBit();
-	//setPin(pwr_en, 1);
 }
 
 void SSD1306::draw()
@@ -158,9 +144,9 @@ void SSD1306::begin(uint8_t vccstate, bool reset) {
   //initPin(cs, OUTPUTPP);
 
 	//initSPI(spiNum, MASTER, 8, 2, cs, sck, -1, mosi);
-  if(spiNum == 1) Spi_1::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
-  else if(spiNum == 2) Spi_2::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
-  else if(spiNum == 3) Spi_3::spi_init(master_mode, simple, fullDuplex, d8b, b2r, msb);
+  if(spiNum == 1) Spi_1::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
+  else if(spiNum == 2) Spi_2::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
+  else if(spiNum == 3) Spi_3::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
   
   // Setup reset pin direction (used by both SPI and I2C)
   //initPin(rst, OUTPUTPP);

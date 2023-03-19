@@ -40,3 +40,5 @@
 .\objects\pin_setup.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\pin_setup.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\pin_setup.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\pin_setup.o: .\src\main\tools.h
+.\objects\pin_setup.o: .\src\main\tools.h
