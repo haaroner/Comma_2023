@@ -2,6 +2,7 @@
 
 #include <project_config.h>
 #include <pin_setup.h>
+#include "math.h"
 
 class Motor
 {
@@ -24,6 +25,7 @@ class Motor
 //			TIM_TypeDef* TIMx2);
 		void motorMove(double pupower);
 		void blockMotor(int32_t pupower);
+    void disableMotor();
 	private:
 		pin _p1;
 		pin _p2;
@@ -32,5 +34,7 @@ class Motor
 		TIM_TypeDef* _TIMx1;
 		TIM_TypeDef* _TIMx2;
     float power_ch_const;
+    int8_t  power_sgn;
+    int _test1, _test2;
 		
 };

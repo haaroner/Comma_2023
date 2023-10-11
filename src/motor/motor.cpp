@@ -41,8 +41,8 @@ Motor::Motor(char pin_gpio1, uint8_t pin_num1, uint16_t _tim1, uint8_t channel1,
 	else if(_tim2 == tim13) {_TIMx2 = TIM13; _RCC_TIMx2 = RCC_APB1ENR_TIM13EN;}
 	else if(_tim2 == tim14) {_TIMx2 = TIM14; _RCC_TIMx2 = RCC_APB1ENR_TIM14EN;}
 	
-	_p1.pwmInit(_RCC_TIMx1, 2, 4096, 0, channel1, _TIMx1, 1);	
-	_p2.pwmInit(_RCC_TIMx2, 2, 4096, 0, channel2, _TIMx2, 1);
+	_p1.pwmInit(_RCC_TIMx1, 1, 4000, 0, channel1, _TIMx1, 1);	
+	_p2.pwmInit(_RCC_TIMx2, 1, 4000, 0, channel2, _TIMx2, 1);
 }
 
 void Motor::motorMove(double pupower)
@@ -58,27 +58,35 @@ void Motor::motorMove(double pupower)
   //{
     //pupower = 4095 * (abs(double(pupower)) / pupower);
   //}
-  
+  if(pupower < 0) power_sgn = -1;
+  else power_sgn = 1;
+  pupower = int(pow(int((pupower/30.03) / 0.0000183902 * power_sgn), 0.6851) * power_sgn);//0.6851    68803946594376
 	if(pupower <= -1)
 	{
-		pupower = -4096 - pupower;
-		if(pupower < -4095)
+		pupower = -4000 - pupower;
+		if(pupower < -4000)
 		{
-			pupower = -4095;
+			pupower = -4000;
 		}
 		_p1.pwm(pupower * -1);
-		_p2.pwm(4095);
+		_p2.pwm(4000);
 	}
 	else
 	{
-		pupower = 4096 - pupower;
-		if(pupower > 4095)
+		pupower = 4000 - pupower;
+		if(pupower > 4000)
 		{
-			pupower = 4095;
+			pupower = 4000;
 		}
-		_p1.pwm(4095);
+		_p1.pwm(4000);
 		_p2.pwm(pupower);
 	}
+}
+
+void Motor::disableMotor()
+{
+  _p1.pwm(0);
+  _p2.pwm(0);
 }
 
 void Motor::blockMotor(int32_t pupower)

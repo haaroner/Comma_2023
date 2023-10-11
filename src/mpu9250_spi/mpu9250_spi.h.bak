@@ -2,14 +2,20 @@
 #define MPU9250_LIB
 
 //for stm32f407!!!
-#include "project_config.h"
+
+#include "math.h"
+
+#include "SPI2_DOT.h"
+#include "pin_setup.h"
 #include "mpu9250_registers_spi.h"
 #include "time_service.h"
-#include "SPI2_DOT.h.h"
 
+#define adduction(x) {while(x>=180)x-=360;while(x<-180)x+=360;}
+#define RAD2DEG	57.2957795130823208767
+#define DEG2RAD	0.01745329251994329576
 
-#define ACC_FS 8				//+-2g, +-4g, +-8g, +-16g				select accelerometer and gyroscope full-scale range
-#define GYRO_FS 250		//+-250°/s, +-500°/s, +-1000°/s, +-2000°/s
+#define ACC_FS 4				//+-2g, +-4g, +-8g, +-16g				select accelerometer and gyroscope full-scale range
+#define GYRO_FS 2000		//+-250°/s, +-500°/s, +-1000°/s, +-2000°/s
 
 #define CFG_8                   (2718)
 #define CFG_6                   (2753)
@@ -232,7 +238,7 @@ const unsigned char regs_end[12] = {0xFE, 0xF2, 0xAB,
 class mpu9250_spi
 {
 public:
-  mpu9250_spi(pin &ssPin);
+  mpu9250_spi(pin &ss);
 	volatile double xa, ya, za;
 	volatile double xg, yg, zg;
 	volatile double temp;
@@ -242,7 +248,7 @@ public:
 
 	
 	
-	void initIMU(pin &ssPin);
+	void initIMU();
 	void readAcc();
 	void readGyro();
 	void readTemp();
@@ -266,17 +272,19 @@ public:
 	double xAccOffset, yAccOffset, zAccOffset;
   int read_gyro_fs_sel();
   int read_acc_fs_sel();
-	
+	float _acceleration;
 	
 private:
 	unsigned int mpuSPI;
 	int mpuSSPin;
 	double ACC_DIV, GYRO_DIV;
+  pin _ss;
 	
 	long long int time;
+  double _old_yaw;
+  uint32_t _additional_time;
 	long long int correctionTimer;
 	unsigned char fifo_data[32];
-  pin _ss_pin;
 	
 	
 	inline int convert(uint16_t msb, uint8_t lsb);

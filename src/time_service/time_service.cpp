@@ -119,14 +119,14 @@ namespace time_service
 }
 
 extern "C"{
-  void TIM7_IRQHandler(void) //handler for delay functions
-  {			
-    if(TIM7->SR & TIM_SR_UIF)
-    {
-        TIM7->SR &= ~TIM_SR_UIF;
-        time_service::systemTime++;
-    }
-  }
+//  void TIM7_IRQHandler(void) //handler for delay functions
+//  {			
+//    if(TIM7->SR & TIM_SR_UIF)
+//    {
+//        TIM7->SR &= ~TIM_SR_UIF;
+//        time_service::systemTime++;
+//    }
+//  }
   void SysTick_Handler(void)
 	{
 		time_service::systemTime++;

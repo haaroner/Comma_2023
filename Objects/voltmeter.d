@@ -40,14 +40,9 @@
 .\objects\voltmeter.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\voltmeter.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\voltmeter.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\voltmeter.o: .\src\main\tools.h
-.\objects\voltmeter.o: .\src\main\tools.h
 .\objects\voltmeter.o: .\src\pin_setup\pin_setup.h
 .\objects\voltmeter.o: .\src\main\project_config.h
-.\objects\voltmeter.o: .\src\main\tools.h
 .\objects\voltmeter.o: .\src\adc\adc.h
 .\objects\voltmeter.o: .\src\main\project_config.h
-.\objects\voltmeter.o: .\src\main\tools.h
 .\objects\voltmeter.o: .\src\dma\dma.h
 .\objects\voltmeter.o: .\src\main\project_config.h
-.\objects\voltmeter.o: .\src\main\tools.h

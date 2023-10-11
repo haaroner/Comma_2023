@@ -10,7 +10,9 @@ class voltmeter
 
     float get_voltage(uint16_t _data);
   private:
-    float _data;
+    double _data;
+    double _old_data;
+    double k1, k2;
     double _kv;
     //pin _adc_pin;
     //Adc _adc_meter;

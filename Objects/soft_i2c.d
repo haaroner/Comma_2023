@@ -40,8 +40,5 @@
 .\objects\soft_i2c.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\soft_i2c.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\soft_i2c.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\soft_i2c.o: .\src\main\tools.h
-.\objects\soft_i2c.o: .\src\main\tools.h
 .\objects\soft_i2c.o: .\src\pin_setup\pin_setup.h
 .\objects\soft_i2c.o: .\src\main\project_config.h
-.\objects\soft_i2c.o: .\src\main\tools.h

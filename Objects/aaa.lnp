@@ -28,7 +28,6 @@
 ".\objects\spi_2.o"
 ".\objects\spi_3.o"
 ".\objects\uart2.o"
-".\objects\ssd1306.o"
 ".\objects\dribler.o"
 ".\objects\adc.o"
 ".\objects\dma.o"

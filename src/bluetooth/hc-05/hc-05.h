@@ -1,90 +1,79 @@
 #include "project_config.h"
-#include "usart2.h"
 #include "usart3.h"
-#include "usart6.h"
+#include "time_service.h"
 
-class hc_05
+uint8_t _num1 = 0, _num2 = 0;
+bool _robot = 0, _defence_mode = 0, _attack_available = 1;
+uint32_t _time = 0, _time_out = 1000;
+
+void bluetooth_init(bool robot, uint32_t time_out)
 {
-  public:
-    hc_05(uint8_t uart_num)
+  _robot = robot;
+  if(time_out <= 1.67 + 5) time_out = 250; // 1.67 is a time to send 16 bits at speed 9600 (+5 is overvalued loop delay)
+  else _time_out = time_out;
+}
+
+void bluetooth_send_data(bool _game, bool _is_dribling_in_progress)
+{
+  _num1 = 0;
+  
+  usart3::write(255);
+  _num1 += _game * 100;
+  _num1 += _is_dribling_in_progress * 10;
+  
+//  if(_role == 0) _role = 2;
+//  if(_robot) _num1 += _role;
+  usart3::write(_num1);
+}
+
+void semicolon_advise_send(bool _data)
+{
+  if(_data == 1) usart3::write(255);
+}
+
+bool semicolon_advise_read()
+{
+  if(usart3::available() > 0)
+  {
+    usart3::read();
+    _time = time_service::getCurTime();
+  }
+  if(time_service::getCurTime() - _time > 1000) return false;
+   return true;
+}
+
+void bluetooth_read_data()
+{
+  if(usart3::available() >= 2)
+  {
+    if(usart3::read() == 255)
     {
-      _uart_num = uart_num;
-    }
-    void send(uint8_t data)
-    {
-      _crc_data[0] = data;
-      if(_uart_num == uart_2)
-      {
-        usart2::write(255);
-        usart2::write(data);
-        //usart2::write(crc8(_crc_data, 1));
-      }
-      else if(_uart_num == uart_3)
-      {
-        usart3::write(255);
-        usart3::write(data);
-        //usart3::write(crc8(_crc_data, 1));
-      }
-      else if(_uart_num == uart_6)
-      {
-        usart6::write(255);
-        usart6::write(data);
-        //usart6::write(crc8(_crc_data, 1));
-      }
-    }
-    uint8_t read()
-    {
-      if(_uart_num == uart_3)
-      {
-        if(usart3::available() > 1)
-        {
-          if(usart3::read() == 255)
-            _data = usart3::read();
-        }
-        return _data;
-      }
+      _num2 = usart3::read();
       
-      if(_uart_num == uart_3)
-      {
-        if(usart3::available() > 1)
-        {
-          if(usart3::read() == 255)
-            _data = usart3::read();
-        }
-        return _data;
-      }
+      if(int(_num2 / 100) == 0)_defence_mode = 1;
+      else _defence_mode = 0;
       
-      if(_uart_num == uart_6)
-      {
-        if(usart6::available() > 1)
-        {
-          if(usart6::read() == 255)
-            _data = usart6::read();
-        }
-        return _data;
-      }
+      if(int((_num2 % 100) / 10) == 1) _attack_available = 0;
+      else _attack_available = 1; 
+      
+      _time = time_service::getCurTime();
     }
-    uint8_t available()
-    {
-      if(_uart_num == uart_2) return usart2::available();
-      else if(_uart_num == uart_3) return usart3::available();
-      else if(_uart_num == uart_6) return usart6::available();
-      else return 0;
-    }
-  private:
-    uint8_t crc8(uint8_t* data, int len)
-    {
-      uint8_t crc = 0xFF, i, j;
-      for (i = 0; i < len; i++) {
-        crc ^= data[i];
-        for (j = 0; j < 8; j++) {
-          if (crc & 0x80) crc = (char)((crc << 1) ^ 0x31);
-           else crc <<= 1;
-           }
-      }
-      return crc;
-    }
-    uint8_t _uart_num;
-    uint8_t _data;
-    uint8_t _crc_data[2];
-};
+  }
+  
+  if(time_service::getCurTime() - _time > _time_out)
+  {
+    _defence_mode = 0;
+    _attack_available = 1;
+  }
+}
+
+bool get_defence_mode()
+{
+  return _defence_mode;
+}
+
+bool is_attack_available()
+{
+  return _attack_available;
+}
+

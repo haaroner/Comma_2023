@@ -10,7 +10,6 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARMCC</pArmCC>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
@@ -326,7 +325,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
@@ -338,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER</Define>
+              <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER,  HSE_VALUE = 8000000, USE_HSE</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\MPU9250;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05;.\src\Display\SSD1306;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\TSSP;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\Field;.\src\TSSP</IncludePath>
+              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\usart3;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\usart6;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\SPI\SPI_1;.\src\SPI\SPI_2;.\src\SPI\SPI_3;.\src\ball_detour;.\src\usart2;.\src\UART;.\src\bluetooth\hc-05;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\TSSP;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\Field;.\src\TSSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -685,26 +684,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>MPU9250</GroupName>
-          <Files>
-            <File>
-              <FileName>MPU9250.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\MPU9250\MPU9250.h</FilePath>
-            </File>
-            <File>
-              <FileName>MPU9250RegisterMap.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\MPU9250\MPU9250RegisterMap.h</FilePath>
-            </File>
-            <File>
-              <FileName>QuaternionFilter.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\MPU9250\QuaternionFilter.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>UART</GroupName>
           <Files>
             <File>
@@ -740,21 +719,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>display</GroupName>
-          <Files>
-            <File>
-              <FileName>SSD1306.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\SSD1306\SSD1306.h</FilePath>
-            </File>
-            <File>
-              <FileName>SSD1306.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\SSD1306\SSD1306.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>dribler</GroupName>
           <Files>
             <File>
@@ -781,6 +745,11 @@
               <FileName>robot_math.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\robot_math\robot_math.h</FilePath>
+            </File>
+            <File>
+              <FileName>points_movement.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robot_math\points_movement.h</FilePath>
             </File>
           </Files>
         </Group>

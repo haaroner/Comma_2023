@@ -40,11 +40,7 @@
 .\objects\irlocator.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\irlocator.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\irlocator.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\irlocator.o: .\src\main\tools.h
-.\objects\irlocator.o: .\src\main\tools.h
 .\objects\irlocator.o: .\src\pin_setup\pin_setup.h
 .\objects\irlocator.o: .\src\main\project_config.h
-.\objects\irlocator.o: .\src\main\tools.h
 .\objects\irlocator.o: .\src\i2c\soft_i2c.h
 .\objects\irlocator.o: .\src\main\project_config.h
-.\objects\irlocator.o: .\src\main\tools.h

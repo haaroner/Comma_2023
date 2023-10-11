@@ -1,20 +1,24 @@
 #include "project_config.h"
 #include "pin_setup.h"
 #include "time_service.h"
+#include "robot_math.h"
 
-class dribler
+int _cur_speed = 300, change_speed_const = 1;
+uint32_t _cur_time = 0;
+
+int change_speed(int _speed, uint32_t _time)
 {
-  public:
-    dribler(pin &control_pin, uint8_t tim_num);
-    void set_speed(int16_t speed, uint16_t d_speed);
-    
-  private:
-    uint16_t convert_to_pulse(int16_t data);
-    pin _control_pin;
-    int16_t _init_pulse;
-    int16_t _cur_speed;
-    uint16_t _period;
-    int16_t _max_speed;
-    int16_t _min_speed;
-    uint32_t _cur_time;
-};
+  if(my_abs(_speed - _cur_speed) < change_speed_const )
+    _cur_speed = _speed;
+  else
+  {
+    if(_cur_time != _time)
+    {
+      _cur_speed = _cur_speed + my_sgn(_speed - _cur_speed) * change_speed_const;
+      _cur_time = _time;
+    }
+  }
+  if(_cur_speed > 350) _cur_speed = 350;
+  else if(_cur_speed < 250) _cur_speed = 250;
+  return _cur_speed;
+}

@@ -40,5 +40,3 @@
 .\objects\usart6.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\usart6.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\usart6.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\usart6.o: .\src\main\tools.h
-.\objects\usart6.o: .\src\main\tools.h

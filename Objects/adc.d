@@ -40,8 +40,5 @@
 .\objects\adc.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\adc.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\adc.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\adc.o: .\src\main\tools.h
-.\objects\adc.o: .\src\main\tools.h
 .\objects\adc.o: .\src\pin_setup\pin_setup.h
 .\objects\adc.o: .\src\main\project_config.h
-.\objects\adc.o: .\src\main\tools.h

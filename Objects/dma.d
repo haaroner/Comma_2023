@@ -40,11 +40,7 @@
 .\objects\dma.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\dma.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\dma.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\dma.o: .\src\main\tools.h
-.\objects\dma.o: .\src\main\tools.h
 .\objects\dma.o: .\src\adc\adc.h
 .\objects\dma.o: .\src\main\project_config.h
-.\objects\dma.o: .\src\main\tools.h
 .\objects\dma.o: .\src\pin_setup\pin_setup.h
 .\objects\dma.o: .\src\main\project_config.h
-.\objects\dma.o: .\src\main\tools.h

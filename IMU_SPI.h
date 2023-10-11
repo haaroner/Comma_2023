@@ -1,17 +1,16 @@
 #ifndef IMU_LIB
 #define IMU_LIB
 
+#include "project_config.h"
 #include "mpu9250_spi.h"
+#include "SPI2_DOT.h"
+
 
 class IMU
 {
 	public:
-    IMU(pin &ss_pin, mpu9250_spi &mpuSensor): _ss_pin(ss_pin), _mpuSensor(mpuSensor)
-    {
-    }
+    IMU(mpu9250_spi &mpuSensor): _mpuSensor(mpuSensor){}
 		void init();
-		void turnOn();
-		void turnOff();
 		void setZeroAngle();
 		void calibrate(uint32_t t);
 		unsigned int update();
@@ -27,9 +26,14 @@ class IMU
 		double getZg();
     int gyro_sel();
     int acc_sel();
+    float get_acceleration();
+    //float get_acceleration();
+		mpu9250_spi _mpuSensor;
+	
 	private:
-    pin _ss_pin;
-    mpu9250_spi _mpuSensor;
+		
+		unsigned int spi;
+		uint16_t en, ss;
 		volatile double angle, zeroAngle;
 		bool working;
 };
@@ -37,18 +41,14 @@ class IMU
 
 void IMU::init()
 {
-	
-	time_service::delay_ms(100);
-	_mpuSensor.initIMU(_ss_pin);
+	_mpuSensor.initIMU();
 	time_service::delay_ms(100);
 	
 	setZeroAngle(); // IMU calibrated angle estimating
 	
 	imuFloatTime = time_service::getCurTime();
 	imuFloatValue = 0;
-  working = true;
 }
-
 
 void IMU::setZeroAngle()
 {
@@ -78,6 +78,10 @@ void IMU::calibrate(uint32_t t)
 	_mpuSensor.calibrate(t);
 }
 
+float IMU::get_acceleration()
+{
+  return _mpuSensor._acceleration;
+}
 
 double IMU::getAngle()
 {

@@ -40,5 +40,3 @@
 .\objects\spi_dot.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\spi_dot.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\spi_dot.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\spi_dot.o: .\src\main\tools.h
-.\objects\spi_dot.o: .\src\main\tools.h

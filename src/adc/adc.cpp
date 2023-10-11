@@ -13,14 +13,21 @@ Adc::Adc(ADC_TypeDef* ADCx,
   cur = 1;
 }
 
-void Adc::adcInit()
+void Adc::adcInit(uint8_t _num_of_cycles)
 {
 	m_sig.pinInit();
 	RCC_APB2PeriphClockCmd(m_RCC_APB2Periph_ADCx, ENABLE);
 	ADC_CommonInitTypeDef cADC;
 	cADC.ADC_Mode = ADC_Mode_Independent;
 	cADC.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;//!!!
-	cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;
+  switch (_num_of_cycles)
+  {
+    case 5: cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles; break;
+    case 10: cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_10Cycles; break;
+    case 15: cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_15Cycles; break;
+    case 20: cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_20Cycles; break;
+    default: cADC.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles; break;
+  }
 	cADC.ADC_Prescaler = ADC_Prescaler_Div2;
 	
 	ADC_CommonInit(&cADC);

@@ -8,7 +8,6 @@ class Adc
 		Adc(ADC_TypeDef* ADCx,
 				uint8_t numberOfChannels,
 				uint8_t curChannel,
-				uint8_t ADC_Channel_x,
 				uint32_t RCC_APB2Periph_ADCx,
 				pin &sig);
 		void adcInit();

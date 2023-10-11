@@ -40,11 +40,7 @@
 .\objects\kicker.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\kicker.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\kicker.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\kicker.o: .\src\main\tools.h
-.\objects\kicker.o: .\src\main\tools.h
 .\objects\kicker.o: .\src\pin_setup\pin_setup.h
 .\objects\kicker.o: .\src\main\project_config.h
-.\objects\kicker.o: .\src\main\tools.h
 .\objects\kicker.o: .\src\time_service\time_service.h
 .\objects\kicker.o: .\src\main\project_config.h
-.\objects\kicker.o: .\src\main\tools.h

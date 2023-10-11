@@ -40,11 +40,8 @@
 .\objects\motors.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\motors.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\motors.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
-.\objects\motors.o: .\src\main\tools.h
-.\objects\motors.o: .\src\main\tools.h
 .\objects\motors.o: .\src\motor\motor.h
 .\objects\motors.o: .\src\main\project_config.h
-.\objects\motors.o: .\src\main\tools.h
 .\objects\motors.o: .\src\pin_setup\pin_setup.h
 .\objects\motors.o: .\src\main\project_config.h
 .\objects\motors.o: .\src\main\tools.h

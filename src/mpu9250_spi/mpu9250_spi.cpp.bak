@@ -6,10 +6,8 @@
 #define DEG2RAD	0.01745329251994329576
 #define beta		0.25f		// 2 * proportional gain
 
-mpu9250_spi::mpu9250_spi(pin &ssPin): _ss_pin(ssPin)
-{
-}
-
+mpu9250_spi::mpu9250_spi(pin &ss):_ss(ss)
+{}
 
 inline int mpu9250_spi::convert(uint16_t msb, uint8_t lsb)
 {
@@ -23,15 +21,17 @@ inline int mpu9250_spi::convert(uint16_t msb, uint8_t lsb)
 int mpu9250_spi::readReg(int regAddr, int * data, int q)
 {
 	//setPin(mpuSSPin, 0);
-  _ss_pin.resetBit();
-	writeSPI(0x80 | regAddr);
-  //Spi_2::send(0x80 | regAddr);
+  _ss.resetBit();
+	//writeSPI(mpuSPI, 0x80 | regAddr);
+  writeSPI(0x80 | regAddr);
 	for(int i = 0; i < q; i++)
   {
+		//data[i] = writeSPI(mpuSPI, 0);
     data[i] = writeSPI(0);
   }
-  int a = writeSPI(0);
-  _ss_pin.setBit();
+	int a = writeSPI(0);
+	//setPin(mpuSSPin, 1);
+  _ss.setBit();
 	return a;
 }
 
@@ -39,27 +39,24 @@ int mpu9250_spi::readReg(int regAddr, int * data, int q)
 
 void mpu9250_spi::writeReg(int regAddr, uint8_t data)
 {
-	//setPin(mpuSSPin, 0);
-  _ss_pin.resetBit();
+//	setPin(mpuSSPin, 0);
+//	writeSPI(mpuSPI, regAddr);
+//	writeSPI(mpuSPI, data);
+//	setPin(mpuSSPin, 1);
+  _ss.resetBit();
   writeSPI(regAddr);
-	writeSPI(data);
-	//Spi_2::send(regAddr);
-	//Spi_2::send(data);
-	//setPin(mpuSSPin, 1);
-  _ss_pin.setBit();
+  writeSPI(data);
+  _ss.setBit();
 }
 
 
 
-void mpu9250_spi::initIMU(pin &ssPin)
+void mpu9250_spi::initIMU()
 {
-  _ss_pin = ssPin;
 	time_service::delay_ms(10);
 	ACC_DIV = 32760.0 / ACC_FS;
 	GYRO_DIV = 32760.0 / GYRO_FS / DEG2RAD;
 	
-	//mpuSPI = _spi;
-	//mpuSSPin = _ssPin;
 	xGyroOffset = 0.00, yGyroOffset = 0.0, zGyroOffset = 0;
 	xAccOffset = 0.00, yAccOffset = 0.00, zAccOffset = 0.00;
 	pitchOffset = 0, rollOffset = 0, yawOffset = 0;
@@ -83,11 +80,10 @@ void mpu9250_spi::initIMU(pin &ssPin)
 	else if(GYRO_FS == 2000) gyroFSsel = 0x18;
 
 		
-  initSPI2(1, 8, 256);  
-  //Spi_2::spi_init(master_mode, simple, fullDuplex, d8b, b256r,msb); 			//init spi
-	
+	initSPI2(1, 8, 128);			//init spi
+	//initPin(mpuSSPin, OUTPUTPP);!!!!!!!!!!!!
 	//setPin(mpuSSPin, 1);
-  _ss_pin.setBit();
+  _ss.setBit();
 	
 	writeReg(PWR_MGMT_1, 0x80);			//reset
 	time_service::delay_ms(10);
@@ -110,33 +106,17 @@ void mpu9250_spi::initIMU(pin &ssPin)
 	writeReg(USER_CTRL, 0x40);
 	time_service::delay_ms(1);
 	writeReg(FIFO_EN, 0x78);			//write accel and gyro data to FIFO
-	time_service::delay_ms(1);
+	time_service::delay_ms(5);
 	
 	
 	setGyroOffset(0, 0, 0);
 	setAccOffset(0, 0, 0);
-  
-  SPI2->CR1 &= ~SPI_CR1_BR;
-	SPI2->CR1 |= SPI_CR1_BR_1;
 	
-	//Spi_2::spi_deinit();
-  //Spi_2::spi_init(master_mode, simple, fullDuplex, d8b, b4r, msb);
-//	if(_spi == _SPI1)											//set frequency to 17.75 MHz
-//	{
-//		SPI1->CR1 &= ~SPI_CR1_BR;
-//		SPI1->CR1 |= SPI_CR1_BR_1;
-//	}
-//	else if(_spi == _SPI2)
-//	{
-//		SPI2->CR1 &= ~SPI_CR1_BR;
-//		SPI2->CR1 |= SPI_CR1_BR_1;
-//	}
-//	else if(_spi == _SPI3)
-//	{
-//		SPI3->CR1 &= ~SPI_CR1_BR;
-//		SPI3->CR1 |= SPI_CR1_BR_1;
-//	}
-  correctionTimer = time_service::getCurTime();	
+		SPI2->CR1 &= ~SPI_CR1_BR;
+		SPI2->CR1 |= SPI_CR1_BR_1 | SPI_CR1_BR_0;
+
+	//correctionTimer = millis();
+	correctionTimer = time_service::getCurTime();
 }
 
 
@@ -365,6 +345,7 @@ void mpu9250_spi::updateAngles(double _time, bool flag1)
 	if(_time == -1)
 	{
 		_time = double(time_service::getCurTime() - time) / 1000;
+    _additional_time = _time;
 		time = time_service::getCurTime();
 		if(_time > 1) _time = 0;
 	}
@@ -374,7 +355,7 @@ void mpu9250_spi::updateAngles(double _time, bool flag1)
 		readAcc();
 		readGyro();
 	}
-	
+  
 	MadgwickAHRSupdateIMU(_time);
 
 	pitch = asin(2*(q0*q2 - q3*q1));
@@ -384,6 +365,10 @@ void mpu9250_spi::updateAngles(double _time, bool flag1)
 	pitch = pitch * RAD2DEG - pitchOffset;
 	roll = roll * RAD2DEG - rollOffset;
 	yaw = yaw * RAD2DEG - yawOffset;
+  
+  _acceleration = (yaw - _old_yaw) / 0.001;
+  
+  _old_yaw = yaw;
 	/*
 	while (pitch < -180) pitch += 360;
 	while (pitch > 180) pitch -= 360;

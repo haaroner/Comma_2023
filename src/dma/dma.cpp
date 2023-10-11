@@ -2,14 +2,13 @@
 
 Dma::Dma(uint32_t RCC_AHB1Periph_DMAx,Adc &adcx):m_adcx(adcx){m_RCC_AHB1Periph_DMAx = RCC_AHB1Periph_DMAx;}
 
-	void Dma::adcInitInDma()
-	{
-		m_adcx.adcInit();
-		m_adcx.startAdc();
-		m_adcx.setChannel();
-		m_adcx.adcDmaInit();
-		
-	}
+void Dma::adcInitInDma(uint8_t _num_of_adc_cycles)
+{
+	m_adcx.adcInit(_num_of_adc_cycles);
+	m_adcx.startAdc();
+	m_adcx.setChannel();
+	m_adcx.adcDmaInit();
+}
 	void Dma::dmaInit(DMA_Stream_TypeDef* dmax_streamx, uint32_t dma_channelx, uint32_t bufferSize)
 {
 	RCC_AHB1PeriphClockCmd(m_RCC_AHB1Periph_DMAx, ENABLE);
