@@ -3,6 +3,16 @@
 #include "time_service.h"
 #include "robot_math.h"
 
+enum dribler_speed
+{
+  stop_dribler_speed = 300,
+  standart_dribler_speed = 350,
+  MINIMAL_DRIBLER_SPEED = 315,
+  KECK_DRIBLER_SPEED = 235,
+  MIN_KECK_SPEED = 265
+  
+};
+
 int _cur_speed = 300, change_speed_const = 1;
 uint32_t _cur_time = 0;
 
@@ -12,13 +22,13 @@ int change_speed(int _speed, uint32_t _time)
     _cur_speed = _speed;
   else
   {
-    if(_cur_time != _time)
+    if(_cur_time != time_service::getCurTime())
     {
       _cur_speed = _cur_speed + my_sgn(_speed - _cur_speed) * change_speed_const;
-      _cur_time = _time;
+      _cur_time = time_service::getCurTime();
     }
   }
   if(_cur_speed > 350) _cur_speed = 350;
-  else if(_cur_speed < 250) _cur_speed = 250;
+  else if(_cur_speed < 235) _cur_speed = 235;
   return _cur_speed;
 }

@@ -69,12 +69,12 @@ void motors::moveRobot(double _maxPower,
   //_maxPower_angle = calculate_power(_maxPower_angle);
   //_inc = calculate_power(_inc);
   
-  _wanted_movement[0] = lead_to_degree_borders(_angle - _gyro);
+  _wanted_movement[0] = lead_to_degree_borders(_angle);
   _wanted_movement[1] = _maxPower;
   
   if(_last_time_of_call == 0 || _time - _instant_start_timer < 500)
   {
-    _current_movement[0] = lead_to_degree_borders(_angle - _gyro);
+    _current_movement[0] = lead_to_degree_borders(_angle);
     _current_movement[1] = _maxPower;
   }
   else
@@ -88,7 +88,7 @@ void motors::moveRobot(double _maxPower,
   
   _last_time_of_call = _time;
   
-  _angle = lead_to_degree_borders(_current_movement[0] + _gyro);
+  _angle = lead_to_degree_borders(_current_movement[0]);
   _maxPower = _current_movement[1];
   
 	if(_inc > _maxPower_angle)

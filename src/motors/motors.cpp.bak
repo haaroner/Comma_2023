@@ -19,6 +19,19 @@ motors::motors(Motor& m1,
   _dL = dL;
   
 }
+
+int motors::lead_to_degree_borders(int _num)
+{
+  while(_num < -180 || _num > 180)
+  {
+    if(_num < -180)
+        _num += 360;
+    else if(_num > 180)
+        _num -= 360;
+  }
+  return _num;
+}
+
 void motors::moveMotor(int32_t power)
 {
 		_m1.motorMove(power);//power);//without
@@ -56,12 +69,12 @@ void motors::moveRobot(double _maxPower,
   //_maxPower_angle = calculate_power(_maxPower_angle);
   //_inc = calculate_power(_inc);
   
-  _wanted_movement[0] = lead_ _angle;
+  _wanted_movement[0] = lead_to_degree_borders(_angle - _gyro);
   _wanted_movement[1] = _maxPower;
   
   if(_last_time_of_call == 0 || _time - _instant_start_timer < 500)
   {
-    _current_movement[0] = _angle;
+    _current_movement[0] = lead_to_degree_borders(_angle - _gyro);
     _current_movement[1] = _maxPower;
   }
   else
@@ -75,7 +88,7 @@ void motors::moveRobot(double _maxPower,
   
   _last_time_of_call = _time;
   
-  _angle = _current_movement[0];
+  _angle = lead_to_degree_borders(_current_movement[0] + _gyro);
   _maxPower = _current_movement[1];
   
 	if(_inc > _maxPower_angle)
