@@ -214,7 +214,7 @@ int main(){
 //  tssp_right_read_dma.dmaInit(DMA2_Stream3, DMA_Channel_1, 1);
 //  tssp_right_read_dma.adcInitInDma();
   
-  role = 1; //1 - attacker!!!!!!!!!!!!!!!!!!!!!!
+  role = 2; //1 - attacker!!!!!!!!!!!!!!!!!!!!!!
   
   //usart2::
   
@@ -247,7 +247,7 @@ int main(){
   //pin test_dribler('A', 7, dribler_);
   
   camera camera(usart6_tx, usart6_rx);
-  motors motors(m1, m2, m3, m4, 100, 32);//0.26
+  motors motors(m1, m2, m3, m4, 100, 4);//0.26
   
   TSSP ball(digital ,tssp_write_4, tssp_write_3, tssp_write_2, 
   tssp_write_1, tssp_left_read, tssp_right_read, role//,// tssp_left_read_dma, 
@@ -676,14 +676,14 @@ int main(){
             
           
           if((robot_x > 30 && abs_ball_angle > 0 ) || (robot_x < -30 && abs_ball_angle < 0))
-            move_speed = 30;
+            move_speed = 45;
           else
           {
             if(forward_distance < 50)
               move_speed = 75;
           }
           
-          if(ball_distance > 4 && my_abs(ball_angle) > 30)
+          if(ball_distance > 4 && my_abs(ball_angle) > 30 && robot_y > 110)
             move_speed = 45;
           
           if(ball_distance >= 3 && my_abs(ball_angle) < 45)
@@ -937,12 +937,12 @@ int main(){
 //            }
           }
           
-          if((robot_x > 50 && attacker_state == 0) || ((robot_x > 37 && attacker_state != 0))) 
+          if((robot_x > 50 && attacker_state == 0 && robot_y > 110) || (robot_x > 55 && attacker_state == 0 && robot_y <= 110) || ((robot_x > 37 && attacker_state != 0))) 
           {
             move_angle = lead_to_degree_borders(-90 - gyro);
             if(attacker_state == 0) move_speed = 63;
           }
-          else if((robot_x < -42 && attacker_state == 0) || (robot_x < -40 && attacker_state != 0))
+          else if((robot_x < -42 && attacker_state == 0 && robot_y > 110)|| (robot_x < -55 && attacker_state == 0 && robot_y <= 110) || (robot_x < -40 && attacker_state != 0))
           {
              move_angle = lead_to_degree_borders(90 - gyro);
              if(attacker_state == 0) move_speed = 63;
@@ -1050,7 +1050,7 @@ int main(){
         static const uint8_t max_deviation[2] = {25, 25};
         static const int16_t max_angles[2] = {-135, 135};
         static float k_error = 1.9;//3.375
-        static const double k1_ball = 1.65, k2_ball = 0.5, k3_ball = 0.6, k_gyro = 0.017;//2.825 0.765 0.39
+        static const double k1_ball = 1.7, k2_ball = 0.55, k3_ball = 0.65, k_gyro = 0.017;//2.825 0.765 0.39
         
         if(defender_state == 0) //defending state
         {
