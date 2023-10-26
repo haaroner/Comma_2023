@@ -668,7 +668,7 @@ int main(){
             
             
          // }
-          kp_angle = -0.45;
+          kp_angle = -0.4;//-0.45
           
           if(my_abs(ball_angle) < 21 && my_abs(forward_angle - gyro) < 21)
             move_speed = 95;
@@ -680,11 +680,11 @@ int main(){
             move_speed = 45;
           else
           {
-            if(forward_distance < 50)
-              move_speed = 75;
+            if(forward_distance < 60)
+              move_speed = 65;
           }
           
-          if(ball_distance > 4 && my_abs(ball_angle) > 30 && robot_y > 110)
+          if(ball_distance > 4 && my_abs(ball_angle) > 30 && robot_y > 120)
             move_speed = 45;
           
           if(ball_distance >= 3 && my_abs(ball_angle) < 45)
@@ -886,17 +886,17 @@ int main(){
 //          move_speed = 2200;
 //        }
         
-        if(ball_distance == 0 && ball_angle == 255 && ball_sen_dma.dataReturn(0) < BALL_DETECTION_LIGHTNESS)
-        {
-          //x0_gyro = 90;
-          if(robot_y < 65)
-          {
-            move_angle = lead_to_degree_borders(0 - gyro);
-            move_speed = 50;
-          }
-          else
-            move_speed = 0;
-        }  
+//        if(ball_distance == 0 && ball_angle == 255 && ball_sen_dma.dataReturn(0) < BALL_DETECTION_LIGHTNESS)
+//        {
+//          //x0_gyro = 90;
+//          if(robot_y < 65)
+//          {
+//            move_angle = lead_to_degree_borders(0 - gyro);
+//            move_speed = 50;
+//          }
+//          else
+//            move_speed = 0;
+//        }  
         
         if((my_abs(robot_x) <= 20 && forward_distance < 58) ||
             (my_abs(robot_x) > 20 && forward_distance < 60))
@@ -938,12 +938,12 @@ int main(){
 //            }
           }
           
-          if((robot_x > 50 && attacker_state == 0 && robot_y > 100) || (robot_x > 50 && attacker_state == 0 && robot_y <= 100) || ((robot_x > 37 && attacker_state != 0))) 
+          if((robot_x > 49 && attacker_state == 0 && robot_y > 100) || (robot_x > 44 && attacker_state == 0 && robot_y <= 100) || ((robot_x > 37 && attacker_state != 0))) 
           {
             move_angle = lead_to_degree_borders(-90 - gyro);
             if(attacker_state == 0) move_speed = 63;
           }
-          else if((robot_x < -42 && attacker_state == 0 && robot_y > 110)|| (robot_x < -50 && attacker_state == 0 && robot_y <= 110) || (robot_x < -40 && attacker_state != 0))
+          else if((robot_x < -41 && attacker_state == 0 && robot_y > 100)|| (robot_x < -43 && attacker_state == 0 && robot_y <= 100) || (robot_x < -40 && attacker_state != 0))
           {
              move_angle = lead_to_degree_borders(90 - gyro);
              if(attacker_state == 0) move_speed = 63;
@@ -954,7 +954,7 @@ int main(){
           move_angle = lead_to_degree_borders(180 - gyro);
         }
         
-        if(robot_y < 55)
+        if(robot_y < 60)
         {
           move_angle = lead_to_degree_borders(0 - gyro);
           
@@ -966,14 +966,14 @@ int main(){
           }
           else if(my_abs(ball_angle) < 125)
           {
-            if(robot_y < 40)
+            if(robot_y < 45)
             {
               if(ball_angle > 0)
                 move_angle = lead_to_degree_borders(ball_angle + 10);
               else
                 move_angle = lead_to_degree_borders(ball_angle - 10);
               move_angle = ball_angle;
-              if(attacker_state == 0) move_speed = 68;
+              if(attacker_state == 0) move_speed = 60;
             }
             else
             {
@@ -986,11 +986,25 @@ int main(){
           }      
         }
         
-        if(robot_y < 42 || backward_distance < 42)
+        if(robot_y < 47 || backward_distance < 47)
         {
             move_angle = lead_to_degree_borders(0 - gyro);
             if(attacker_state == 0) move_speed = 43;  
         }
+        
+        if(robot_y < 70) move_speed = 50;
+        
+        if(ball_distance <= 1)
+        {
+          //x0_gyro = 90;
+          if(robot_y < 65)
+          {
+            move_angle = lead_to_degree_borders(0 - gyro);
+            move_speed = 50;
+          }
+          else
+            move_speed = 0;
+        } 
         
 //        if(my_abs(robot_x) > 30)
 //          move_speed = 1700;
