@@ -248,7 +248,7 @@ int main(){
   //pin test_dribler('A', 7, dribler_);
   
   camera camera(usart6_tx, usart6_rx);
-  motors motors(m1, m2, m3, m4, 100, 1.5);//0.26
+  motors motors(m1, m2, m3, m4, 100, 2.5);//1.5
   
   TSSP ball(digital ,tssp_write_4, tssp_write_3, tssp_write_2, 
   tssp_write_1, tssp_left_read, tssp_right_read, role//,// tssp_left_read_dma, 
@@ -305,7 +305,7 @@ int main(){
     }
     
     ball.get_data();
-    ball_angle = lead_to_degree_borders(ball.get_angle() - 4);
+    ball_angle = lead_to_degree_borders(ball.get_angle());
     abs_ball_angle = lead_to_degree_borders(ball_angle + gyro);
     ball_distance = ball.get_distance();
     
@@ -644,8 +644,8 @@ int main(){
             }
             else
             {
-              move_angle = abs_ball_angle + exponential_detour(abs_ball_angle, ball_distance, 0.07, 0.37, 0.026, 4.2);
-              move_angle = lead_to_degree_borders(move_angle - gyro);
+              move_angle = ball_angle + exponential_detour(ball_angle, ball_distance, 0.066, 0.35, 0.0255, 4.1);// 0.07, 0.37, 0.026, 4.2
+              //move_angle = lead_to_degree_borders(move_angle - gyro);
             }
             //move_angle = abs_ball_angle + exponential_detour(abs_ball_angle, ball_distance, 0.07, 0.35, 0.023, 4.5);
           //if(ball_distance >= 3)
@@ -668,7 +668,7 @@ int main(){
             
             
          // }
-          kp_angle = -0.4;//-0.45
+          kp_angle = -0.35;//-0.45
           
           if(my_abs(ball_angle) < 21 && my_abs(forward_angle - gyro) < 21)
             move_speed = 95;
@@ -676,16 +676,18 @@ int main(){
             move_speed = 90;
             
           
-          if((robot_x > 30 && abs_ball_angle > 0 ) || (robot_x < -30 && abs_ball_angle < 0))
-            move_speed = 45;
+          if((robot_x > 27 && abs_ball_angle > 0 ) || (robot_x < -27 && abs_ball_angle < 0))
+            move_speed = 37;
           else
           {
-            if(forward_distance < 60)
+            if(forward_distance < 70)
               move_speed = 65;
           }
           
-          if(ball_distance > 4 && my_abs(ball_angle) > 30 && robot_y > 120)
-            move_speed = 45;
+          if(ball_distance > 4 && my_abs(ball_angle) > 20 && robot_y > 135)
+            move_speed = 55;
+          if(ball_distance > 4 && my_abs(ball_angle) > 20 && robot_y <= 135)
+            move_speed = 75;
           
           if(ball_distance >= 3 && my_abs(ball_angle) < 45)
             dribler_control.pwm(change_speed(MIN_KECK_SPEED, time_service::getCurTime()));
@@ -938,12 +940,12 @@ int main(){
 //            }
           }
           
-          if((robot_x > 49 && attacker_state == 0 && robot_y > 100) || (robot_x > 44 && attacker_state == 0 && robot_y <= 100) || ((robot_x > 37 && attacker_state != 0))) 
+          if((robot_x > 45 && attacker_state == 0 && robot_y > 100) || (robot_x > 44 && attacker_state == 0 && robot_y <= 100) || ((robot_x > 37 && attacker_state != 0))) 
           {
             move_angle = lead_to_degree_borders(-90 - gyro);
             if(attacker_state == 0) move_speed = 63;
           }
-          else if((robot_x < -41 && attacker_state == 0 && robot_y > 100)|| (robot_x < -40 && attacker_state == 0 && robot_y <= 100) || (robot_x < -40 && attacker_state != 0))
+          else if((robot_x < -41 && attacker_state == 0 && robot_y > 100)|| (robot_x < -42 && attacker_state == 0 && robot_y <= 100) || (robot_x < -40 && attacker_state != 0))
           {
              move_angle = lead_to_degree_borders(90 - gyro);
              if(attacker_state == 0) move_speed = 63;
