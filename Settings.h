@@ -33,6 +33,8 @@
 
 #define BALL_DETECTION_LIGHTNESS 1500
 
+#define BUTTON_MIN_PRESSING_TIME_MS 90
+
 #define BALL_K1
 #define BALL_K2
 #define BALL_K3

@@ -26,7 +26,7 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
 {
   m_tx.pinInit();
   m_rx.pinInit();
-  usart6::usart6Init(460800, 8, 1);
+  
   sign = 1;
   num = 0;
   _x = 0;

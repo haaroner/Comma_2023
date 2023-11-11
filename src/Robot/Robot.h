@@ -28,8 +28,7 @@ namespace Robot
   pin OLED_res('C', 11, write_UP);
   
   pin usart6_tx('C', 6,  uart6);	
-  pin usart6_rx('C', 7,  uart6);
-    
+  pin usart6_rx('C', 7,  uart6);    
     
   pin motors_move('B', 1, read_UP);
   pin gyro_reset('B', 0, read_UP);	
@@ -51,19 +50,29 @@ namespace Robot
   void control_led(uint8_t _led_num, bool _data);
   void moveRobot(int16_t _angle, uint8_t _speed);
   void rotateRobot(int16_t _angular_speed);
+  void change_side();
   void update();
   
-  uint32_t time;
+  int a = 0;
+  
+  uint32_t time, button_timers[3];
+  
   int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
-  robot_x, robot_y;
+  robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
+  ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180;
+  
+  uint16_t ball_distance = 20, forward_distance = 100, backward_distance = 100;
+  
   uint8_t move_speed = 0;
+  bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
+  pressed_buttons[3] = {0, 0, 0};
   
   void init_robot(uint8_t role)
   { 
     time_service::init();
     time_service::startTime();
     
-    control_led(0, ON);
+    control_led(0, OFF);
     
     usart2::usart2Init(115200, 8, 1);//gyro
     usart6::usart6Init(460800, 8, 1);//camera
@@ -86,25 +95,77 @@ namespace Robot
   void moveRobot(int16_t _angle, uint8_t _speed)
   {
     move_angle = lead_to_degree_borders(_angle);
-    if(_speed < 0) _speed *= -1;
-    if(_speed > 100) _speed = 100;
+    if(_speed > 100) _speed = 0;
     move_speed = _speed;
   }
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
   {
-    if(_angular_speed < 0) _angular_speed *= -1;
-    if(_angular_speed > 100) _angular_speed = 100;
+    if(_angular_speed > 100) _angular_speed = 0;
     angular_speed = _angular_speed;
     
     if(_max_angular_speed < 0) _max_angular_speed *= -1;
-    if(_max_angular_speed > 100) _max_angular_speed = 100;
+    if(_max_angular_speed > 0) _max_angular_speed = 0;
     max_angular_speed = _max_angular_speed;
+  }
+  
+  void check_buttons()
+  {
+    buttons_data[0] = up.read();
+    buttons_data[1] = reset_gyro.read();
+    buttons_data[2] = enter.read();
+    for(int i = 0; i < 3; i++)
+    {
+      if(buttons_data[i] == 0 && buttons_old_data[i] == 1)//is pressed
+        button_timers[i] = time;
+      if(time - button_timers[i] > BUTTON_MIN_PRESSING_TIME_MS && buttons_data[i] == 1 && buttons_old_data[i] == 0)
+      {
+        pressed_buttons[i] = 1;
+        button_timers[i] = time;
+        //control_led(i + 1, ON);
+      }
+    }
+    buttons_old_data[0] = buttons_data[0];
+    buttons_old_data[1] = buttons_data[1];
+    buttons_old_data[2] = buttons_data[2];
+  }
+  
+  bool check_button(uint8_t _button_num)
+  {
+    a = pressed_buttons[_button_num - 1];
+    pressed_buttons[_button_num - 1] = 0;
+    return a;
+  }
+  
+  void change_side()
+  {
+    side = my_abs(side - 1);
   }
   
   void update()
   {
     time = time_service::getCurTime();
     gyro = lead_to_degree_borders(mpu.update());
+    
+    camera.getData();
+    camera.calculate_pos(gyro, side);
+    
+    robot_x = camera.get_x();
+    robot_y = camera.get_y();
+    
+    ball_loc_angle = camera.get_ball_angle();
+    ball_abs_angle = camera.get_abs_ball_angle();
+    ball_distance = camera.get_ball_distance();
+    
+    ball_loc_x = camera.get_ball_loc_x();
+    ball_loc_y = camera.get_ball_loc_y();
+    
+    forward_angle = camera.get_forward_angle();
+    forward_distance = camera.get_forward_distance();
+    backward_angle = camera.get_backward_angle();
+    backward_distance = camera.get_backward_distance();
+    
+    check_buttons();
+    
     motors.moveRobot(move_speed, max_angular_speed, move_angle, angular_speed, time, 0);
   }
 }
