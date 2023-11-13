@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Settings.h"
 #include "libs.h"
 #include "tools.h"
 
@@ -46,16 +47,20 @@ namespace Robot
     
   mpu9250_spi mpu_sensor(spi2_ck);
   IMU mpu(mpu_sensor);
-  
+  void init_robot(uint8_t role);
+  void callibrate_gyro();
   void control_led(uint8_t _led_num, bool _data);
+  void set_blinking(uint8_t _led_num, uint32_t _duration);
   void moveRobot(int16_t _angle, uint8_t _speed);
   void rotateRobot(int16_t _angular_speed);
+  void check_buttons();
+  bool check_button(uint8_t _button_num);
   void change_side();
   void update();
-  
+
   int a = 0;
   
-  uint32_t time, button_timers[3];
+  volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations;
   
   int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -65,7 +70,7 @@ namespace Robot
   
   uint8_t move_speed = 0;
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
-  pressed_buttons[3] = {0, 0, 0};
+  pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0;
   
   void init_robot(uint8_t role)
   { 
@@ -81,8 +86,14 @@ namespace Robot
     mpu.update();
   }
   
-  void control_led(uint8_t _led_num, bool _data)
+  
+  void motors_on_off(bool _state)
   {
+    motors_state = _state; 
+  }
+  
+  void control_led(uint8_t _led_num, bool _data)
+  {    
     switch(_led_num)
     {
       case 0: led1.write(_data); led2.write(_data); led3.write(_data); break;
@@ -90,6 +101,22 @@ namespace Robot
       case 2: led2.write(_data); break;
       case 3: led3.write(_data); break;
     }
+  }
+  
+  
+  void set_blinking(uint8_t _led_num, uint32_t _duration)
+  {
+   for(int i = 0; i < 3; i++)
+      blinking_leds[i] = OFF;
+    switch(_led_num)
+    {
+      case 0: blinking_leds[0] = ON; blinking_leds[1] = ON; blinking_leds[2] = ON; break;
+      case 1: blinking_leds[0] = ON; break;
+      case 2: blinking_leds[1] = ON; break;
+      case 3: blinking_leds[2] = ON; break;
+    }
+    
+    blinking_durations = _duration;
   }
   
   void moveRobot(int16_t _angle, uint8_t _speed)
@@ -103,9 +130,18 @@ namespace Robot
     if(_angular_speed > 100) _angular_speed = 0;
     angular_speed = _angular_speed;
     
-    if(_max_angular_speed < 0) _max_angular_speed *= -1;
-    if(_max_angular_speed > 0) _max_angular_speed = 0;
     max_angular_speed = _max_angular_speed;
+  }
+  
+  void callibrate_gyro()
+  {
+    motors.moveRobot(0, 0, 0, 0, 0, 0);
+    control_led(3, ON);
+    time_service::delay_ms(500);
+    mpu.calibrate(1000);
+    mpu.setZeroAngle();
+    control_led(3, OFF);
+    motors_on_off(OFF);
   }
   
   void check_buttons()
@@ -121,7 +157,7 @@ namespace Robot
       {
         pressed_buttons[i] = 1;
         button_timers[i] = time;
-        //control_led(i + 1, ON);
+        control_led(i + 1, ON);
       }
     }
     buttons_old_data[0] = buttons_data[0];
@@ -144,7 +180,8 @@ namespace Robot
   void update()
   {
     time = time_service::getCurTime();
-    gyro = lead_to_degree_borders(mpu.update());
+    mpu.update();
+    gyro = lead_to_degree_borders(mpu.getAngle());
     
     camera.getData();
     camera.calculate_pos(gyro, side);
@@ -165,7 +202,23 @@ namespace Robot
     backward_distance = camera.get_backward_distance();
     
     check_buttons();
+    if(time - blinking_timer > blinking_durations)
+    {
+      leds_state = my_abs(leds_state - 1);
+      for(int i = 0; i < 3; i++)
+      {
+        if(blinking_leds[i])
+        {
+          control_led(i + 1, leds_state);
+          
+        }
+      }
+      blinking_timer = time;
+    }
     
-    motors.moveRobot(move_speed, max_angular_speed, move_angle, angular_speed, time, 0);
+    if(motors_state)
+      motors.moveRobot(move_speed, max_angular_speed, move_angle, angular_speed, time, 0);
+    else
+      motors.disableMotors();
   }
 }

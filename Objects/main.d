@@ -1,5 +1,6 @@
 .\objects\main.o: main.cpp
-.\objects\main.o: Settings.h
+.\objects\main.o: .\src\Robot\Robot.h
+.\objects\main.o: ..\Comma_2023_open\Settings.h
 .\objects\main.o: .\src\main\libs.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\global_macros\global_macros.h
@@ -80,4 +81,4 @@
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\SPI_DOT\SPI2_DOT.h
 .\objects\main.o: .\src\main\project_config.h
-.\objects\main.o: .\src\Robot\Robot.h
+.\objects\main.o: .\src\robot_math\Timers.h

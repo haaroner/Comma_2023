@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER,  HSE_VALUE = 8000000, USE_HSE</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\ball_detour;.\src\UART;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\UART\usart2;.\src\UART\usart3;.\src\UART\usart6;.\src\Robot</IncludePath>
+              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\ball_detour;.\src\UART;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\UART\usart2;.\src\UART\usart3;.\src\UART\usart6;.\src\Robot;..\Comma_2023_open</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -384,6 +384,11 @@
           <GroupName>main</GroupName>
           <Files>
             <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\main.cpp</FilePath>
+            </File>
+            <File>
               <FileName>project_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\main\project_config.h</FilePath>
@@ -397,11 +402,6 @@
               <FileName>startup_stm32f407xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\src\main\startup_stm32f407xx.s</FilePath>
-            </File>
-            <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\main.cpp</FilePath>
             </File>
             <File>
               <FileName>system_stm32f4xx.c</FileName>
@@ -432,71 +432,6 @@
               <FileName>tools.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\tools.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>spl4</GroupName>
-          <Files>
-            <File>
-              <FileName>misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\misc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_dac.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\spl4\stm32f4xx_conf.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spl4\src\stm32f4xx_dma.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -865,6 +800,71 @@
               <FileName>TSSP.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\TSSP\TSSP.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>spl4</GroupName>
+          <Files>
+            <File>
+              <FileName>misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\spl4\stm32f4xx_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_dma.c</FilePath>
             </File>
           </Files>
         </Group>
