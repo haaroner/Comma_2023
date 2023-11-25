@@ -466,6 +466,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\robot_math\points_movement.h</FilePath>
             </File>
+            <File>
+              <FileName>Timers.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robot_math\Timers.h</FilePath>
+            </File>
+            <File>
+              <FileName>PID.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robot_math\PID.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

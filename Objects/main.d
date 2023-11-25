@@ -82,3 +82,11 @@
 .\objects\main.o: .\src\SPI_DOT\SPI2_DOT.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\robot_math\Timers.h
+.\objects\main.o: .\src\robot_math\PID.h
+.\objects\main.o: ..\Comma_2023_open\Settings.h
+.\objects\main.o: .\src\time_service\time_service.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\TSSP\TSSP.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\time_service\time_service.h
+.\objects\main.o: .\src\main\project_config.h

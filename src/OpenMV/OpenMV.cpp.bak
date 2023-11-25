@@ -104,13 +104,15 @@ void camera::getData()
 
 void camera::calculate_pos(int16_t angle, bool side)
 {
+  _yellow_angle = _yellow_angle + angle;
+  _blue_angle = _blue_angle + angle;
+  _yellow_angle = lead_to_degree_borders(_yellow_angle);
+  _blue_angle = lead_to_degree_borders(_blue_angle);
+  _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
   if(_received)
   {
     //angle = lead_to_degree_borders(angle);
-    _yellow_angle = _yellow_angle + angle;
-    _blue_angle = _blue_angle + angle;
-    _yellow_angle = lead_to_degree_borders(_yellow_angle);
-    _blue_angle = lead_to_degree_borders(_blue_angle);
+    
 //    if(_yellow_first_receive && !_blue_first_receive)
 //    {
 //      if (_yellow_angle > 270 or _yellow_angle < 90)

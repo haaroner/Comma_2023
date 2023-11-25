@@ -32,10 +32,10 @@ class camera
 		pin m_rx, m_tx;
 		uint8_t camera_data;
 		int16_t _data;
-		int _yellow_distance;
+		volatile int _yellow_distance;
     int _yellow_angle;
     int _blue_distance;
-		int _blue_angle;
+		volatile int _blue_angle;
     int _ball_angle;
     int _abs_ball_angle;
     int _ball_distance;
@@ -63,7 +63,7 @@ class camera
     bool _first_receive;
     bool _yellow_first_receive, _blue_first_receive;
     bool _ball_is_seen;
-		uint8_t data[7];
+		uint8_t data[8];
 		uint8_t crc8(uint8_t* data, int len);
     uint8_t _state;
     

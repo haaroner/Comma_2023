@@ -39,14 +39,28 @@ namespace Robot
   pin adc_voltage_pin('C', 5, adc);
   pin ball_sen('A', 7, adc);
     
+  pin tssp_write_4('D', 8, write_DOWN);
+  pin tssp_write_3('D', 9, write_DOWN);
+  pin tssp_write_2('D', 10, write_DOWN);
+  pin tssp_write_1('D', 11, write_DOWN);
+  
+  pin tssp_left_read('C', 3, read_DOWN);
+  pin tssp_right_read('C', 2, read_DOWN);  
+  
   pin up('B', 5, read_UP);
   pin reset_gyro('B', 6, read_UP);
   pin enter('B', 7, read_UP);
     
   camera camera(usart6_tx, usart6_rx);
     
+  TSSP ball(digital ,tssp_write_4, tssp_write_3, tssp_write_2, 
+  tssp_write_1, tssp_left_read, tssp_right_read, 1//,// tssp_left_read_dma, 
+  /*tssp_right_read_dma*/);
   mpu9250_spi mpu_sensor(spi2_ck);
   IMU mpu(mpu_sensor);
+  
+  PID angle_pid(-0.2, -0.005, 0, 5);
+  
   void init_robot(uint8_t role);
   void callibrate_gyro();
   void control_led(uint8_t _led_num, bool _data);
@@ -64,7 +78,7 @@ namespace Robot
   
   int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
-  ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180;
+  ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle;
   
   uint16_t ball_distance = 20, forward_distance = 100, backward_distance = 100;
   
@@ -108,14 +122,20 @@ namespace Robot
   {
    for(int i = 0; i < 3; i++)
       blinking_leds[i] = OFF;
-    switch(_led_num)
+    if(_duration > 0)
     {
-      case 0: blinking_leds[0] = ON; blinking_leds[1] = ON; blinking_leds[2] = ON; break;
-      case 1: blinking_leds[0] = ON; break;
-      case 2: blinking_leds[1] = ON; break;
-      case 3: blinking_leds[2] = ON; break;
+      switch(_led_num)
+      {
+        case 0: blinking_leds[0] = ON; blinking_leds[1] = ON; blinking_leds[2] = ON; break;
+        case 1: blinking_leds[0] = ON; break;
+        case 2: blinking_leds[1] = ON; break;
+        case 3: blinking_leds[2] = ON; break;
+      }
     }
-    
+    else
+    {
+      control_led(_led_num, OFF);
+    }
     blinking_durations = _duration;
   }
   
@@ -125,24 +145,34 @@ namespace Robot
     if(_speed > 100) _speed = 0;
     move_speed = _speed;
   }
+  
+  void moveRobotAbs(int16_t _angle, uint8_t _speed)
+  {
+    move_angle = lead_to_degree_borders(_angle - gyro);
+    if(_speed > 100) _speed = 0;
+    move_speed = _speed;
+  }
+  
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
   {
-    if(_angular_speed > 100) _angular_speed = 0;
     angular_speed = _angular_speed;
-    
-    if(_max_angular_speed < 0) _max_angular_speed *= -1;
-    if(_max_angular_speed > 0) _max_angular_speed = 0;
+    max_angular_speed = _max_angular_speed;
+  }
+  
+  void setAngle(int16_t x0_angle, int16_t _max_angular_speed)
+  {
+    angular_speed = angle_pid.calculate(x0_angle, gyro);
     max_angular_speed = _max_angular_speed;
   }
   
   void callibrate_gyro()
   {
     motors.moveRobot(0, 0, 0, 0, 0, 0);
-    control_led(3, ON);
-    time_service::delay_ms(500);
+    control_led(2, ON);
+    time_service::delay_ms(200);
     mpu.calibrate(1000);
     mpu.setZeroAngle();
-    control_led(3, OFF);
+    control_led(2, OFF);
     motors_on_off(OFF);
   }
   
@@ -159,7 +189,6 @@ namespace Robot
       {
         pressed_buttons[i] = 1;
         button_timers[i] = time;
-        control_led(i + 1, ON);
       }
     }
     buttons_old_data[0] = buttons_data[0];
@@ -185,6 +214,9 @@ namespace Robot
     mpu.update();
     gyro = lead_to_degree_borders(mpu.getAngle());
     
+    ball.get_data();
+    ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
+    
     camera.getData();
     camera.calculate_pos(gyro, side);
     
@@ -193,7 +225,7 @@ namespace Robot
     
     ball_loc_angle = camera.get_ball_angle();
     ball_abs_angle = camera.get_abs_ball_angle();
-    ball_distance = camera.get_ball_distance();
+    ball_distance = ball.get_distance();
     
     ball_loc_x = camera.get_ball_loc_x();
     ball_loc_y = camera.get_ball_loc_y();

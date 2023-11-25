@@ -4,7 +4,6 @@
 #include "pin_setup.h"
 #include "tools.h"
 
-
 class camera
 {
 	public:

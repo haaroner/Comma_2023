@@ -11,3 +11,11 @@ int lead_to_degree_borders(int _num)
   }
   return _num;
 }
+
+int lead_to_borders(int max, int min, int _num)
+{
+  if(_num > max)_num = max;
+  if(_num < min)_num = min;
+  
+  return _num;
+}

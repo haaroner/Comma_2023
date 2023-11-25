@@ -192,7 +192,7 @@ void camera::calculate_pos(int16_t angle, bool side)
     }
     if(_ball_is_seen)
     {
-      _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
+     // _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
       
       _ball_loc_x = sinf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       _ball_loc_y = cosf(_abs_ball_angle * DEG2RAD) * _ball_distance;
