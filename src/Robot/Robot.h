@@ -80,7 +80,7 @@ namespace Robot
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle;
   
-  uint16_t ball_distance = 20, forward_distance = 100, backward_distance = 100;
+  uint16_t ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0;
   
   uint8_t move_speed = 0;
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
@@ -153,6 +153,21 @@ namespace Robot
     move_speed = _speed;
   }
   
+  bool moveToPoint(int16_t _x, int16_t _y, int16_t _speed)
+  {
+    move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
+    point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
+    // -1 - speed from reg
+    // 0 - turn to point
+    // 1 - standart speed
+    if(_speed == 0 || point_distance < 20) move_speed = 0;
+    else if(_speed == -1) move_speed = point_distance;
+    else move_speed = _speed;
+    
+    moveRobotAbs(move_angle, move_speed);
+    
+    return point_distance < 20;
+  }
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
   {
     angular_speed = _angular_speed;

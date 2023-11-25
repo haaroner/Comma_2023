@@ -1,8 +1,7 @@
 #include "Robot.h"
 
-
 volatile int16_t robot_x, robot_y, gyro = 0, forward_angle = 0, backward_angle = 0,
-a = 0, move_angle, ball_angle;
+a = 0, move_angle, ball_angle, start_attack_point[2];
 
 uint8_t gaming_state = 0, role, attacker_state = 0, defender_state = 0;
 
@@ -56,7 +55,12 @@ int main()
         }
         if(/*ball is in the dribler*/true)
         {
-        
+          if(Robot::check_button(DOWN_BUTTON))
+          {
+            start_attack_point[0] = robot_x;
+            start_attack_point[1] = robot_y;
+          }
+          
         }
       }
       

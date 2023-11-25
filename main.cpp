@@ -60,7 +60,7 @@ int main()
             start_attack_point[0] = robot_x;
             start_attack_point[1] = robot_y;
           }
-          
+          Robot::moveToPoint(0, 100, 20);
         }
       }
       

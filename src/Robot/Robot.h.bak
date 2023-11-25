@@ -76,7 +76,7 @@ namespace Robot
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations;
   
-  int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
+  volatile int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle;
   
@@ -153,6 +153,20 @@ namespace Robot
     move_speed = _speed;
   }
   
+  void moveToPoint(int16_t _x, int16_t _y, int16_t _speed)
+  {
+    move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
+    
+    // -1 - speed from reg
+    // 0 - turn to point
+    // 1 - standart speed
+    if(_speed == -1)
+    move_speed = get_distance_to_point(robot_x, robot_y, _x, _y);
+    else if(_speed == 0) move_speed = 0;
+    else move_speed = _speed;
+    
+    moveRobotAbs(move_angle, move_speed);
+  }
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
   {
     angular_speed = _angular_speed;
@@ -215,7 +229,7 @@ namespace Robot
     gyro = lead_to_degree_borders(mpu.getAngle());
     
     ball.get_data();
-    ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
+    //ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
     
     camera.getData();
     camera.calculate_pos(gyro, side);
