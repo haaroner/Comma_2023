@@ -180,7 +180,7 @@ void camera::calculate_pos(int16_t angle, bool side)
 //        _y = _backward_distance * abs(cos(_backward_angle * DEG2RAD));
 //      else
         _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
-      _backward_distance * abs(cos(_backward_angle * DEG2RAD)) * -1) / 2;//!!!
+      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
     }
     else
     {

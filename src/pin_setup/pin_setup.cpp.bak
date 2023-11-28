@@ -282,7 +282,7 @@ void pin::pwmInit(uint32_t RCC_TIMx,uint16_t _prescaler, uint32_t _period, uint3
   else ch.TIM_OCMode = TIM_OCMode_Timing;
 	ch.TIM_OutputState = TIM_OutputState_Enable;
 	if(_TIMx != TIM1)ch.TIM_OutputNState = TIM_OutputNState_Disable;
-		else ch.TIM_OutputNState = TIM_OutputNState_Enable;
+	else ch.TIM_OutputNState = TIM_OutputNState_Enable;
 	ch.TIM_Pulse = 0;
 	ch.TIM_OCPolarity = TIM_OCPolarity_High;
 	ch.TIM_OCNPolarity = TIM_OCNPolarity_Low;

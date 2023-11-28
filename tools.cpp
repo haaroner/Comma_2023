@@ -14,8 +14,12 @@ int lead_to_degree_borders(int _num)
 
 int lead_to_borders(int max, int min, int _num)
 {
-  if(_num > max)_num = max;
-  if(_num < min)_num = min;
-  
+  while(_num < min || _num > max)
+  {
+    if(_num < min)
+        _num += max - min;
+    else if(_num > max)
+        _num -= max - min;
+  }
   return _num;
 }

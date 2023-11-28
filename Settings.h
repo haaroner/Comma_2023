@@ -1,4 +1,4 @@
-#define START_ROLE 1 //1 - attacker
+//#define START_ROLE 1 //1 - attacker
 
 #define OTLADKA 0
 

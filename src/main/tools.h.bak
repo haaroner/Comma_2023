@@ -16,3 +16,4 @@
 #define CHANNEL4 4
 
 int lead_to_degree_borders(int _num);
+int lead_to_borders(int max, int min, int _num);

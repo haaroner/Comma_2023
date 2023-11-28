@@ -40,6 +40,11 @@ int my_abs(int _num)
   return int(abs(double(_num)));
 }
 
+int my_pow(int _num, int _exp)
+{
+  return int(pow(double(_num), double(_exp)));
+}
+
 int my_sgn(int32_t num)
 {
   if(num == 0)
@@ -81,10 +86,10 @@ int16_t get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x,
   return atan2(double(_x_result), double(_y_result)) * RAD2DEG;
 }
 
-uint16_t get_distance_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
+uint16_t get_distance_to_point(int _a1, int _b1, int _a2, int _b2)
 {
-  _x_result = _point_x - _robot_x;
-  _y_result = _point_y - _robot_y;
+  _x_result = _a2 - _a1;
+  _y_result = _b2 - _b1;
   
   return sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
 }

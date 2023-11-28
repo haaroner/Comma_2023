@@ -90,3 +90,5 @@
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\time_service\time_service.h
 .\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\Actions\Actions.h
+.\objects\main.o: .\src\Queue\Queue.h

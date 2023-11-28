@@ -153,6 +153,11 @@ namespace Robot
     move_speed = _speed;
   }
   
+  int getDistanceToPoint(int16_t _x, int16_t _y)
+  {
+    return get_distance_to_point(robot_x, robot_y, _x, _y);
+  }
+  
   bool moveToPoint(int16_t _x, int16_t _y, int16_t _speed)
   {
     move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
@@ -160,7 +165,7 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 20) move_speed = 0;
+    if(_speed == 0 || point_distance < 15) move_speed = 0;
     else if(_speed == -1) move_speed = point_distance;
     else move_speed = _speed;
     
@@ -176,7 +181,7 @@ namespace Robot
   
   void setAngle(int16_t x0_angle, int16_t _max_angular_speed)
   {
-    angular_speed = angle_pid.calculate(x0_angle, gyro);
+    angular_speed = angle_pid.calculate(x0_angle, gyro, 180);
     max_angular_speed = _max_angular_speed;
   }
   

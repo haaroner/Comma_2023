@@ -44,6 +44,7 @@ class PID
         e_old = e;
         time = time_service::getCurTime();
       }
+      return u;
     }
   private:
     float kp, ki, kd;
