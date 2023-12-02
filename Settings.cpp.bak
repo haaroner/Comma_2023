@@ -1,0 +1,6 @@
+#include "Settings.h"
+
+int max_defender_x[2] = {40, -40};
+static float k_error = 1.85;//3.375
+static const double k1_ball = 1.65, k2_ball = 0.625, k3_ball = 0.61, k_gyro = 0.017;
+int defender_y0 = 25;

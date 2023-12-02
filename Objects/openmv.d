@@ -45,3 +45,5 @@
 .\objects\openmv.o: .\src\pin_setup\pin_setup.h
 .\objects\openmv.o: .\src\main\project_config.h
 .\objects\openmv.o: .\src\main\tools.h
+.\objects\openmv.o: .\src\time_service\time_service.h
+.\objects\openmv.o: .\src\main\project_config.h

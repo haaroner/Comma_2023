@@ -42,7 +42,7 @@ class Queue
     
     int get_length()
     {
-      return length;
+      return counter;
     }
     
     void clear()

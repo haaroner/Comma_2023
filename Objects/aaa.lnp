@@ -4,6 +4,7 @@
 ".\objects\system_stm32f4xx.o"
 ".\objects\retarget.o"
 ".\objects\tools.o"
+".\objects\settings.o"
 ".\objects\pin_setup.o"
 ".\objects\time_service.o"
 ".\objects\uart2.o"

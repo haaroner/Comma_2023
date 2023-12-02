@@ -1,4 +1,6 @@
-#define START_ROLE 1 //1 - attacker
+//#define START_ROLE 1 //1 - attacker
+
+#pragma once
 
 #define OTLADKA 0
 
@@ -12,6 +14,8 @@
 
 #define ROBOT_MAX_Y 210
 #define ROBOT_MIN_Y 10
+
+
 
 #define CENTRAL_GATE_OUT 55
 #define SIDE_GATE_OUT 58

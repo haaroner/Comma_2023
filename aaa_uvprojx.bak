@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARMCC</pArmCC>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
@@ -339,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F407xx,STM32F40_41xxx, USE_STDPERIPH_DRIVER,  HSE_VALUE = 8000000, USE_HSE</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\ball_detour;.\src\UART;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\UART\usart2;.\src\UART\usart3;.\src\UART\usart6;.\src\Robot;..\Comma_2023_open;.\src\TSSP;.\src\Actions</IncludePath>
+              <IncludePath>.\src\main;.\src\external;.\src\spl4;.\src\global_macros;.\src\spl4\inc;.\src\spl4\src;.\src\support_pacage\inc;.\src\support_pacage\arm;.\src\support_pacage\gcc;.\src\support_pacage\gcc\linker;.\src\support_pacage;.\src\cmsis;.\src\OpenMV;.\src\pin_setup;.\src\motor;.\src\motors;.\src\IRLocator;.\src\time_service;.\src\kicker;.\src\i2c;.\src\SPI;.\src\ball_detour;.\src\UART;.\src\robot_math;.\src\dribler;.\src\adc;.\src\dma;.\src\main;.\src\voltmeter;.\src\mpu9250_spi;.\src\SPI_DOT;.\src\UART\usart2;.\src\UART\usart3;.\src\UART\usart6;.\src\Robot;..\Comma_2023_open;.\src\TSSP;.\src\Actions;.\src\Queue</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -433,6 +434,11 @@
               <FileType>8</FileType>
               <FilePath>.\tools.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Settings.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Settings.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -442,6 +448,11 @@
               <FileName>Robot.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Robot\Robot.h</FilePath>
+            </File>
+            <File>
+              <FileName>Robot.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Robot\Robot.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -475,6 +486,11 @@
               <FileName>PID.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\robot_math\PID.h</FilePath>
+            </File>
+            <File>
+              <FileName>prediction.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\robot_math\prediction.h</FilePath>
             </File>
           </Files>
         </Group>

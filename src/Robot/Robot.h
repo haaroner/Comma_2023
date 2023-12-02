@@ -4,9 +4,9 @@
 #include "libs.h"
 #include "tools.h"
 
-
 namespace Robot
 {
+  
   pin led1('A', 0, write_UP); 
   pin led2('A', 1, write_UP); 
   pin led3('A', 2, write_UP); 
@@ -76,13 +76,20 @@ namespace Robot
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations;
   
-  volatile int16_t move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
+  volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle;
   
-  uint16_t ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0;
+  int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
+    old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
+  _dS = 0, _x1b = 0, _y1b = 0;
+  
+  double _dxb = 0, _dyb = 0;
   
   uint8_t move_speed = 0;
+  
+  double _alpha = 0;
+  
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0;
   
@@ -146,19 +153,19 @@ namespace Robot
     move_speed = _speed;
   }
   
-  void moveRobotAbs(int16_t _angle, uint8_t _speed)
+  void moveRobotAbs(int16_t _angle, uint16_t _speed)
   {
     move_angle = lead_to_degree_borders(_angle - gyro);
-    if(_speed > 100) _speed = 0;
+    if(_speed > 100) _speed = 100;
     move_speed = _speed;
   }
   
-  int getDistanceToPoint(int16_t _x, int16_t _y)
+  int getDistanceToPoint(int _x, int _y)
   {
     return get_distance_to_point(robot_x, robot_y, _x, _y);
   }
   
-  bool moveToPoint(int16_t _x, int16_t _y, int16_t _speed)
+  bool moveToPoint(int32_t _x, int32_t _y, int16_t _speed)
   {
     move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
     point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
@@ -228,6 +235,19 @@ namespace Robot
     side = my_abs(side - 1);
   }
   
+  void predict()
+  {
+   _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2));
+   _alpha = atan2(_dxb, _dyb * -1);
+   
+   if(my_abs(_alpha) < 90 && _dS > 20)
+   {
+     _y1b = ball_abs_y - 30;
+     _x1b = tan(_alpha) * _y1b;
+   }
+   
+  }
+  
   void update()
   {
     time = time_service::getCurTime();
@@ -250,6 +270,15 @@ namespace Robot
     ball_loc_x = camera.get_ball_loc_x();
     ball_loc_y = camera.get_ball_loc_y();
     
+    ball_abs_x = camera.get_ball_abs_x();
+    ball_abs_y = camera.get_ball_abs_y();
+    
+    old_b_x = camera.get_old_b_x();
+    old_b_y = camera.get_old_b_y();
+    
+    _dxb = camera.get_dbx();
+    _dyb = camera.get_dby();
+    
     forward_angle = camera.get_forward_angle();
     forward_distance = camera.get_forward_distance();
     backward_angle = camera.get_backward_angle();
@@ -259,7 +288,7 @@ namespace Robot
     if(time - blinking_timer > blinking_durations)
     {
       leds_state = my_abs(leds_state - 1);
-      for(int i = 0; i < 3; i++)
+      for(int i   = 0; i < 3; i++)
       {
         if(blinking_leds[i])
         {

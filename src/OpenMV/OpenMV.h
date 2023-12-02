@@ -3,6 +3,7 @@
 #include "usart6.h"
 #include "pin_setup.h"
 #include "tools.h"
+#include "time_service.h"
 
 class camera
 {
@@ -25,6 +26,10 @@ class camera
     int16_t get_ball_loc_y();
     int16_t get_ball_abs_x();
     int16_t get_ball_abs_y();
+    int16_t get_old_b_x();
+    int get_old_b_y();
+    int16_t get_dbx();
+    int get_dby();
     bool is_first_data_received();
 
 	private:
@@ -47,9 +52,11 @@ class camera
     int _backward_angle;
     int _center_distance;
     int _center_angle;
-    int32_t _x, _y;
-    int32_t _x_centered, _y_centered;
-    int32_t _center_y;
+    int _x, _y;
+    int _old_x, _old_y;
+    int _dbx, _dby;
+    int _x_centered, _y_centered;
+    int _center_y;
     double _forward_sin, _backward_sin;
     double _forward_x, _backward_x;
     int _dist1, _dist2;
@@ -66,6 +73,7 @@ class camera
 		uint8_t data[8];
 		uint8_t crc8(uint8_t* data, int len);
     uint8_t _state;
+    uint32_t _ball_d_timer;
     
     uint8_t _length_between_gates;
 };

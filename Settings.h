@@ -1,5 +1,7 @@
 //#define START_ROLE 1 //1 - attacker
 
+#pragma once
+
 #define OTLADKA 0
 
 #define STOP_DRIBLER_SPEED 300

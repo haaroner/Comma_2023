@@ -38,6 +38,7 @@ class Queue
     {
       if(_addr < length)
         return mas[_addr];
+      return 0;
     }
     
     int get_length()

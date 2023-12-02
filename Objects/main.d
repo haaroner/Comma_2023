@@ -61,6 +61,8 @@
 .\objects\main.o: .\src\OpenMV\OpenMv.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\main\tools.h
+.\objects\main.o: .\src\time_service\time_service.h
+.\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\ball_detour\ball_detour.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\robot_math\robot_math.h
@@ -83,7 +85,6 @@
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\robot_math\Timers.h
 .\objects\main.o: .\src\robot_math\PID.h
-.\objects\main.o: ..\Comma_2023_open\Settings.h
 .\objects\main.o: .\src\time_service\time_service.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\TSSP\TSSP.h
@@ -92,3 +93,4 @@
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\Actions\Actions.h
 .\objects\main.o: .\src\Queue\Queue.h
+.\objects\main.o: .\src\robot_math\prediction.h
