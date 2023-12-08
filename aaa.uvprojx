@@ -892,6 +892,11 @@
               <FileType>8</FileType>
               <FilePath>.\src\Display\SSD1306\SSD1306.cpp</FilePath>
             </File>
+            <File>
+              <FileName>font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\font.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

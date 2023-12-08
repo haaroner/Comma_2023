@@ -21,12 +21,6 @@ namespace Robot
   pin spi2_mosi('B', 15, spi2);
   pin spi2_miso('B', 14, spi2);
   pin spi2_ck('B', 12, write_DOWN);
-    
-  pin spi3_mosi('C', 12, spi3);
-  pin spi3_sck('C', 10, spi3);
-  pin OLED_DC('A', 15, write_UP);
-  pin spi3_nss('E', 0, write_UP);
-  pin OLED_res('C', 11, write_UP);
   
   pin usart6_tx('C', 6,  uart6);	
   pin usart6_rx('C', 7,  uart6);    
@@ -50,6 +44,14 @@ namespace Robot
   pin up('B', 5, read_UP);
   pin reset_gyro('B', 6, read_UP);
   pin enter('B', 7, read_UP);
+  
+  pin spi3_mosi('C', 12, spi3);
+  pin spi3_sck('C', 10, spi3);
+  pin spi3_dc('A', 15, write_DOWN);
+  pin spi3_cs('E', 0, write_DOWN);
+  pin spi3_rst('C', 11, write_DOWN);
+  
+  SSD1306 display(3, spi3_dc, spi3_rst, spi3_cs, 1, 1, 1);
     
   camera camera(usart6_tx, usart6_rx);
     
@@ -74,7 +76,8 @@ namespace Robot
 
   int a = 0;
   
-  volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations;
+  volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
+    init_timer = 0, display_timer = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -91,7 +94,8 @@ namespace Robot
   double _alpha = 0;
   
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
-  pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0;
+  pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
+  init_image = true;
   
   void init_robot(uint8_t role)
   { 
@@ -103,11 +107,48 @@ namespace Robot
     usart2::usart2Init(115200, 8, 1);//gyro
     usart6::usart6Init(460800, 8, 1);//camera
        
+    display.begin();
+    //display.clear();
+    //drawString(display, "Comma,", 6, 2);
+    display.display();
+    
+    init_timer = time;
+    
     mpu.init();
     mpu.update();
   }
   
   
+
+  inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
+  {
+    drawString(display, data, x, y);
+  }
+  
+  template <typename N>
+    
+  inline void display_draw_number(N data,unsigned num_of_digits_after_dot = 3, unsigned x = 0, unsigned y = 0)
+  {
+    printTml(display, data, num_of_digits_after_dot, y, x);
+  }
+  
+  inline void display_clear()
+  {
+    display.clear();
+  }
+  
+  inline void display_update(bool auto_clear = true)
+  {
+    if(time_service::getCurTime() - init_timer > 1000 && (time_service::getCurTime() - display_timer) > 10)
+    {
+      if(init_image) display.clear();//to clear before first .display()
+      display.display();
+      if(auto_clear) display.clear();// to clear buffer for following .display()
+      display_timer = time_service::getCurTime();
+      init_image = false;
+    }
+  }
+
   void motors_on_off(bool _state)
   {
     motors_state = _state; 

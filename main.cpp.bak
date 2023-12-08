@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include "Settings.h"
-#include "Display.h"
+#include "SSD1306.h"
+#include "font.h"
 
 volatile int16_t robot_x = 0, robot_y = 0, gyro = 0, forward_angle = 0, backward_angle = 0,
 a = 0, b = 0, c, move_angle, ball_angle, defence_angle, start_attack_point[2], point[2], error_angle;
@@ -9,25 +10,13 @@ volatile int32_t defender_y_error = 0;
 
 uint8_t gaming_state = 0, role, attacker_state = 0, defender_state = 0, move_speed, error_speed = 0;
 
-volatile int ball_abs_x = 0, ball_abs_y = 0, ball_loc_x = 0, ball_loc_y = 0;
-
+volatile int ball_abs_x = 0, ball_abs_y = 0, ball_loc_x = 0, ball_loc_y = 0, d, e = 0;
+double testf;
 bool trajectory_started = 0;
 
 int main()
 {
   Robot::init_robot(1);
-  pin mosi_('C', 12, spi3);
-  pin sck_('C', 10, spi3);
-  pin dc_('A', 15, write_DOWN);
-  pin cs_('E', 0, write_DOWN);
-  pin rst_('C', 11, write_DOWN);
-  SSD1306 display(3, dc_, rst_, cs_, 1, 1, 1);
-  time_service::delay_ms(1);
-  display.begin();
-  time_service::delay_ms(1000);
-  //display.drawPixel(30, 30, WHITE);
-  display.drawFastVLine(10, 10, 30, 1);
- // display.switchOn();
   
   //point abcd;
   //abcd.x = 2;
@@ -41,12 +30,18 @@ int main()
   role = 2;
   Queue points_queue;
   
-  display.display();
   
   while(true)
   {
-    display.drawFastVLine(10, 10, 10, 1);
-    display.display();
+    testf = int(time_service::getCurTime() - d);
+    d = time_service::getCurTime();
+    Robot::display_draw_string("time =");
+    if(testf < 20)
+    {
+      Robot::display_clear();
+      Robot::display_draw_number(int(testf), 1, 6, 0);
+    }
+    Robot::display_update(true);
     gyro = Robot::gyro;
     robot_x = Robot::robot_x;
     robot_y = Robot::robot_y;

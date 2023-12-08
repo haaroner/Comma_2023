@@ -1465,7 +1465,7 @@ unsigned drawChar(SSD1306& display, char symbol, unsigned x, unsigned y)
 	return fontData[index][0] + 2;
 }
 
-void drawString(SSD1306& display, char* s, unsigned row = 0, unsigned column = 0)
+void drawString(SSD1306& display, const char* s, unsigned column = 0, unsigned row = 0)
 {
 	unsigned x = column * 7, i = 0;
 	char symbol;
@@ -1476,8 +1476,10 @@ void drawString(SSD1306& display, char* s, unsigned row = 0, unsigned column = 0
 		
 		if (!symbol) 
 			break;
-		
-		if (symbol == ' ')
+    
+		if(symbol < 32 || symbol > 126) 
+      break;
+		else if (symbol == ' ')
 			x += 5;
 		else
 			x += drawChar(display, symbol, x, row);
@@ -1584,7 +1586,7 @@ char* toPrint(T x, short next = 3)
 
 
 template <typename T>
-void printTml(SSD1306& display, T x, int next = 3, int row = 0, int column = 0)
+void printTml(SSD1306& display, T x, int next = 3, int column = 0, int row = 0)
 {	
 	char *ptr = toPrint(x, next);
 	

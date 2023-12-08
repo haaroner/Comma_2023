@@ -555,46 +555,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>SPI</GroupName>
-          <Files>
-            <File>
-              <FileName>SPI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\SPI\SPI.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\SPI\SPI_1\SPI_1.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_1.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\SPI\SPI_1\SPI_1.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\SPI\SPI_2\SPI_2.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_2.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\SPI\SPI_2\SPI_2.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\SPI\SPI_3\SPI_3.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_3.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\SPI\SPI_3\SPI_3.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>i2c</GroupName>
           <Files>
             <File>
@@ -755,7 +715,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>SPI_DOT</GroupName>
+          <GroupName>SPI</GroupName>
           <Files>
             <File>
               <FileName>SPI2_DOT.h</FileName>
