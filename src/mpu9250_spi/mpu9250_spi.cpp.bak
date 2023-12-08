@@ -366,7 +366,7 @@ void mpu9250_spi::updateAngles(double _time, bool flag1)
 	roll = roll * RAD2DEG - rollOffset;
 	yaw = yaw * RAD2DEG - yawOffset;
   
-  _acceleration = (yaw - _old_yaw) / 0.001;
+  _acceleration = zg;
   
   _old_yaw = yaw;
 	/*

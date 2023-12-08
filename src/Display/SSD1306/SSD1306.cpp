@@ -1,10 +1,8 @@
-#include "stdlib.h"
+#include <stdlib.h>
 
+#include "SPI3_DOT.h"
 #include "SSD1306.h"
 
-#include "SPI_1.h"
-#include "SPI_2.h"
-#include "SPI_3.h"
 
 // the memory buffer for the LCD
 static uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8] = {
@@ -78,6 +76,7 @@ static uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8] = {
 #endif
 };
 
+
 #define ssd1306_swap(a, b) { int16_t t = a; a = b; b = t; }
 
 // the most basic function, set a single pixel
@@ -115,17 +114,23 @@ void SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
 
 // constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset
-SSD1306::SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &SCK, pin &MOSI): _DC(DC),
-                                                                                                 _RST(RST),
-                                                                                                 _CS(CS),
-                                                                                                 _SCK(SCK),
-                                                                                                 _MOSI(MOSI)
+SSD1306::SSD1306(unsigned int SPI_NUM, pin &dc, pin &rst, pin &cs, uint16_t PWR_EN, uint16_t SCK, uint16_t MOSI): _rst(rst),
+                                                                                                                  _cs(cs),
+                                                                                                                  _dc(dc)
 {
-	spiNum = spi_num;
-  hwSPI = true;
 	
-//	initPin(PWR_EN, OUTPUTPP);
-//	setPin(PWR_EN, 1);
+	spiNum = SPI_NUM;
+  //dc = DC;
+  //rst = RST;
+  //cs = CS;
+	//sck = SCK;
+	//mosi = MOSI;
+  //hwSPI = true;
+	//pwr_en = PWR_EN;
+	
+	
+	//initPin(PWR_EN, OUTPUTPP);
+	//setPin(PWR_EN, 1);
 	
 }
 
@@ -144,30 +149,26 @@ void SSD1306::begin(uint8_t vccstate, bool reset) {
   //initPin(cs, OUTPUTPP);
 
 	//initSPI(spiNum, MASTER, 8, 2, cs, sck, -1, mosi);
-  if(spiNum == 1) Spi_1::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
-  else if(spiNum == 2) Spi_2::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
-  else if(spiNum == 3) Spi_3::spi_init(master_mode, simple, TxOnly, d8b, b16r, lsb);
+  initSPI3(1, 8, 2);
   
   // Setup reset pin direction (used by both SPI and I2C)
   //initPin(rst, OUTPUTPP);
-  _RST.setBit();
+  
   //setPin(rst, HIGH);
+  _rst.setBit();
+  
   // VDD (3.3V) goes high at start, lets just chill for a ms
-  
   time_service::delay_ms(1);
-  //delay(1);
   // bring reset low
-  
-  _RST.resetBit();
+  _rst.resetBit();
   //setPin(rst, LOW);
+  
   // wait 10ms
-  
   time_service::delay_ms(10);
-  //delay(10);
-  // bring out of reset
   
-  _RST.setBit();
-  //setPin(rst, HIGH);
+  // bring out of reset
+ // setPin(rst, HIGH);
+  _rst.setBit();
   // turn on VCC (9V?)
   
 
@@ -246,18 +247,19 @@ void SSD1306::ssd1306_command(uint8_t c) {
 
   // SPI
 
-  _CS.setBit();
-  _DC.resetBit();
-  _CS.resetBit();
 //  setPin(cs, HIGH);
 //  setPin(dc, LOW);
 //  setPin(cs, LOW);
 
+  _cs.setBit();
+  _dc.resetBit();
+  time_service::delay_ms(1);//????
+  _cs.resetBit();
+  
   fastSPIwrite(c);
 
-  _CS.setBit();
   //setPin(cs, HIGH);
-
+  _cs.setBit();
 }
 
 // startscrollright
@@ -368,22 +370,22 @@ void SSD1306::display() {
 
 
   // SPI
-  
-  _CS.setBit();
-  _DC.setBit();
-  _CS.resetBit();
+
 //  setPin(cs, HIGH);
 //  setPin(dc, HIGH);
 //  setPin(cs, LOW);
+
+  _cs.setBit();
+  _dc.setBit();
+  _cs.resetBit();
 
 	
   for (uint16_t i=0; i<(SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8); i++) {
     fastSPIwrite(buffer[i]);
   }
 
-  _CS.setBit();
   //setPin(cs, HIGH);
-  
+  _cs.setBit();
 }
 
 void SSD1306::display(uint8_t *buf) {
@@ -405,21 +407,21 @@ void SSD1306::display(uint8_t *buf) {
 
 
   // SPI
-  
-  _CS.setBit();
-  _DC.setBit();
-  _CS.resetBit();
+
 //  setPin(cs, HIGH);
 //  setPin(dc, HIGH);
 //  setPin(cs, LOW);
+
+  _cs.setBit();
+  _dc.setBit();
+  _cs.resetBit();
 	
   for (uint16_t i=0; i<(SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8); i++) {
     fastSPIwrite(buf[i]);
   }
 
-  _CS.setBit();
   //setPin(cs, HIGH);
-  
+  _cs.setBit();
 }
 
 // clear everything
@@ -427,18 +429,12 @@ void SSD1306::clear(void) {
   memset(buffer, 0, (SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8));
 }
 
+
 inline void SSD1306::fastSPIwrite(uint8_t d) 
 {
-	writeSPI(d);  
+	writeSPI3(d);
+  
 }
-
-void SSD1306::writeSPI(uint8_t _data)
-{
-  if(spiNum == 1) Spi_1::send(_data);
-  else if(spiNum == 2) Spi_2::send(_data);
-  else if(spiNum == 3) Spi_3::send(_data);
-}
-
 
 void SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
   bool bSwap = false;
@@ -543,14 +539,14 @@ void SSD1306::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color) {
 }
 
 
-//SSD1306::SSD1306()
+//SSD1306::SSD1306(void)
 //{
 //}
 
 void SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h, uint16_t color) {
 
   // do nothing if we're off the left or right side of the screen
-  if(x < 0 || x >= SSD1306_LCDWIDTH) { return; }
+  if(x < 0 || x >= 128) { return; }
 
   // make sure we don't try to draw below 0
   if(__y < 0) {

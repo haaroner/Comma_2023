@@ -1,13 +1,15 @@
+#pragma once
+
 #ifndef SSD1306_LIB
 #define SSD1306_LIB
 
 #include "project_config.h"
+#include "pin_setup.h"
 #include "time_service.h"
-#include "SPI_1.h"
-#include "SPI_2.h"
-#include "SPI_3.h"
+//#include "libs.h"
 #include "stdbool.h"
 #include "string.h"
+//#include 
 
 #define HIGH 1
 #define LOW 0
@@ -16,7 +18,13 @@
 #define WHITE 1
 #define INVERSE 2
 
-#define SSD1306_128_64
+/*=========================================================================
+    SSD1306 Displays
+	----------------------------------------------*/
+   #define SSD1306_128_64
+//   #define SSD1306_128_32
+//   #define SSD1306_96_16
+/*=========================================================================*/
 
 #if defined SSD1306_128_64 && defined SSD1306_128_32
   #error "Only one SSD1306 display can be specified at once in SSD1306.h"
@@ -84,12 +92,16 @@
 #define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A
 
-class SSD1306
-{
-  public:
-    SSD1306(uint8_t spi_num, pin &DC, pin &RST, pin &CS, pin &SCK, pin &MOSI);
-  
-    SSD1306(void);
+
+
+class SSD1306 {
+ public:
+   SSD1306(unsigned int SPI_NUM, pin &dc, pin &rst, pin &cs, uint16_t PWR_EN, uint16_t SCK, uint16_t MOSI);
+   
+   SSD1306(void);
+
+	void switchOn(void);
+	void switchOff(void);
  
 	void draw(void);
 	
@@ -120,20 +132,17 @@ class SSD1306
 
  private:
   int8_t _vccstate, sid, sclk, spiNum;
-	uint16_t dc, rst, cs, pwr_en, sck, mosi;
+	uint16_t dc/*, rst*/, cs, pwr_en, sck, mosi;
   void fastSPIwrite(uint8_t c);
-  void writeSPI(uint8_t _data);
 
   bool hwSPI;
+  
+  pin _rst, _dc, _cs;
 
 
   inline void drawFastVLineInternal(int16_t x, int16_t y, int16_t h, uint16_t color) __attribute__((always_inline));
   inline void drawFastHLineInternal(int16_t x, int16_t y, int16_t w, uint16_t color) __attribute__((always_inline));
-  pin _DC;
-  pin _RST;
-  pin _CS;
-  pin _SCK;
-  pin _MOSI;
+
 };
 
 #endif

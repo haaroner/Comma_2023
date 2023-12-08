@@ -94,3 +94,8 @@
 .\objects\main.o: .\src\Actions\Actions.h
 .\objects\main.o: .\src\Queue\Queue.h
 .\objects\main.o: .\src\robot_math\prediction.h
+.\objects\main.o: .\src\Display\SSD1306\SSD1306.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\time_service\time_service.h
+.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdbool.h

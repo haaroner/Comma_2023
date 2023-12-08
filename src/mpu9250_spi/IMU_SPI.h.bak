@@ -26,6 +26,7 @@ class IMU
 		double getZg();
     int gyro_sel();
     int acc_sel();
+    float get_acceleration();
     //float get_acceleration();
 		mpu9250_spi _mpuSensor;
 	
@@ -77,11 +78,15 @@ void IMU::calibrate(uint32_t t)
 	_mpuSensor.calibrate(t);
 }
 
+float IMU::get_acceleration()
+{
+  return _mpuSensor._acceleration;
+}
 
 double IMU::getAngle()
 {
 	double a = angle-zeroAngle;
-	adduction(a)
+	adduction(a);
 	return -a;
 }
 

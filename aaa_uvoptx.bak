@@ -220,6 +220,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>b,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>c,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -562,7 +567,7 @@
 
   <Group>
     <GroupName>Robot</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -590,7 +595,7 @@
 
   <Group>
     <GroupName>Maths</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -814,7 +819,7 @@
 
   <Group>
     <GroupName>SPI</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1066,7 +1071,7 @@
 
   <Group>
     <GroupName>OpenMv</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1250,7 +1255,7 @@
 
   <Group>
     <GroupName>SPI_DOT</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1278,6 +1283,30 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>19</GroupNumber>
+      <FileNumber>60</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\SPI_DOT\SPI3_DOT.h</PathWithFileName>
+      <FilenameWithoutPath>SPI3_DOT.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>19</GroupNumber>
+      <FileNumber>61</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\SPI_DOT\SPI3_DOT.cpp</PathWithFileName>
+      <FilenameWithoutPath>SPI3_DOT.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -1288,7 +1317,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>20</GroupNumber>
-      <FileNumber>60</FileNumber>
+      <FileNumber>62</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1300,7 +1329,7 @@
     </File>
     <File>
       <GroupNumber>20</GroupNumber>
-      <FileNumber>61</FileNumber>
+      <FileNumber>63</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1320,7 +1349,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>21</GroupNumber>
-      <FileNumber>62</FileNumber>
+      <FileNumber>64</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1332,7 +1361,7 @@
     </File>
     <File>
       <GroupNumber>21</GroupNumber>
-      <FileNumber>63</FileNumber>
+      <FileNumber>65</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1352,7 +1381,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>22</GroupNumber>
-      <FileNumber>64</FileNumber>
+      <FileNumber>66</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1372,7 +1401,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>23</GroupNumber>
-      <FileNumber>65</FileNumber>
+      <FileNumber>67</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1384,7 +1413,7 @@
     </File>
     <File>
       <GroupNumber>23</GroupNumber>
-      <FileNumber>66</FileNumber>
+      <FileNumber>68</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1404,7 +1433,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>67</FileNumber>
+      <FileNumber>69</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1416,7 +1445,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>68</FileNumber>
+      <FileNumber>70</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1428,7 +1457,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>69</FileNumber>
+      <FileNumber>71</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1440,7 +1469,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>70</FileNumber>
+      <FileNumber>72</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1452,7 +1481,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>71</FileNumber>
+      <FileNumber>73</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1464,7 +1493,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>72</FileNumber>
+      <FileNumber>74</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1476,7 +1505,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>73</FileNumber>
+      <FileNumber>75</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1488,7 +1517,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>74</FileNumber>
+      <FileNumber>76</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1500,7 +1529,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>75</FileNumber>
+      <FileNumber>77</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1512,7 +1541,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>76</FileNumber>
+      <FileNumber>78</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1524,7 +1553,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>77</FileNumber>
+      <FileNumber>79</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1536,7 +1565,7 @@
     </File>
     <File>
       <GroupNumber>24</GroupNumber>
-      <FileNumber>78</FileNumber>
+      <FileNumber>80</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1556,7 +1585,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>25</GroupNumber>
-      <FileNumber>79</FileNumber>
+      <FileNumber>81</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1570,19 +1599,51 @@
 
   <Group>
     <GroupName>Queue</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>26</GroupNumber>
-      <FileNumber>80</FileNumber>
+      <FileNumber>82</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\Queue\Queue.h</PathWithFileName>
       <FilenameWithoutPath>Queue.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>display</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>27</GroupNumber>
+      <FileNumber>83</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\Display\SSD1306\SSD1306.h</PathWithFileName>
+      <FilenameWithoutPath>SSD1306.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>27</GroupNumber>
+      <FileNumber>84</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\Display\SSD1306\SSD1306.cpp</PathWithFileName>
+      <FilenameWithoutPath>SSD1306.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

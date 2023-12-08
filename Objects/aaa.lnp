@@ -10,9 +10,6 @@
 ".\objects\uart2.o"
 ".\objects\usart3.o"
 ".\objects\usart6.o"
-".\objects\spi_1.o"
-".\objects\spi_2.o"
-".\objects\spi_3.o"
 ".\objects\soft_i2c.o"
 ".\objects\adc.o"
 ".\objects\dma.o"
@@ -24,6 +21,7 @@
 ".\objects\dribler.o"
 ".\objects\line.o"
 ".\objects\spi_dot.o"
+".\objects\spi3_dot.o"
 ".\objects\irlocator.o"
 ".\objects\kicker.o"
 ".\objects\tssp.o"
@@ -38,6 +36,7 @@
 ".\objects\stm32f4xx_tim.o"
 ".\objects\stm32f4xx_usart.o"
 ".\objects\stm32f4xx_dma.o"
+".\objects\ssd1306.o"
 --strict --scatter ".\Objects\aaa.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

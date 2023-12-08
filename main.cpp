@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include "Settings.h"
+#include "SSD1306.h"
 
 volatile int16_t robot_x = 0, robot_y = 0, gyro = 0, forward_angle = 0, backward_angle = 0,
 a = 0, b = 0, c, move_angle, ball_angle, defence_angle, start_attack_point[2], point[2], error_angle;
@@ -14,11 +15,22 @@ bool trajectory_started = 0;
 
 int main()
 {
+  Robot::init_robot(1);
+  pin mosi_('C', 12, spi3);
+  pin sck_('C', 10, spi3);
+  pin dc_('A', 15, write_DOWN);
+  pin cs_('E', 0, write_DOWN);
+  pin rst_('C', 11, write_DOWN);
+  SSD1306 display(3, dc_, rst_, cs_, 1, 1, 1);
+  time_service::delay_ms(1);
+  display.begin();
+  time_service::delay_ms(1000);
+  //display.drawPixel(30, 30, WHITE);
+  display.drawFastVLine(10, 10, 30, 1);
+ // display.switchOn();
   
-
   //point abcd;
   //abcd.x = 2;
-  Robot::init_robot(1);
   //Robot::set_blinking(0, 1000);
   Robot::motors_on_off(OFF);
   //Timer test;
@@ -29,8 +41,12 @@ int main()
   role = 2;
   Queue points_queue;
   
+  display.display();
+  
   while(true)
   {
+    display.drawFastVLine(10, 10, 10, 1);
+    display.display();
     gyro = Robot::gyro;
     robot_x = Robot::robot_x;
     robot_y = Robot::robot_y;

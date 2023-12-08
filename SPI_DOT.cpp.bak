@@ -3,10 +3,8 @@
 uint16_t _RxData[2];
 bool _available[2];
 uint8_t num = 1;
-uint32_t _fault_time = 0;
-uint8_t _fault_cnt= 0;
 
-void initSPI2(bool mode, uint8_t dataFrameFormat, uint16_t clkPrescaler)
+void initSPI(uint8_t num, uint8_t mode, uint8_t dataFrameFormat, uint16_t clkPrescaler)
 {
   _RxData[num] = 0;														
 	_available[num] = 0;
@@ -14,9 +12,28 @@ void initSPI2(bool mode, uint8_t dataFrameFormat, uint16_t clkPrescaler)
 	SPI_TypeDef *spi;
 	uint8_t afNumber = 5;
   
-  spi = SPI2;
-	RCC->APB1ENR |= RCC_APB1ENR_SPI2EN;
-
+  if(num == 1) spi = SPI1;
+  else if(num == 2) spi = SPI2;
+  else spi = SPI3;
+  
+  switch(num)
+  {
+    case 1:
+      RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
+      if(mode == 0) NVIC_EnableIRQ(SPI1_IRQn);
+      break;
+    case 2:
+      RCC->APB1ENR |= RCC_APB1ENR_SPI2EN; 
+      if(mode == 0) NVIC_EnableIRQ(SPI2_IRQn);
+      break;
+    case 3:
+      RCC->APB1ENR |= RCC_APB1ENR_SPI3EN;
+      if (mode == 0) NVIC_EnableIRQ(SPI3_IRQn);
+      break;
+  }
+    
+	
+  
   if(mode == 1)
   {
     spi->CR1 &= ~SPI_CR1_BR;
@@ -51,23 +68,20 @@ void initSPI2(bool mode, uint8_t dataFrameFormat, uint16_t clkPrescaler)
 }
 
 
-uint16_t writeSPI(uint16_t TxData){						//for master
-	_fault_time = time_service::getCurTime();
+uint16_t writeSPI(uint8_t num, uint16_t TxData){						//for master
+	
 	//select SPI register name
-	SPI_TypeDef * spi;								
-	spi = SPI2;
+	SPI_TypeDef * spi;
+  if(num == 1) spi = SPI1;
+  else if(num == 2) spi = SPI2;
+  else spi = SPI3;
 	
 	//write data
-	while((!(spi->SR & SPI_SR_TXE)) && (time_service::getCurTime() - _fault_time < 10))	
+	while(!(spi->SR & SPI_SR_TXE));		
 	spi->DR = TxData;
-  
-  if(time_service::getCurTime() - _fault_time >= 10) _fault_cnt++;
-	_fault_time = time_service::getCurTime();
+	
 	//read data
-	while((!(spi->SR & SPI_SR_RXNE)) && (time_service::getCurTime() - _fault_time < 10))
-    
-  if(time_service::getCurTime() - _fault_time >= 10) _fault_cnt++;
-  
+	while(!(spi->SR & SPI_SR_RXNE));
 	return spi->DR;		
 	
 }
