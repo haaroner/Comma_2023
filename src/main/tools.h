@@ -17,3 +17,4 @@
 
 int lead_to_degree_borders(int _num);
 int lead_to_borders(int max, int min, int _num);
+int constrain(int max, int min, int _num);

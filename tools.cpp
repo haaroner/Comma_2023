@@ -23,3 +23,11 @@ int lead_to_borders(int max, int min, int _num)
   }
   return _num;
 }
+
+int constrain(int max, int min, int _num)
+{
+  if(_num > max) _num = max;
+  else if(_num < min) _num = min;
+  
+  return _num;
+}

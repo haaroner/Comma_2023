@@ -92,10 +92,11 @@ namespace Robot
   uint8_t move_speed = 0;
   
   double _alpha = 0;
+  unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
+  bool side = 1, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
-  init_image = true;
+  init_image = true, _game_state = 0, _callibrated = 0;
   
   void init_robot(uint8_t role)
   { 
@@ -118,8 +119,61 @@ namespace Robot
     mpu.update();
   }
   
+  void check_buttons()
+  {
+    buttons_data[0] = up.read();
+    buttons_data[1] = reset_gyro.read();
+    buttons_data[2] = enter.read();
+    for(int i = 0; i < 3; i++)
+    {
+      if(buttons_data[i] == 0 && buttons_old_data[i] == 1)//is pressed
+        button_timers[i] = time;
+      if(time - button_timers[i] > BUTTON_MIN_PRESSING_TIME_MS && buttons_data[i] == 1 && buttons_old_data[i] == 0)
+      {
+        pressed_buttons[i] = 1;
+        button_timers[i] = time;
+      }
+    }
+    buttons_old_data[0] = buttons_data[0];
+    buttons_old_data[1] = buttons_data[1];
+    buttons_old_data[2] = buttons_data[2];
+  }
   
+  bool check_button(uint8_t _button_num)
+  {
+    a = pressed_buttons[_button_num - 1];
+    pressed_buttons[_button_num - 1] = 0;
+    return a;
+  }
+    
+  void change_side()
+  {
+    side = my_abs(side - 1);
+  }
+    
+  void change_game_state()
+  {
+    if(_callibrated)
+      _game_state = my_abs(_game_state - 1);
+  }
 
+  void motors_on_off(bool _state)
+  {
+    motors_state = _state; 
+  }
+  
+  void callibrate_gyro()
+  {
+    motors.moveRobot(0, 0, 0, 0, 0, 0);
+    control_led(2, ON);
+    time_service::delay_ms(200);
+    mpu.calibrate(1000);
+    mpu.setZeroAngle();
+    control_led(2, OFF);
+    motors_on_off(OFF);
+    _callibrated = true;
+  }
+  
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
   {
     drawString(display, data, x, y);
@@ -129,8 +183,16 @@ namespace Robot
     
   inline void display_draw_number(N data,unsigned num_of_digits_after_dot = 3, unsigned x = 0, unsigned y = 0)
   {
-    printTml(display, data, num_of_digits_after_dot, y, x);
+    printTml(display, data, num_of_digits_after_dot, x, y);
   }
+  
+  template <typename N>
+  
+  void display_data(const char* str_data, unsigned _str_len, N num_data,  unsigned num_of_digits_after_dot = 3, unsigned x = 0, unsigned y = 0)
+  {
+    drawString(display, str_data, x, y);
+    printTml(display, num_data, num_of_digits_after_dot, x + _str_len, y);
+  }  
   
   inline void display_clear()
   {
@@ -139,7 +201,7 @@ namespace Robot
   
   inline void display_update(bool auto_clear = true)
   {
-    if(time_service::getCurTime() - init_timer > 1000 && (time_service::getCurTime() - display_timer) > 100)
+    if(time_service::getCurTime() - init_timer > 1000 && (time_service::getCurTime() - display_timer) > 30) //30fps
     {
       if(init_image) display.clear();//to clear before first .display()
       display.display();
@@ -148,12 +210,75 @@ namespace Robot
       init_image = false;
     }
   }
-
-  void motors_on_off(bool _state)
-  {
-    motors_state = _state; 
-  }
   
+  void draw_menu()
+  {
+    display_clear();
+    if(_game_state)
+    {
+      if(check_button(ENTER_BUTTON))
+        change_game_state();
+      
+      display_data("Gyro & gates", 11, gyro, 1, 0, 0);
+      display_draw_number(lead_to_degree_borders(forward_angle - gyro), 1, 14, 0);
+      display_data("Robot XY", 9, robot_x, 1, 0, 1);
+      display_draw_number(robot_y, 1, 12, 1);
+      
+      //display.drawLine(10, 40, 0, 10);
+    }
+    else
+    {
+      if(check_button(UP_BUTTON))
+        select_arrow_y = constrain(4, 0, select_arrow_y - 1);
+      if(check_button(DOWN_BUTTON))
+        select_arrow_y = constrain(4, 0, select_arrow_y + 1);
+      if(menu_level == 0)
+      {
+        if(check_button(ENTER_BUTTON))
+        {
+          switch(select_arrow_y)
+          {
+            case 0: callibrate_gyro(); break;
+            case 1: change_side(); break;
+            case 2: change_game_state(); break;
+            case 4: 
+              menu_level = 11;
+              main_menu_arrow_y = select_arrow_y;
+              select_arrow_y = 0;
+            break;
+          }
+        }
+        
+        display_data("Gyro & gates", 11, gyro, 1, 0, 0);
+        display_draw_number(lead_to_degree_borders(forward_angle - gyro), 1, 14, 0);
+        if(side)
+          display_draw_string("Side  Yellow", 0, 1);
+        else
+          display_draw_string("Side  Blue", 0, 1);
+        display_draw_string("RUN", 0, 2);
+        display_draw_string("Test data", 0, 4);
+      }
+      else if(menu_level == 11)
+      {
+        if(check_button(ENTER_BUTTON)) 
+        {
+          switch(select_arrow_y)
+          {
+            case 0: 
+              menu_level = 0;
+              select_arrow_y = main_menu_arrow_y;
+              break;
+          }
+        }
+        
+        display_draw_string("...", 0, 0);
+        display_data("Ball abs XY", 11, ball_abs_x, 1, 0, 1);
+        display_draw_number(ball_abs_y, 1, 14, 1);
+      }
+      display_draw_string("<", 17, select_arrow_y);
+    }
+    display_update();
+  }
   void control_led(uint8_t _led_num, bool _data)
   {    
     switch(_led_num)
@@ -231,49 +356,6 @@ namespace Robot
   {
     angular_speed = angle_pid.calculate(x0_angle, gyro, 180);
     max_angular_speed = _max_angular_speed;
-  }
-  
-  void callibrate_gyro()
-  {
-    motors.moveRobot(0, 0, 0, 0, 0, 0);
-    control_led(2, ON);
-    time_service::delay_ms(200);
-    mpu.calibrate(1000);
-    mpu.setZeroAngle();
-    control_led(2, OFF);
-    motors_on_off(OFF);
-  }
-  
-  void check_buttons()
-  {
-    buttons_data[0] = up.read();
-    buttons_data[1] = reset_gyro.read();
-    buttons_data[2] = enter.read();
-    for(int i = 0; i < 3; i++)
-    {
-      if(buttons_data[i] == 0 && buttons_old_data[i] == 1)//is pressed
-        button_timers[i] = time;
-      if(time - button_timers[i] > BUTTON_MIN_PRESSING_TIME_MS && buttons_data[i] == 1 && buttons_old_data[i] == 0)
-      {
-        pressed_buttons[i] = 1;
-        button_timers[i] = time;
-      }
-    }
-    buttons_old_data[0] = buttons_data[0];
-    buttons_old_data[1] = buttons_data[1];
-    buttons_old_data[2] = buttons_data[2];
-  }
-  
-  bool check_button(uint8_t _button_num)
-  {
-    a = pressed_buttons[_button_num - 1];
-    pressed_buttons[_button_num - 1] = 0;
-    return a;
-  }
-  
-  void change_side()
-  {
-    side = my_abs(side - 1);
   }
   
   void predict()

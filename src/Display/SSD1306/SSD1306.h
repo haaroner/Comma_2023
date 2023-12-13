@@ -9,8 +9,8 @@
 //#include "libs.h"
 #include "stdbool.h"
 #include "string.h"
-//#include 
 
+//#include 
 #define HIGH 1
 #define LOW 0
 
@@ -127,13 +127,20 @@ class SSD1306 {
 
   virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+  void drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
 	
 	uint8_t rotation;	//0 - no rotation, 1 - 90 deg, 2 - 180 deg, 3 - 270 deg
 
  private:
+  int dX, dY, x3, y3, sub;
+  volatile double alpha;
   int8_t _vccstate, sid, sclk, spiNum;
 	uint16_t dc/*, rst*/, cs, pwr_en, sck, mosi;
   void fastSPIwrite(uint8_t c);
+  inline int my_abs(int _num)
+  {
+    return int(abs(double(_num)));
+  }
 
   bool hwSPI;
   

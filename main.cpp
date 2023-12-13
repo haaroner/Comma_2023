@@ -33,12 +33,14 @@ int main()
   
   while(true)
   {
-    testf = int(time_service::getCurTime() - d);
+    testf = time_service::getCurTime() - d;
     d = time_service::getCurTime();
-    Robot::display_clear();
-    Robot::display_draw_string("time =");
-    Robot::display_draw_number(int(testf), 1, 6, 0);
-    Robot::display_update(true);
+//    Robot::display_clear();
+//    Robot::display_draw_string("time =");
+//    Robot::display_draw_number(testf, 1, 6, 0);
+//    Robot::display_update(true);
+    Robot::predict();
+    Robot::draw_menu();
     gyro = Robot::gyro;
     robot_x = Robot::robot_x;
     robot_y = Robot::robot_y;
@@ -59,18 +61,20 @@ int main()
     forward_angle = Robot::forward_angle;
     backward_angle = Robot::backward_angle;
     
-    if(Robot::check_button(ENTER_BUTTON))
-    {
-      gaming_state = my_abs(gaming_state - 1);
-      Robot::control_led(0, OFF);
-    }
+    gaming_state = Robot::_game_state;
+    
+//    if(Robot::check_button(ENTER_BUTTON))
+//    {
+//      gaming_state = my_abs(gaming_state - 1);
+//      Robot::control_led(0, OFF);
+//    }
     
     if(gaming_state == 0)
     {
       Robot::set_blinking(3, 0);
       Robot::motors_on_off(OFF);
-      if(Robot::check_button(UP_BUTTON)) Robot::change_side();
-      if(Robot::check_button(DOWN_BUTTON)) Robot::callibrate_gyro();
+      //if(Robot::check_button(UP_BUTTON)) Robot::change_side();
+      //if(Robot::check_button(DOWN_BUTTON)) Robot::callibrate_gyro();
       
       Robot::moveRobot(move_angle, 0);
       Robot::control_led(3, my_abs(gyro) < 5);
@@ -78,7 +82,7 @@ int main()
     }
     else if(gaming_state == 1)
     {
-      Robot::motors_on_off(ON);
+      Robot::motors_on_off(OFF);
       Robot::set_blinking(3, 200);
       if(role == 1) // atacker
       {
@@ -127,7 +131,7 @@ int main()
       {
         if(/* not prediction, standart defend mode*/ false)
         {
-          Robot::motors_on_off(ON);
+          Robot::motors_on_off(OFF);
           const int defender_y0 = 40;
           int max_defender_x[2] = {-30, 30};
           static float k_error = 1.85;//3.375

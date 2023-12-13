@@ -989,15 +989,15 @@ const unsigned char bitmaps[] =
 	0x00, //      
 	0x00, //      
 	0x00, //      
-	0x00, //      
-	0x78, //  ####
+	0x78, //      
+	0x88, //  ####
 	0x88, // #   #
 	0x88, // #   #
 	0x88, // #   #
-	0x88, // #   #
-	0x78, //  ####
-	0x08, //     #
-	0xF0, // #### 
+	0x78, // #   #
+	0x08, //  ####
+	0xF0, //     #
+	0x00, // #### 
 
 	// @876 'h' (5 pixels wide)
 	0x00, //      
@@ -1590,7 +1590,7 @@ void printTml(SSD1306& display, T x, int next = 3, int column = 0, int row = 0)
 {	
 	char *ptr = toPrint(x, next);
 	
-	drawString(display, ptr, row, column);
+	drawString(display, ptr, column, row);
 	
 	delete ptr;
 }
