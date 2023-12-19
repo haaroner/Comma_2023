@@ -48,6 +48,7 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _blue_first_receive = false;
   _first_receive = false;
   _length_between_gates = 229; //(234,8)
+  _ball_d_timer = 0;
 }
 void camera::getData()
 {
@@ -210,11 +211,14 @@ void camera::calculate_pos(int16_t angle, bool side)
       
       _ball_abs_x = _x + _ball_loc_x;
       _ball_abs_y = _y + _ball_loc_y;
-      
+    }
+    if(time_service::getCurTime() - _ball_d_timer > 100)
+    {
       _dbx = _ball_abs_x - _old_x;
-      _dby = _ball_abs_y - _old_y;
+      _dby = _old_y - _ball_abs_y;
       _old_x = _ball_abs_x;
       _old_y = _ball_abs_y;
+      _ball_d_timer = time_service::getCurTime();
     }
     _received = false;
   }

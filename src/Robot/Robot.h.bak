@@ -85,7 +85,7 @@ namespace Robot
   
   int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
-  _dS = 0, _x1b = 0, _y1b = 0;
+  _dS = 0, _x1b = 0, _y1b = 0, _defender_predicted_x = 0, _defender_predicted_y = 0;
   
   double _dxb = 0, _dyb = 0;
   
@@ -94,7 +94,7 @@ namespace Robot
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  bool side = 1, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
+  bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
   init_image = true, _game_state = 0, _callibrated = 0;
   
@@ -224,7 +224,7 @@ namespace Robot
       display_data("Robot XY", 9, robot_x, 1, 0, 1);
       display_draw_number(robot_y, 1, 12, 1);
       
-      //display.drawLine(10, 40, 0, 10);
+      display.drawLine(64, 40, constrain(128, 0, _x1b + 64), 64);
     }
     else
     {
@@ -256,6 +256,8 @@ namespace Robot
         else
           display_draw_string("Side  Blue", 0, 1);
         display_draw_string("RUN", 0, 2);
+        display_data("Robot XY", 9, robot_x, 1, 0, 3);
+        display_draw_number(robot_y, 1, 12, 3);
         display_draw_string("Test data", 0, 4);
       }
       else if(menu_level == 11)
@@ -274,6 +276,7 @@ namespace Robot
         display_draw_string("...", 0, 0);
         display_data("Ball abs XY", 11, ball_abs_x, 1, 0, 1);
         display_draw_number(ball_abs_y, 1, 14, 1);
+        display_data("Predicted_x", 11, _x1b, 1, 0, 2);
       }
       display_draw_string("<", 17, select_arrow_y);
     }
@@ -338,8 +341,8 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 15) move_speed = 0;
-    else if(_speed == -1) move_speed = point_distance;
+    if(_speed == 0 || point_distance < 5) move_speed = 0;
+    else if(_speed == -1) move_speed = point_distance * 1.25;
     else move_speed = _speed;
     
     moveRobotAbs(move_angle, move_speed);
@@ -361,12 +364,25 @@ namespace Robot
   void predict()
   {
    _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2));
-   _alpha = atan2(_dxb, _dyb * -1);
-   
-   if(my_abs(_alpha) < 90 && _dS > 20)
+   _alpha = atan2(_dxb, _dyb);
+    
+   if(_dS > 15 && _dyb > 0)
    {
-     _y1b = ball_abs_y - 30;
+     _y1b = ball_abs_y - 40;
      _x1b = tan(_alpha) * _y1b;
+     if(my_abs(_x1b + ball_abs_x) < 40)
+     {
+      _defender_predicted_x = (_x1b + ball_abs_x) * 1.2;
+      _defender_predicted_y = 40;
+     }
+   }
+   else
+   {
+    if(my_abs(ball_abs_x) < 40)
+    {
+      _defender_predicted_x = ball_abs_x;
+      _defender_predicted_y = 40;
+    }
    }
    
   }

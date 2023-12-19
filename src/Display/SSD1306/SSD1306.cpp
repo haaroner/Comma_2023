@@ -611,7 +611,7 @@ void SSD1306::drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
     for(int i = 0; i < my_abs(dX); i++)
     {
       x3 = x2 - i * (dX / my_abs(dX));
-      y3 = y1 + x3 * tan(alpha) * -1;
+      y3 = my_abs(y1 + x3 * tan(alpha));
       drawPixel(int(x3), int(y3), WHITE);
     }
   }
@@ -619,7 +619,7 @@ void SSD1306::drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
   {
     for(int i = 0; i < my_abs(dY); i++)
     {
-      y3 = y1 + i * (dY / my_abs(dY));//x3 * tan(alpha) * -1;
+      y3 = my_abs(y1 + i * (dY / my_abs(dY)));//x3 * tan(alpha) * -1;
       x3 = x1 + y3 / tan(alpha);
       
       drawPixel(int(x3), int(y3), WHITE);

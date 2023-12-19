@@ -82,7 +82,7 @@ int main()
     }
     else if(gaming_state == 1)
     {
-      Robot::motors_on_off(OFF);
+      Robot::motors_on_off(ON);
       Robot::set_blinking(3, 200);
       if(role == 1) // atacker
       {
@@ -163,7 +163,8 @@ int main()
         }
         else if(/*prediction*/true)
         {
-          Robot::moveToPoint(ball_abs_x, ball_abs_y - 20, -1);
+          //if(my_abs(Robot::_defender_predicted_x) < 30)
+          Robot::moveToPoint(Robot::_defender_predicted_x, 40, -1);
         }
         Robot::setAngle(0, 20);
       }

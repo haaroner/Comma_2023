@@ -197,7 +197,7 @@ void camera::calculate_pos(int16_t angle, bool side)
     }
     
     _x = int(ceil(double(_x))) * -1;
-    _y = int(ceil(double(_y)));
+    _y = int(ceil(double(_y))); 
     
     if(_ball_is_seen)
     {
@@ -211,15 +211,14 @@ void camera::calculate_pos(int16_t angle, bool side)
       
       _ball_abs_x = _x + _ball_loc_x;
       _ball_abs_y = _y + _ball_loc_y;
-      
-      if(time_service::getCurTime() - _ball_d_timer > 100)
-      {
-        _dbx = _ball_abs_x - _old_x;
-        _dby = _ball_abs_y - _old_y;
-        _old_x = _ball_abs_x;
-        _old_y = _ball_abs_y;
-        _ball_d_timer = time_service::getCurTime();
-      }
+    }
+    if(time_service::getCurTime() - _ball_d_timer > 100)
+    {
+      _dbx = _ball_abs_x - _old_x;
+      _dby = _old_y - _ball_abs_y;
+      _old_x = _ball_abs_x;
+      _old_y = _ball_abs_y;
+      _ball_d_timer = time_service::getCurTime();
     }
     _received = false;
   }
