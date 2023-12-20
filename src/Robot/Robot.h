@@ -81,7 +81,8 @@ namespace Robot
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
-  ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle;
+  ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle,
+  moving_point[4] = {0, 0, 0, 0};
   
   int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
@@ -96,7 +97,7 @@ namespace Robot
   
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
-  init_image = true, _game_state = 0, _callibrated = 0;
+  init_image = true, _game_state = 0, _callibrated = 0, moving_to_point = false;
   
   void init_robot(uint8_t role)
   { 
@@ -336,8 +337,12 @@ namespace Robot
   
   bool moveToPoint(int32_t _x, int32_t _y, int16_t _speed)
   {
-    move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
-    point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
+    moving_point[0] = _x;
+    moving_point[1] = _y;
+    moving_point[2] = 0; //choosing angle will be added in the future
+    moving_point[3] = _speed;
+    //move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
+    //point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
@@ -439,7 +444,20 @@ namespace Robot
     }
     
     if(motors_state)
+    {
+      if(moving_to_point)
+      {
+        move_angle = get_angle_to_point(robot_x, robot_y, moving_point[0], moving_point[1]);
+        point_distance = get_distance_to_point(robot_x, robot_y, moving_point[0], moving_point[1]);
+        // -1 - speed from reg
+        // 0 - turn to point
+        // 1 - standart speed
+        if(moving_point[3] == 0 || point_distance < 5) move_speed = 0;
+        else if(moving_point[3] == -1) move_speed = point_distance * 1.25;
+        else move_speed = moving_point[3];
+      }
       motors.moveRobot(move_speed, max_angular_speed, move_angle, angular_speed, time, 0);
+    }
     else
       motors.disableMotors();
   }

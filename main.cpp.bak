@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include "SSD1306.h"
 #include "font.h"
-
+volatile uint32_t _test_flashka = 0;
 volatile int16_t robot_x = 0, robot_y = 0, gyro = 0, forward_angle = 0, backward_angle = 0,
 a = 0, b = 0, c, move_angle, ball_angle, defence_angle, start_attack_point[2], point[2], error_angle;
 
@@ -29,8 +29,9 @@ int main()
   Robot::rotateRobot(0, 15);
   role = 2;
   Queue points_queue;
-  
-  
+  write_to_FLASH(1);
+  time_service::delay_ms(1);
+  _test_flashka = read_from_FLASH();
   while(true)
   {
     testf = time_service::getCurTime() - d;
@@ -40,7 +41,9 @@ int main()
 //    Robot::display_draw_number(testf, 1, 6, 0);
 //    Robot::display_update(true);
     Robot::predict();
-    Robot::draw_menu();
+    Robot::display_clear();
+    Robot::display_draw_number(_test_flashka, 1, 0, 0);
+    Robot::display_update();
     gyro = Robot::gyro;
     robot_x = Robot::robot_x;
     robot_y = Robot::robot_y;
@@ -164,7 +167,7 @@ int main()
         else if(/*prediction*/true)
         {
           //if(my_abs(Robot::_defender_predicted_x) < 30)
-          Robot::moveToPoint(Robot::_defender_predicted_x, Robot::_defender_predicted_y, -1);
+          Robot::moveToPoint(Robot::_defender_predicted_x, 40, -1);
         }
         Robot::setAngle(0, 20);
       }

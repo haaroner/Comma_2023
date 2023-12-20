@@ -71,6 +71,8 @@
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\dma\dma.h
 .\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\flashka\flashka.h
+.\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\voltmeter\voltmeter.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\mpu9250_spi\IMU_SPI.h

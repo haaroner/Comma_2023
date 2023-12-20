@@ -857,6 +857,16 @@
               <FileType>1</FileType>
               <FilePath>.\src\spl4\src\stm32f4xx_dma.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_flash_ramfunc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\spl4\src\stm32f4xx_flash_ramfunc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -891,6 +901,21 @@
               <FileName>SSD1306.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\SSD1306\SSD1306.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\font.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Flashka</GroupName>
+          <Files>
+            <File>
+              <FileName>flashka.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\flashka\flashka.h</FilePath>
             </File>
           </Files>
         </Group>

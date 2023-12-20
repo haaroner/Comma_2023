@@ -14,6 +14,7 @@
 #include "robot_math.h"
 #include "adc.h"
 #include "dma.h"
+#include "flashka.h"
 #include "voltmeter.h"
 #include "IMU_SPI.h"
 #include "Timers.h"

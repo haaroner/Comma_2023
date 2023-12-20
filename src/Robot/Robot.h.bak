@@ -372,7 +372,7 @@ namespace Robot
      _x1b = tan(_alpha) * _y1b;
      if(my_abs(_x1b + ball_abs_x) < 40)
      {
-      _defender_predicted_x = (_x1b + ball_abs_x) * 1.2;
+      _defender_predicted_x = _x1b * 1.2 + ball_abs_x;
       _defender_predicted_y = 40;
      }
    }
