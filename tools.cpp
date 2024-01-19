@@ -24,6 +24,28 @@ int lead_to_borders(int max, int min, int _num)
   return _num;
 }
 
+int _my_abs(int _num)
+{
+  return int(abs(double(_num)));
+}
+
+bool is_in_the_angle_borders(int max, int min, int _num)
+{
+  if(max < min) 
+  {
+    int _sub = max;
+    max = min;
+    min = _sub;
+  }
+  
+  int _maxD = _my_abs(lead_to_degree_borders(max - min));
+  
+  if(_my_abs(lead_to_degree_borders(max - _num)) < _maxD && _my_abs(lead_to_degree_borders(min - _num)) < _maxD)
+    return true;
+  else
+    return false;
+}
+
 int constrain(int max, int min, int _num)
 {
   if(_num > max) _num = max;

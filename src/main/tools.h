@@ -1,5 +1,7 @@
 #pragma once
 
+#include "math.h"
+
 #define RAD2DEG	57.2957795130823208767
 #define DEG2RAD	0.01745329251994329576
 
@@ -17,4 +19,6 @@
 
 int lead_to_degree_borders(int _num);
 int lead_to_borders(int max, int min, int _num);
+bool is_in_the_angle_borders(int max, int min, int _num);
 int constrain(int max, int min, int _num);
+

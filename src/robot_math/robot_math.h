@@ -78,10 +78,13 @@ uint16_t get_len_from_sum_of_vectors()
   return len_result;
 }
 
-int16_t get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
+int get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
 {
   _x_result = _point_x - _robot_x;
   _y_result = _point_y - _robot_y;
+  
+  if(_x_result == 0) _x_result = 1;
+  if(_y_result == 0) _y_result = 1;
   
   return atan2(double(_x_result), double(_y_result)) * RAD2DEG;
 }
@@ -90,6 +93,9 @@ int get_distance_to_point(int _a1, int _b1, int _a2, int _b2)
 {
   _x_result = _a2 - _a1;
   _y_result = _b2 - _b1;
+  
+  if(_x_result == 0) _x_result = 1;
+  if(_y_result == 0) _y_result = 1;
   
   return sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
 }

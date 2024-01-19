@@ -1,3 +1,5 @@
+#pragma once
+
 #include "project_config.h"
 
 #define STANDART_PAGE_WRITING_ADDRESS 0x080E0000

@@ -2,8 +2,6 @@
 
 #define STANDART_PAGE_WRITING_ADDRESS 0x080E0000
 
-bool _locked = true;
-
 void write_to_FLASH(uint8_t _data)
 {
   FLASH_Unlock();

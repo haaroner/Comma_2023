@@ -3,13 +3,17 @@
 Adc::Adc(ADC_TypeDef* ADCx,
 				 uint8_t numberOfChannels,
           uint8_t curChannel,          
-				 uint32_t RCC_APB2Periph_ADCx,
 				 pin &sig):m_sig(sig)
 {
 	m_numberOfChannels = numberOfChannels;
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
-	m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADCx;
+  if(ADCx == ADC1)
+    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC1;
+  else if(ADCx == ADC2)
+    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC2;
+  else if(ADCx == ADC3)
+    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC3;
   cur = 1;
 }
 
@@ -58,7 +62,7 @@ void Adc::setChannel()
     for(uint8_t i = 1; i<=m_numberOfChannels; i++)
     {
 	//ADC_EOCOnEachRegularChannelCmd(m_ADCx, ENABLE);
-			ADC_RegularChannelConfig(m_ADCx, channel[i], i, ADC_SampleTime_480Cycles);
+			ADC_RegularChannelConfig(m_ADCx, channel[i], i, ADC_SampleTime_56Cycles);
 //	ADC_RegularChannelConfig(ADC3, , 2, ADC_SampleTime_56Cycles);
     }
 }
@@ -66,6 +70,11 @@ void Adc::setChannel()
 ADC_TypeDef* Adc::getAdc()
 {
 	return m_ADCx;
+}
+
+uint8_t Adc::getChannel()
+{
+  return m_curChannel;
 }
 
 void Adc::adcDmaInit()

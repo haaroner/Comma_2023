@@ -1,7 +1,12 @@
 #include "dma.h"
 
 Dma::Dma(uint32_t RCC_AHB1Periph_DMAx,Adc &adcx):m_adcx(adcx){m_RCC_AHB1Periph_DMAx = RCC_AHB1Periph_DMAx;}
-
+Dma::Dma(Adc &adcx):m_adcx(adcx)
+{
+  _ADCx = m_adcx.getAdc();
+  _adc_channel = m_adcx.getChannel();
+  m_RCC_AHB1Periph_DMAx = RCC_AHB1Periph_DMA2;
+}
 void Dma::adcInitInDma(uint8_t _num_of_adc_cycles)
 {
 	m_adcx.adcInit(_num_of_adc_cycles);
@@ -32,6 +37,23 @@ void Dma::adcInitInDma(uint8_t _num_of_adc_cycles)
 	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
 	DMA_Init(dmax_streamx, &DMA_InitStructure);
 	DMA_Cmd(dmax_streamx, ENABLE);
+}
+
+void Dma::fullDmaInitForAdc()
+{
+  DMA_Stream_TypeDef* _dmax_streamx;
+  if(_ADCx == ADC1) _dmax_streamx = DMA2_Stream0;
+  else if(_ADCx == ADC2) _dmax_streamx = DMA2_Stream2;
+  else if(_ADCx == ADC3) _dmax_streamx = DMA2_Stream1;
+  
+  uint32_t _dma_channelx;
+  if(_ADCx == ADC1) _dma_channelx = DMA_Channel_0;
+  else if(_ADCx == ADC2) _dma_channelx = DMA_Channel_1;
+  else if(_ADCx == ADC3) _dma_channelx = DMA_Channel_2;
+  
+  m_adcx.sendMeChannel(15);//m_adcx.getChannel());
+  dmaInit(_dmax_streamx, _dma_channelx, 1);
+  adcInitInDma(5);
 }
 
 uint16_t Dma::dataReturn(uint8_t n)

@@ -6,7 +6,7 @@ class Dma
 	public:
 		Dma(uint32_t RCC_AHB1Periph_DMAx, Adc &adcx);
 		void dmaInit(DMA_Stream_TypeDef* dmax_streamx, uint32_t dma_channelx, uint32_t bufferSize);
-		void adcInitInDma();
+		void adcInitInDma(uint8_t _num_of_adc_cycles);
 		uint16_t dataReturn(uint8_t n);
 	private:
 		Adc m_adcx;

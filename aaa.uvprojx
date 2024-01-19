@@ -597,6 +597,11 @@
               <FileType>8</FileType>
               <FilePath>.\src\dma\dma.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ADC_DMA.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\dma\ADC_DMA.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
