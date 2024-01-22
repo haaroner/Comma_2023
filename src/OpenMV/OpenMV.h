@@ -31,6 +31,7 @@ class camera
     int16_t get_dbx();
     int get_dby();
     bool is_first_data_received();
+    bool is_ball_seen(uint16_t _dT = 1000);
 
 	private:
 		int8_t sign;
@@ -73,7 +74,7 @@ class camera
 		uint8_t data[8];
 		uint8_t crc8(uint8_t* data, int len);
     uint8_t _state;
-    uint32_t _ball_d_timer;
+    uint32_t _ball_d_timer, _ball_timer;
     
     uint8_t _length_between_gates;
 };

@@ -80,7 +80,7 @@ namespace Robot
   int a = 0;
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
-    init_timer = 0, display_timer = 0, voltage = 0;
+    init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, old_time = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -101,7 +101,8 @@ namespace Robot
   
   bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
-  init_image = true, _game_state = 0, _callibrated = 0, moving_to_point = false;
+  init_image = true, _game_state = 0, _callibrated = 0, moving_to_point = false,
+  is_ball_seen = 0;
   
   void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
   { 
@@ -214,7 +215,7 @@ namespace Robot
   inline void display_update(bool auto_clear = true)
   {
     if(_game_state == 0) display_delay_update_time = 30;
-    else display_delay_update_time = 250;
+    else display_delay_update_time = 30;
     if(time_service::getCurTime() - init_timer > 1000 && (time_service::getCurTime() - display_timer) > display_delay_update_time) 
     {
       if(init_image) display.clear();//to clear before first .display()
@@ -244,7 +245,7 @@ namespace Robot
       display_draw_number(lead_to_degree_borders(forward_angle - gyro), 1, 14, 0);
       display_data("Robot XY", 9, robot_x, 1, 0, 1);
       display_draw_number(robot_y, 1, 12, 1);
-      display_data("def_data", 8, display_data_1, 1, 0, 2);
+      display_data("def_data", 8, display_data_1, 2, 0, 2);
       display_draw_number(display_data_2, 1, 14, 2);
       
       display.drawLine(64, 40, constrain(128, 0, _x1b + 64), 64);
@@ -371,8 +372,8 @@ namespace Robot
     moving_point[1] = _y;
     moving_point[2] = 0; //choosing angle will be added in the future
     moving_point[3] = _speed;
-    //move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
-    //point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
+    move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
+    point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
@@ -411,20 +412,20 @@ namespace Robot
       _defender_predicted_y = 40;
      }
    }
-   else
-   {
-    if(my_abs(ball_abs_x) < 40)
-    {
-      _defender_predicted_x = ball_abs_x;
-      _defender_predicted_y = 40;
-    }
-   }
-   
+  }
+  
+  bool is_ball_seen_T(uint16_t _T)
+  {
+    return camera.is_ball_seen(_T);
   }
   
   void update()
   {
+    old_time = time;
+    draw_menu();
     time = time_service::getCurTime();
+    loop_delay = time - old_time;
+    
     mpu.update();
     gyro = lead_to_degree_borders(mpu.getAngle());
     
@@ -453,6 +454,8 @@ namespace Robot
     _dxb = camera.get_dbx();
     _dyb = camera.get_dby();
     
+    is_ball_seen = camera.is_ball_seen();
+    
     forward_angle = camera.get_forward_angle();
     forward_distance = camera.get_forward_distance();
     backward_angle = camera.get_backward_angle();
@@ -460,7 +463,7 @@ namespace Robot
     
     voltage = test_dma.dataReturn(0);
     
-    draw_menu();
+    //draw_menu();
     
     check_buttons();
     if(time - blinking_timer > blinking_durations)
@@ -494,5 +497,6 @@ namespace Robot
     }
     else
       motors.disableMotors();
+    
   }
 }

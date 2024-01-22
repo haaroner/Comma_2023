@@ -49,6 +49,7 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _first_receive = false;
   _length_between_gates = 229; //(234,8)
   _ball_d_timer = 0;
+  _ball_timer = 2000;
 }
 void camera::getData()
 {
@@ -91,6 +92,7 @@ void camera::getData()
         {
           _ball_angle = data[4] * 4;
           _ball_distance = data[5] * 4;
+          _ball_timer = time_service::getCurTime();
           _ball_is_seen = true;
         }
         else
@@ -197,7 +199,7 @@ void camera::calculate_pos(int16_t angle, bool side)
     }
     
     _x = int(ceil(double(_x))) * -1;
-    _y = int(ceil(double(_y)));
+    _y = int(ceil(double(_y))); 
     
     if(_ball_is_seen)
     {
@@ -336,4 +338,9 @@ int camera::get_dby()
 bool camera::is_first_data_received()
 {
   return _first_receive;
+}
+
+bool camera::is_ball_seen(uint16_t _dT)
+{
+  return (time_service::getCurTime() - _ball_timer) < _dT;
 }

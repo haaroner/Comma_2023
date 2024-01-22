@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include "SSD1306.h"
 #include "font.h"
-volatile uint32_t _test_flashka = 0;
+volatile uint32_t _test_flashka = 0, defender_angry_ball_movement_timer = 0, time = 0;
 volatile int16_t robot_x = 0, robot_y = 0, gyro = 0, forward_angle = 0, backward_angle = 0,
 a = 0, b = 0, c, move_angle, ball_angle, defence_angle, 
   start_attack_point[2], point[2], error_angle = 0, ball_distance = 0;
@@ -18,8 +18,8 @@ uint8_t gaming_state = 0, role, attacker_state = 0, defender_state = 0, move_spe
 
 volatile int ball_abs_x = 0, ball_abs_y = 0, ball_loc_x = 0,
   ball_loc_y = 0, d, e = 0, ball_abs_angle;
-double testf;
-bool trajectory_started = 0;
+double testf, defender_ball_state = 0;
+bool trajectory_started = 0, defender_angry_ball_movement_enable = 0;
 
 int main()
 {
@@ -40,6 +40,7 @@ int main()
   role = Robot::role;
   while(true)
   {
+    time = time_service::getCurTime();
     testf = time_service::getCurTime() - d;
     d = time_service::getCurTime();
 //    Robot::display_clear();
@@ -180,19 +181,31 @@ int main()
 //        }
         if(true /* test phormula movement*/)
         {
-          const int borderangls[6] = {112, 125, 145, -145, -130, -112};
+          const int borderangls[6] = {112, 125, 145, -142, -130, -112};
+          const int slow_angles[2] = {135, -135};
           const int stop_angles[2] = {120, -120};
-          const int d0[5] = {39, 10, 34, 10, 40};
-          const int side_points[2][2] = {{-27, 23}, {27, 23}};
-          const double defence_k1 = 0.00025, defence_k2 = 1.53, defence_k3 = 1.3;
-          const float kd = 1.5;
+          const int d0[5] = {41, 12, 35, 13, 41};
+          const int minR = 25;
+          const int side_points[2][2] = {{-29, 23}, {27, 23}};
+          const double defence_k1 = 0.000265/*25*/, defence_k2 = 1.53, defence_k3 = 1.3;
+          const float kd = 2.4;
+          const uint8_t defender_whole_max_speed = 77, defender_defence_max_speed = 50, defender_error_max_speed = 50;
+         
           defender_ideal_angle = lead_to_degree_borders(backward_angle + 180);
           defender_local_gate_ball_angle = get_angle_to_point(0, 0, ball_abs_x, ball_abs_y);
-          defender_angle_error = lead_to_degree_borders(defender_local_gate_ball_angle - defender_ideal_angle);
-          if(my_abs(defender_angle_error) > 7) //side vertical line
+          
+          if(my_abs(backward_angle - ball_abs_angle) < 45)
           {
-            if((backward_angle < borderangls[1] && backward_angle > borderangls[0]) ||
-               (backward_angle > borderangls[4] && backward_angle < borderangls[5]))
+            defender_angle_error = lead_to_degree_borders(defender_local_gate_ball_angle - defender_ideal_angle);
+            defender_ball_state = 1;
+          }
+            else 
+            {
+              defender_angle_error = lead_to_degree_borders(ball_abs_angle - defender_ideal_angle);
+              defender_ball_state = 0;
+            }
+            if((backward_angle <= borderangls[1] && backward_angle >= borderangls[0]) ||
+               (backward_angle >= borderangls[4] && backward_angle <= borderangls[5]))
             {
               a = 1;
               if(robot_x > 0) // right side
@@ -225,7 +238,7 @@ int main()
                //move_speed = 14;
               
             }
-            else if(backward_angle > borderangls[2] || backward_angle < borderangls[3]) // central line zone
+            else if(backward_angle >= borderangls[2] || backward_angle <= borderangls[3]) // central line zone
             {
               a = 2;
               if(defender_angle_error > 0)
@@ -287,42 +300,92 @@ int main()
               }
               
               //move_angle = sum_of_vectors(defender_defence_angle, 15, defender_line_angle, 15);
-              move_speed = 14;
+              move_speed = 0;
             }
             else
             {
-              defender_defence_angle = 0;
-              move_speed = 14;
+              defender_line_angle = 0;
+              defender_error_len = 15;
+              defender_defence_len = 0;
             }
-          }
-          else
-            move_speed = 0;
+          if(my_abs(defender_angle_error) < 7) //side vertical line
+            defender_defence_len = 0;
           defender_ball_angle = constrain(80, 0, my_abs(defender_angle_error));
-          defender_ball_distance = constrain(100, 25, ball_distance);     
+          defender_ball_distance = constrain(85, 15, ball_distance);     
           defender_defence_len = defence_k1 * pow(my_abs(defender_ball_angle), defence_k2) * pow(double(130 - defender_ball_distance), defence_k3);
-          //if(a == 3) defender_defence_len = 0;
-          //defender_defence_len = constrain(80, 0, defender_defence_len); 
           
-          move_angle = sum_of_vectors(defender_defence_angle, defender_defence_len, defender_line_angle, defender_error_len);
-          move_speed = get_len_from_sum_of_vectors();
-          move_speed = constrain(65, 0, move_speed);
+          //if(a == 3) defender_defence_len = 0;
+          //defender_defence_len = constrain(80, 0, defender_defence_len);
+
+          if(defender_ball_state == 1 && defender_angle_error > 7)
+          {
+            if(ball_distance > 35)
+             defender_defence_len = constrain(50, 10, defender_defence_len);
+            else
+              defender_defence_len = constrain(30, 10, defender_defence_len);
+          }
+          else if(defender_ball_state == 1) defender_defence_len = constrain(30, 0, defender_defence_len);
+          
+          if(Robot::is_ball_seen && defender_ball_angle > 15)
+            defender_defence_len = constrain(defender_defence_max_speed, 15, defender_defence_len);
+          else
+            defender_defence_len = constrain(defender_defence_max_speed, 0, defender_defence_len);
+          if(Robot::backward_distance <= minR)
+            defender_defence_angle = lead_to_degree_borders(Robot::backward_angle + 180);
+          
+          if((is_in_the_angle_borders(slow_angles[0], 0, backward_angle) && defender_angle_error <= 0) ||
+            (is_in_the_angle_borders(0, slow_angles[1], backward_angle) && defender_angle_error >= 0))
+            defender_defence_len = constrain(35, 0, defender_defence_len);
+          
           if((is_in_the_angle_borders(stop_angles[0], 0, backward_angle) && defender_angle_error <= 0) ||
             (is_in_the_angle_borders(0, stop_angles[1], backward_angle) && defender_angle_error >= 0))
-            move_speed = 0;
+            defender_defence_len = 0;
           
-          if(robot_y > 50)
-          {// TODO: make detour of ball in area (robot_y > 50);
+          if(Robot::is_ball_seen_T(2000) == 0 && my_abs(robot_x) > 10)
+          {
+            if(robot_x > 0)
+              Robot::moveToPoint(10, 37, -1);
+            else
+              Robot::moveToPoint(-10, 37, -1);
+            c = 0;
+            defender_angry_ball_movement_timer = time;
+            defender_angry_ball_movement_enable = 1;
+          }
+          else 
+          {  
+            c = 1;
+            if(Robot::is_ball_seen_T(2000) == 0) defender_defence_len = 0;
+            defender_error_len = constrain(defender_error_max_speed, 0, defender_error_len);
+            move_angle = sum_of_vectors(defender_defence_angle, defender_defence_len, defender_line_angle, defender_error_len);
+            move_speed = get_len_from_sum_of_vectors();
+            move_speed = constrain(defender_whole_max_speed, 0, move_speed);
+            
+            if(time - defender_angry_ball_movement_timer < 1500 && defender_angry_ball_movement_enable)
+            {
+              if(ball_abs_x < -12 && ball_abs_x > -60 && ball_abs_y < 60 && ball_abs_y > 20 && ball_distance > 20)
+              {
+                move_angle = Robot::getAngleToPoint(ball_abs_x, ball_abs_y - 5);
+                move_speed = 95;
+              }
+            }
+            if(ball_distance <= 20 || time - defender_angry_ball_movement_timer > 1500)
+              defender_angry_ball_movement_enable = 0;
+          }
+          
+          //if(robot_y > 50)
+          //{// TODO: make detour of ball in area (robot_y > 50);
            // if(my_abs(lead_to_degree_borders(move_angle - ball_abs_angle)) < 5)
             //{
               
             //}
-          }
+          //}
         }
-        Robot::display_data(defender_local_gate_ball_angle, defender_angle_error);
         Robot::setAngle(0, 20);
-      }
-      Robot::moveRobotAbs(move_angle, move_speed);
+      } 
+      if(Robot::is_ball_seen_T(2000) == 1 || my_abs(robot_x) < 10)
+        Robot::moveRobotAbs(move_angle, move_speed);
     }
+    Robot::display_data(c);
     Robot::update();
   }
 }

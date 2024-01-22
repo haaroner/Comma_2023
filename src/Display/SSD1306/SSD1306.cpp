@@ -183,7 +183,8 @@ void SSD1306::ssd1306_command(uint8_t c) {
 
   _cs.setBit();
   _dc.resetBit();
-  time_service::delay_ms(1);//????
+  //time_service::delay_ms(1);//????
+  for(int i = 0; i < 35; i++);  
   _cs.resetBit();
   
   fastSPIwrite(c);
