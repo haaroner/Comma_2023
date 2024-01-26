@@ -22,3 +22,15 @@ int lead_to_borders(int max, int min, int _num);
 bool is_in_the_angle_borders(int max, int min, int _num);
 int constrain(int max, int min, int _num);
 
+struct point
+{
+  int x;
+  int y;
+};
+
+struct polar_vector
+{
+  int angle;
+  int length;
+};
+

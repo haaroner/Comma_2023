@@ -2,7 +2,8 @@
 #include "Settings.h"
 #include "SSD1306.h"
 #include "font.h"
-volatile uint32_t _test_flashka = 0, defender_angry_ball_movement_timer = 0, time = 0;
+volatile uint32_t _test_flashka = 0, defender_angry_ball_movement_timer = 0, 
+  time = 0, defender_angry_state_start_timer = 0;
 volatile int16_t robot_x = 0, robot_y = 0, gyro = 0, forward_angle = 0, backward_angle = 0,
 a = 0, b = 0, c, move_angle, ball_angle, defence_angle, 
   start_attack_point[2], point[2], error_angle = 0, ball_distance = 0;
@@ -38,6 +39,10 @@ int main()
   time_service::delay_ms(1);
   //_test_flashka = read_from_FLASH();
   role = Robot::role;
+  
+  struct point point;
+  struct polar_vector vector;
+  
   while(true)
   {
     time = time_service::getCurTime();
@@ -192,7 +197,8 @@ int main()
           const uint8_t defender_whole_max_speed = 77, defender_defence_max_speed = 50, defender_error_max_speed = 50;
          
           defender_ideal_angle = lead_to_degree_borders(backward_angle + 180);
-          defender_local_gate_ball_angle = get_angle_to_point(0, 0, ball_abs_x, ball_abs_y);
+          vector = get_angle_to_point(0, 0, ball_abs_x, ball_abs_y);
+          defender_local_gate_ball_angle = vector.angle;
           
           if(my_abs(backward_angle - ball_abs_angle) < 45)
           {
@@ -207,6 +213,7 @@ int main()
             if((backward_angle <= borderangls[1] && backward_angle >= borderangls[0]) ||
                (backward_angle >= borderangls[4] && backward_angle <= borderangls[5]))
             {
+              defender_state = 1;
               a = 1;
               if(robot_x > 0) // right side
               {
@@ -240,6 +247,7 @@ int main()
             }
             else if(backward_angle >= borderangls[2] || backward_angle <= borderangls[3]) // central line zone
             {
+              defender_state = 12;
               a = 2;
               if(defender_angle_error > 0)
                 defender_defence_angle = 90;
@@ -257,6 +265,7 @@ int main()
             else if((backward_angle > borderangls[3] && backward_angle < borderangls[4]) ||
                (backward_angle > borderangls[1] && backward_angle < borderangls[2])) // quarter ring side zone
             { 
+              defender_state = 1;
               a = 3;
               if(robot_x > 0)
               {
@@ -304,6 +313,7 @@ int main()
             }
             else
             {
+              defender_state = 0;
               defender_line_angle = 0;
               defender_error_len = 15;
               defender_defence_len = 0;
@@ -343,6 +353,7 @@ int main()
           
           if(Robot::is_ball_seen_T(2000) == 0 && my_abs(robot_x) > 10)
           {
+            defender_state = 2;
             if(robot_x > 0)
               Robot::moveToPoint(10, 37, -1);
             else
@@ -360,15 +371,30 @@ int main()
             move_speed = get_len_from_sum_of_vectors();
             move_speed = constrain(defender_whole_max_speed, 0, move_speed);
             
+            if(my_abs(backward_angle) > 130 && Robot::predict())
+            {
+              move_angle = Robot::getAngleToPoint(Robot::_defender_predicted_x, Robot::_defender_predicted_y);
+              if(Robot::getDistanceToPoint(Robot::_defender_predicted_x, Robot::_defender_predicted_y) > 7)
+                move_speed = 80;
+              else
+                move_speed = 0;
+            }
+            
             if(time - defender_angry_ball_movement_timer < 1500 && defender_angry_ball_movement_enable)
             {
-              if(ball_abs_x < -12 && ball_abs_x > -60 && ball_abs_y < 60 && ball_abs_y > 20 && ball_distance > 20)
+              if(((ball_abs_x < -10 && ball_abs_x > -60 && ball_abs_y < 60 && 
+                ball_abs_y > 15 && ball_distance > 15) ||
+              (ball_abs_x > 10 && ball_abs_x < 60 && ball_abs_y < 60 && 
+                ball_abs_y > 15 && ball_distance > 15)) && 
+              time - defender_angry_state_start_timer > 1500)
               {
                 move_angle = Robot::getAngleToPoint(ball_abs_x, ball_abs_y - 5);
                 move_speed = 95;
               }
+              if(my_abs(defender_angle_error) < 15)
+                move_speed = 0;
             }
-            if(ball_distance <= 20 || time - defender_angry_ball_movement_timer > 1500)
+            if((ball_distance <= 15 || time - defender_angry_ball_movement_timer > 1500) || my_abs(ball_abs_angle) > 160)
               defender_angry_ball_movement_enable = 0;
           }
           
@@ -385,7 +411,7 @@ int main()
       if(Robot::is_ball_seen_T(2000) == 1 || my_abs(robot_x) < 10)
         Robot::moveRobotAbs(move_angle, move_speed);
     }
-    Robot::display_data(c);
+    Robot::display_data(Robot::_dS);
     Robot::update();
   }
 }

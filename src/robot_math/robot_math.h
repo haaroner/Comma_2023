@@ -1,5 +1,6 @@
 #pragma once
 
+#include "tools.h"
 #include "project_config.h"
 #define PI 3.1416
 #define ec 2.7182
@@ -78,7 +79,7 @@ uint16_t get_len_from_sum_of_vectors()
   return len_result;
 }
 
-int get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
+polar_vector get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
 {
   _x_result = _point_x - _robot_x;
   _y_result = _point_y - _robot_y;
@@ -86,19 +87,37 @@ int get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int
   if(_x_result == 0) _x_result = 1;
   if(_y_result == 0) _y_result = 1;
   
-  return atan2(double(_x_result), double(_y_result)) * RAD2DEG;
+  struct polar_vector result;
+  result.angle = atan2(double(_x_result), double(_y_result)) * RAD2DEG;
+  result.length = sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
+  
+  return result;
 }
 
-int get_distance_to_point(int _a1, int _b1, int _a2, int _b2)
+polar_vector get_angle_to_point(point point1, point point2)
 {
-  _x_result = _a2 - _a1;
-  _y_result = _b2 - _b1;
+  _x_result = point2.x - point1.x;
+  _y_result = point2.y - point1.y;
   
   if(_x_result == 0) _x_result = 1;
   if(_y_result == 0) _y_result = 1;
   
-  return sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
+  struct polar_vector result;
+  result.angle = atan2(double(_x_result), double(_y_result)) * RAD2DEG;
+  result.length = sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
+  
+  return result;
 }
+
+//int get_distance_to_point(int _a1, int _b1, int _a2, int _b2)
+//{
+//  _x_result = _a2 - _a1;
+//  _y_result = _b2 - _b1;
+//  
+//  if(_x_result == 0) _x_result = 1;
+//  if(_y_result == 0) _y_result = 1;
+
+//}
 
 void calculate_angle_near_side_out(int16_t robot_x, int16_t angle, double speed, int16_t x_min, int16_t x_max)
 {
@@ -116,4 +135,12 @@ void calculate_angle_near_side_out(int16_t robot_x, int16_t angle, double speed,
   ang_result = atan2(double(x1), double(y1)) * 57.3;
   len_result = sqrt(double(x1 * x1 + y1 * y1));
 
+}
+
+point test()
+{
+  struct point test;
+  test.x = 0;
+  test.y = 0;
+  return test;
 }

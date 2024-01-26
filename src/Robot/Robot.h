@@ -80,7 +80,8 @@ namespace Robot
   int a = 0;
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
-    init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, old_time = 0;
+    init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
+    old_time = 0, prediction_timer = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -103,6 +104,8 @@ namespace Robot
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
   init_image = true, _game_state = 0, _callibrated = 0, moving_to_point = false,
   is_ball_seen = 0;
+  
+  struct point robot_position, robot_move, _sub_point;
   
   void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
   { 
@@ -358,22 +361,27 @@ namespace Robot
   
   int getAngleToPoint(int _x, int _y)
   {
-    return get_angle_to_point(robot_x, robot_y, _x, _y);
+    return get_angle_to_point(robot_x, robot_y, _x, _y).angle;
   }
   
   int getDistanceToPoint(int _x, int _y)
   {
-    return get_distance_to_point(robot_x, robot_y, _x, _y);
+    return get_angle_to_point(robot_x, robot_y, _x, _y).length;
   }
   
-  bool moveToPoint(int32_t _x, int32_t _y, int16_t _speed)
+  polar_vector get_data_of_point(point _data)
   {
-    moving_point[0] = _x;
-    moving_point[1] = _y;
+    return get_angle_to_point(robot_x, robot_y, _data.x, _data.y);
+  }
+  
+  bool moveToPoint(point _point, int16_t _speed)
+  {
+    moving_point[0] = _point.x;
+    moving_point[1] = _point.y;
     moving_point[2] = 0; //choosing angle will be added in the future
     moving_point[3] = _speed;
-    move_angle = get_angle_to_point(robot_x, robot_y, _x, _y);
-    point_distance = get_distance_to_point(robot_x, robot_y, _x, _y);
+    move_angle = get_angle_to_point(robot_position, _point).angle;
+    point_distance = get_angle_to_point(robot_position, _point).length;
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
@@ -385,6 +393,27 @@ namespace Robot
     
     return point_distance < 20;
   }
+  
+  bool moveToPoint(int _x, int _y, int16_t _speed)
+  {
+    _sub_point.x = _x;
+    _sub_point.y = _y;
+    moving_point[2] = 0; //choosing angle will be added in the future
+    moving_point[3] = _speed;
+    move_angle = get_angle_to_point(robot_position, _sub_point).angle;
+    point_distance = get_angle_to_point(robot_position, _sub_point).length;
+    // -1 - speed from reg
+    // 0 - turn to point
+    // 1 - standart speed
+    if(_speed == 0 || point_distance < 5) move_speed = 0;
+    else if(_speed == -1) move_speed = point_distance * 1.25;
+    else move_speed = _speed;
+    
+    moveRobotAbs(move_angle, move_speed);
+    
+    return point_distance < 20;
+  }
+  
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
   {
     angular_speed = _angular_speed;
@@ -397,21 +426,47 @@ namespace Robot
     max_angular_speed = _max_angular_speed;
   }
   
-  void predict()
+  bool predict()
   {
-   _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2));
+   _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2)) / 0.1f;
    _alpha = atan2(_dxb, _dyb);
     
-   if(_dS > 15 && _dyb > 0)
+   if(_dS > 90 && _dyb > 5)
    {
-     _y1b = ball_abs_y - 40;
+     _y1b = ball_abs_y - 37;
      _x1b = tan(_alpha) * _y1b;
-     if(my_abs(_x1b + ball_abs_x) < 40)
+     if(my_abs(_x1b + camera.get_old_b_x()) < 50)
      {
-      _defender_predicted_x = _x1b * 1.2 + ball_abs_x;
-      _defender_predicted_y = 40;
+      _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+      _defender_predicted_y = 37;
+      prediction_timer = time_service::getCurTime();
+      return true;
+     }
+     else
+     {
+       if(time - prediction_timer < 1000)
+       {
+         _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+         _defender_predicted_y = 37;
+         return true;
+       }
      }
    }
+   else
+   {
+     if(time - prediction_timer < 1000)
+     {
+       _y1b = ball_abs_y - 37;
+       _x1b = tan(_alpha) * _y1b;
+       if(my_abs(_x1b + camera.get_old_b_x()) < 50)
+       {
+        _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+        _defender_predicted_y = 37;
+        return true;
+       }
+     }
+   }
+   return false;
   }
   
   bool is_ball_seen_T(uint16_t _T)
@@ -437,6 +492,9 @@ namespace Robot
     
     robot_x = camera.get_x();
     robot_y = camera.get_y();
+    
+    robot_position.x = robot_x;
+    robot_position.y = robot_y;
     
     ball_loc_angle = camera.get_ball_angle();
     ball_abs_angle = camera.get_abs_ball_angle();
@@ -482,17 +540,6 @@ namespace Robot
     
     if(motors_state)
     {
-      if(moving_to_point)
-      {
-        move_angle = get_angle_to_point(robot_x, robot_y, moving_point[0], moving_point[1]);
-        point_distance = get_distance_to_point(robot_x, robot_y, moving_point[0], moving_point[1]);
-        // -1 - speed from reg
-        // 0 - turn to point
-        // 1 - standart speed
-        if(moving_point[3] == 0 || point_distance < 5) move_speed = 0;
-        else if(moving_point[3] == -1) move_speed = point_distance * 1.25;
-        else move_speed = moving_point[3];
-      }
       motors.moveRobot(move_speed, max_angular_speed, move_angle, angular_speed, time, 0);
     }
     else
