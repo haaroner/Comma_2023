@@ -75,6 +75,11 @@ class camera
 		uint8_t crc8(uint8_t* data, int len);
     uint8_t _state;
     uint32_t _ball_d_timer, _ball_timer;
+    float _ball_k;
+    float _ball_x_soft, _ball_y_soft;
+    
+    float _robot_k;
+    float _robot_x_soft, _robot_y_soft;
     
     uint8_t _length_between_gates;
 };

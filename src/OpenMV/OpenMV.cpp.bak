@@ -50,6 +50,14 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _length_between_gates = 229; //(234,8)
   _ball_d_timer = 0;
   _ball_timer = 2000;
+  _ball_k = 0.95;
+  _ball_x_soft = 0;
+  _ball_y_soft = 20;
+  
+  _robot_k = 0.95;
+  _robot_x_soft = 0;
+  _robot_y_soft = 90;
+  
 }
 void camera::getData()
 {
@@ -198,8 +206,11 @@ void camera::calculate_pos(int16_t angle, bool side)
       }
     }
     
-    _x = int(ceil(double(_x))) * -1;
-    _y = int(ceil(double(_y))); 
+    _robot_x_soft = _x * _robot_k + _robot_x_soft * (1 - _robot_k);
+    _robot_y_soft = _y * _robot_k + _robot_y_soft * (1 - _robot_k);
+    
+    _x = int(ceil(double(_robot_x_soft))) * -1;
+    _y = int(ceil(double(_robot_y_soft))); 
     
     if(_ball_is_seen)
     {
@@ -208,11 +219,22 @@ void camera::calculate_pos(int16_t angle, bool side)
       _ball_loc_x = sinf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       _ball_loc_y = cosf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       
+      
+      _ball_loc_x = int(ceil(double(_ball_loc_x)));
+      _ball_loc_y = int(ceil(double(_ball_loc_y)));
+      
+      _ball_x_soft = _ball_loc_x * _ball_k + _ball_x_soft * (1 - _ball_k);
+      _ball_loc_x = _ball_x_soft;
+      
+      _ball_y_soft = _ball_loc_y * _ball_k + _ball_y_soft * (1 - _ball_k);
+      _ball_loc_y = _ball_y_soft;
+      
       _ball_loc_x = int(ceil(double(_ball_loc_x)));
       _ball_loc_y = int(ceil(double(_ball_loc_y)));
       
       _ball_abs_x = _x + _ball_loc_x;
       _ball_abs_y = _y + _ball_loc_y;
+      
     }
     if(time_service::getCurTime() - _ball_d_timer > 100)
     {

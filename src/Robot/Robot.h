@@ -29,7 +29,7 @@ namespace Robot
   pin gyro_reset('B', 0, read_UP);	
   pin cap_charge('B', 9, write_);
   pin cap_discharge('E', 0, write_);
-  pin dribler_control('A', 3, dribler_);
+  //pin dribler_control('A', 3, dribler_);
   pin adc_voltage_pin('C', 5, adc);
   pin ball_sen('A', 7, adc);
     
@@ -88,7 +88,7 @@ namespace Robot
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle,
   moving_point[4] = {0, 0, 0, 0};
   
-  int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
+  volatile int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
   _dS = 0, _x1b = 0, _y1b = 0, _defender_predicted_x = 0,
   _defender_predicted_y = 0, display_data_1 = 0, display_data_2 = 0, display_delay_update_time = 30;
@@ -391,7 +391,7 @@ namespace Robot
     
     moveRobotAbs(move_angle, move_speed);
     
-    return point_distance < 20;
+    return point_distance < 10;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed)
@@ -431,11 +431,11 @@ namespace Robot
    _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2)) / 0.1f;
    _alpha = atan2(_dxb, _dyb);
     
-   if(_dS > 90 && _dyb > 5)
+   if(_dS > 40 && _dyb > 10)
    {
      _y1b = ball_abs_y - 37;
      _x1b = tan(_alpha) * _y1b;
-     if(my_abs(_x1b + camera.get_old_b_x()) < 50)
+     if(my_abs(_x1b + camera.get_old_b_x()) < 45)
      {
       _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
       _defender_predicted_y = 37;
@@ -444,7 +444,7 @@ namespace Robot
      }
      else
      {
-       if(time - prediction_timer < 1000)
+       if(time - prediction_timer < 2000)
        {
          _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
          _defender_predicted_y = 37;
@@ -454,13 +454,13 @@ namespace Robot
    }
    else
    {
-     if(time - prediction_timer < 1000)
+     if(time - prediction_timer < 2000)
      {
        _y1b = ball_abs_y - 37;
        _x1b = tan(_alpha) * _y1b;
-       if(my_abs(_x1b + camera.get_old_b_x()) < 50)
+       if(my_abs(_x1b + camera.get_old_b_x()) < 45)
        {
-        _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+        _defender_predicted_x = _x1b * 1.3 + camera.get_old_b_x();
         _defender_predicted_y = 37;
         return true;
        }
@@ -511,6 +511,8 @@ namespace Robot
     
     _dxb = camera.get_dbx();
     _dyb = camera.get_dby();
+    
+    _dS = sqrt(my_pow(_dxb, 2) + my_pow(_dyb, 2)) / 0.1f;
     
     is_ball_seen = camera.is_ball_seen();
     

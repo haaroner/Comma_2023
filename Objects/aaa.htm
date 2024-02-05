@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\aaa.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\aaa.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Jan 26 21:14:14 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Feb 05 20:16:36 2024
 <BR><P>
-<H3>Maximum Stack Usage =        800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        808 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 <P>
@@ -260,7 +260,7 @@ Global Symbols
 <P><STRONG><a name="[1d3]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[7e]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 800 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 808 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -601,8 +601,7 @@ Global Symbols
 <P><STRONG><a name="[103]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___8_main_cpp_3a8c9cbf
 <LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::SSD1306(unsigned, pin&, pin&, pin&, unsigned short, unsigned short, unsigned short)
 <LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::motors(Motor&, Motor&, Motor&, Motor&, unsigned short, double)
@@ -610,6 +609,7 @@ Global Symbols
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::TSSP(unsigned short, pin&, pin&, pin&, pin&, pin&, pin&, unsigned char)
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Dma::Dma(Adc&)
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::mpu9250_spi(pin&)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
 </UL>
 
 <P><STRONG><a name="[1d9]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
@@ -1209,8 +1209,8 @@ Global Symbols
 <P><STRONG><a name="[c6]"></a>USART_Init</STRONG> (Thumb, 492 bytes, Stack size 48 bytes, stm32f4xx_usart.o(i.USART_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_GetClocksFreq
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assert_failed
+<BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assert_failed
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_GetClocksFreq
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart6::usart6Init(unsigned, unsigned char, float)
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart2::usart2Init(unsigned, unsigned char, float)
@@ -1296,21 +1296,21 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[db]"></a>lead_to_degree_borders(int)</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, tools.o(i._Z22lead_to_degree_bordersi))
-<BR><BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_in_the_angle_borders(int, int, int)
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobot(short, unsigned char)
 <LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 <LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 <LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobotAbs(short, unsigned short)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_in_the_angle_borders(int, int, int)
 </UL>
 
 <P><STRONG><a name="[da]"></a>is_in_the_angle_borders(int, int, int)</STRONG> (Thumb, 78 bytes, Stack size 24 bytes, tools.o(i._Z23is_in_the_angle_bordersiii))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = is_in_the_angle_borders(int, int, int) &rArr; _my_abs(int) &rArr; __aeabi_d2iz
 </UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
-<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_my_abs(int)
+<BR>[Calls]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_my_abs(int)
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1340,6 +1340,7 @@ Global Symbols
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 <BR>[Called By]<UL><LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 </UL>
 
 <P><STRONG><a name="[dc]"></a>_my_abs(int)</STRONG> (Thumb, 52 bytes, Stack size 24 bytes, tools.o(i._Z7_my_absi))
@@ -1558,8 +1559,7 @@ Global Symbols
 <P><STRONG><a name="[1ea]"></a>mpu9250_spi::mpu9250_spi__sub_object(pin&)</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, mpu9250_spi.o(i._ZN11mpu9250_spiC1ER3pin), UNUSED)
 
 <P><STRONG><a name="[ea]"></a>time_service::getCurTime()</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, time_service.o(i._ZN12time_service10getCurTimeEv))
-<BR><BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
+<BR><BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
@@ -1572,6 +1572,7 @@ Global Symbols
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::is_ball_seen(unsigned short)
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::delay_ms(unsigned)
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::initIMU()
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[12a]"></a>time_service::init()</STRONG> (Thumb, 90 bytes, Stack size 12 bytes, time_service.o(i._ZN12time_service4initEv))
@@ -1767,8 +1768,8 @@ Global Symbols
 <P><STRONG><a name="[116]"></a>PID::calculate(int, int, int)</STRONG> (Thumb, 226 bytes, Stack size 24 bytes, main.o(i._ZN3PID9calculateEiii))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PID::calculate(int, int, int)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_borders(int, int, int)
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_borders(int, int, int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short)
 </UL>
@@ -1781,8 +1782,8 @@ Global Symbols
 <P><STRONG><a name="[1ed]"></a>PID::PID__sub_object(float, float, float, int)</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, main.o(i._ZN3PIDC1Efffi), UNUSED)
 
 <P><STRONG><a name="[11b]"></a>pin::getPinNumber()</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, pin_setup.o(i._ZN3pin12getPinNumberEv))
-<BR><BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::read()
+<BR><BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::read()
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[118]"></a>pin::pwm(unsigned)</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, pin_setup.o(i._ZN3pin3pwmEj))
@@ -1812,8 +1813,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
-<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::control_led(unsigned char, bool)
+<BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::control_led(unsigned char, bool)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
 </UL>
 
 <P><STRONG><a name="[fe]"></a>pin::setBit()</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, pin_setup.o(i._ZN3pin6setBitEv))
@@ -1860,8 +1861,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[11a]"></a>pin::getGPIOx()</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pin_setup.o(i._ZN3pin8getGPIOxEv))
-<BR><BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::read()
+<BR><BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::read()
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[ff]"></a>pin::resetBit()</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, pin_setup.o(i._ZN3pin8resetBitEv))
@@ -1900,12 +1901,12 @@ Global Symbols
 <P><STRONG><a name="[121]"></a>TSSP::get_digital_data()</STRONG> (Thumb, 734 bytes, Stack size 56 bytes, tssp.o(i._ZN4TSSP16get_digital_dataEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = TSSP::get_digital_data() &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(double, int)
+<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(double, int)
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::getGPIOx()
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::getPinNumber()
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::set_addres(unsigned char)
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2152,15 +2153,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 </UL>
 
-<P><STRONG><a name="[141]"></a>Robot::update()</STRONG> (Thumb, 520 bytes, Stack size 40 bytes, main.o(i._ZN5Robot6updateEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 496<LI>Call Chain = Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
+<P><STRONG><a name="[141]"></a>Robot::update()</STRONG> (Thumb, 644 bytes, Stack size 48 bytes, main.o(i._ZN5Robot6updateEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
+<BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 <LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::check_buttons()
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::control_led(unsigned char, bool)
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU::getAngle()
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU::update()
+<LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_pow(int, int)
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::disableMotors()
@@ -2187,9 +2188,13 @@ Global Symbols
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_data()
 <LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Dma::dataReturn(unsigned char)
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2225,8 +2230,7 @@ Global Symbols
 <P><STRONG><a name="[142]"></a>Robot::draw_menu()</STRONG> (Thumb, 610 bytes, Stack size 16 bytes, main.o(i._ZN5Robot9draw_menuEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 456<LI>Call Chain = Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
-<LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_draw_number&lang;int&rang;(T1, unsigned, unsigned, unsigned)
+<BR>[Calls]<UL><LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_draw_number&lang;int&rang;(T1, unsigned, unsigned, unsigned)
 <LI><a href="#[160]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_data&lang;unsigned&rang;(const char*, unsigned, T1, unsigned, unsigned, unsigned)
 <LI><a href="#[15c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_data&lang;int&rang;(const char*, unsigned, T1, unsigned, unsigned, unsigned)
 <LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::display_draw_string(const char*, unsigned, unsigned)
@@ -2238,6 +2242,7 @@ Global Symbols
 <LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::clear()
 <LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 </UL>
@@ -2268,15 +2273,16 @@ Global Symbols
 <LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_seen_T(unsigned short)
 </UL>
 
-<P><STRONG><a name="[144]"></a>camera::calculate_pos(short, bool)</STRONG> (Thumb, 1380 bytes, Stack size 104 bytes, openmv.o(i._ZN6camera13calculate_posEsb))
+<P><STRONG><a name="[144]"></a>camera::calculate_pos(short, bool)</STRONG> (Thumb, 1656 bytes, Stack size 104 bytes, openmv.o(i._ZN6camera13calculate_posEsb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = camera::calculate_pos(short, bool) &rArr; __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::abs(double)
+<BR>[Calls]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::abs(double)
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[164]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cosf
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[162]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ceil
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
@@ -2368,7 +2374,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 </UL>
 
-<P><STRONG><a name="[168]"></a>camera::camera(pin&, pin&)</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, openmv.o(i._ZN6cameraC1ER3pinS1_))
+<P><STRONG><a name="[168]"></a>camera::camera(pin&, pin&)</STRONG> (Thumb, 202 bytes, Stack size 16 bytes, openmv.o(i._ZN6cameraC1ER3pinS1_))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = camera::camera(pin&, pin&) &rArr; pin::pinInit() &rArr; GPIO_PinAFConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::pinInit()
@@ -2489,10 +2495,10 @@ Global Symbols
 <P><STRONG><a name="[12f]"></a>SSD1306::begin(unsigned char, bool)</STRONG> (Thumb, 316 bytes, Stack size 16 bytes, ssd1306.o(i._ZN7SSD13065beginEhb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = SSD1306::begin(unsigned char, bool) &rArr; SSD1306::ssd1306_command(unsigned char) &rArr; pin::resetBit() &rArr; GPIO_ResetBits
 </UL>
-<BR>[Calls]<UL><LI><a href="#[16e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initSPI3(bool, unsigned char, unsigned short)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::resetBit()
+<BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::resetBit()
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::setBit()
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::delay_ms(unsigned)
+<LI><a href="#[16e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initSPI3(bool, unsigned char, unsigned short)
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::ssd1306_command(unsigned char)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::init_robot(unsigned char)
@@ -2577,9 +2583,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
+<BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[172]"></a>operator delete (void*)</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, delete.o(i._ZdlPv))
@@ -2677,14 +2683,14 @@ Global Symbols
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
+<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
 <LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[162]"></a>__hardfp_ceil</STRONG> (Thumb, 252 bytes, Stack size 40 bytes, ceil.o(i.__hardfp_ceil))
@@ -2708,11 +2714,11 @@ Global Symbols
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[164]"></a>__hardfp_cosf</STRONG> (Thumb, 280 bytes, Stack size 8 bytes, cosf.o(i.__hardfp_cosf))
@@ -2785,10 +2791,10 @@ Global Symbols
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[163]"></a>__hardfp_sinf</STRONG> (Thumb, 344 bytes, Stack size 16 bytes, sinf.o(i.__hardfp_sinf))
@@ -2810,12 +2816,13 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 </UL>
 
 <P><STRONG><a name="[159]"></a>__hardfp_tan</STRONG> (Thumb, 108 bytes, Stack size 32 bytes, tan.o(i.__hardfp_tan))
@@ -3062,12 +3069,10 @@ Global Symbols
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
-<P><STRONG><a name="[7f]"></a>main</STRONG> (Thumb, 3148 bytes, Stack size 304 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 800<LI>Call Chain = main &rArr; Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
+<P><STRONG><a name="[7f]"></a>main</STRONG> (Thumb, 3346 bytes, Stack size 304 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 808<LI>Call Chain = main &rArr; Robot::update() &rArr; Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_in_the_angle_borders(int, int, int)
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
-<LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobot(short, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobot(short, unsigned char)
 <LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short)
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
 <LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
@@ -3093,6 +3098,8 @@ Global Symbols
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::delay_ms(unsigned)
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
 <LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_in_the_angle_borders(int, int, int)
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
@@ -3221,11 +3228,11 @@ Global Symbols
 <P><STRONG><a name="[d3]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU::getAngle()
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU::update()
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
@@ -3235,6 +3242,7 @@ Global Symbols
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::calibrate(int)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[162]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ceil
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
@@ -3274,6 +3282,7 @@ Global Symbols
 <LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 <LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::calibrate(int)
@@ -3294,12 +3303,12 @@ Global Symbols
 <P><STRONG><a name="[e9]"></a>__aeabi_cdcmpeq</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, deqf.o(x$fpl$deqf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_cdcmpeq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart6::usart6Init(unsigned, unsigned char, float)
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart2::usart2Init(unsigned, unsigned char, float)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 </UL>
 
@@ -3311,8 +3320,7 @@ Global Symbols
 <P><STRONG><a name="[cf]"></a>__aeabi_d2iz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfix.o(x$fpl$dfix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
+<BR>[Called By]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict()
 <LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
@@ -3324,6 +3332,7 @@ Global Symbols
 <LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::my_abs(int)
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
 <LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
@@ -3337,10 +3346,10 @@ Global Symbols
 <P><STRONG><a name="[ed]"></a>__aeabi_d2uiz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfixu.o(x$fpl$dfixu))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
+<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short)
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
 </UL>
 
 <P><STRONG><a name="[1a6]"></a>_dfixu</STRONG> (Thumb, 90 bytes, Stack size 32 bytes, dfixu.o(x$fpl$dfixu), UNUSED)
@@ -3348,8 +3357,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[cb]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
-<BR><BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::readGyro()
+<BR><BR>[Called By]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::readGyro()
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::readAcc()
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -3367,6 +3375,7 @@ Global Symbols
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::calibrate(int)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::my_abs(int)
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
 <LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
@@ -3384,12 +3393,12 @@ Global Symbols
 <P><STRONG><a name="[1fa]"></a>_ll_sto_d</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, dfltll_clz.o(x$fpl$dfltll), UNUSED)
 
 <P><STRONG><a name="[ce]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
-<BR><BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 </UL>
 
@@ -3415,9 +3424,7 @@ Global Symbols
 <P><STRONG><a name="[cc]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::updateAngles(double, bool)
 <LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
@@ -3430,6 +3437,8 @@ Global Symbols
 <LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_angle_from_index(unsigned short)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSSP::get_digital_data()
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
@@ -3552,6 +3561,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu9250_spi::MadgwickAHRSupdateIMU(double)
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart6::usart6Init(unsigned, unsigned char, float)
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart2::usart2Init(unsigned, unsigned char, float)
+<LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 </UL>
 
 <P><STRONG><a name="[1ae]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -3594,7 +3604,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[6f]"></a>__sti___8_main_cpp_3a8c9cbf</STRONG> (Thumb, 718 bytes, Stack size 32 bytes, main.o(i.__sti___8_main_cpp_3a8c9cbf))
+<P><STRONG><a name="[6f]"></a>__sti___8_main_cpp_3a8c9cbf</STRONG> (Thumb, 706 bytes, Stack size 32 bytes, main.o(i.__sti___8_main_cpp_3a8c9cbf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = __sti___8_main_cpp_3a8c9cbf &rArr; Motor::Motor(char, unsigned char, unsigned short, unsigned char, char, unsigned char, unsigned short, unsigned char) &rArr; pin::pin(char, unsigned char, unsigned short) &rArr; pin::pwmInit(unsigned, unsigned short, unsigned, unsigned, unsigned char, TIM_TypeDef*, bool) &rArr; TIM_OC4Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[18d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID::PID(float, float, float, int)
