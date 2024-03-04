@@ -50,13 +50,14 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _length_between_gates = 229; //(234,8)
   _ball_d_timer = 0;
   _ball_timer = 2000;
-  _ball_k = 0.95;
+  _ball_k = 0.85;
   _ball_x_soft = 0;
   _ball_y_soft = 20;
   
-  _robot_k = 0.95;
+  _robot_k = 0.85;
   _robot_x_soft = 0;
   _robot_y_soft = 90;
+  k_dSSoft = 0.4;
   
 }
 void camera::getData()
@@ -142,7 +143,7 @@ void camera::calculate_pos(int16_t angle, bool side)
 //      else 
 //        _yellow_angle = 0;
 //    }
-    if(side) //enemy gate: yellow - 1; blue - 0
+    if(_received) //enemy gate: yellow - 1; blue - 0
     {
        _front_angle = _yellow_angle;
        _front_distance = _yellow_distance;
@@ -242,6 +243,9 @@ void camera::calculate_pos(int16_t angle, bool side)
       _dby = _old_y - _ball_abs_y;
       _old_x = _ball_abs_x;
       _old_y = _ball_abs_y;
+      _dS = sqrt(pow(double(_dbx), 2) + pow(double(_dby), 2)) / 0.1f;
+    
+      _dSSoft = k_dSSoft * _dS + (1 - k_dSSoft) * _dSSoft;
       _ball_d_timer = time_service::getCurTime();
     }
     _received = false;
@@ -355,6 +359,16 @@ int16_t camera::get_dbx()
 int camera::get_dby()
 {
   return _dby;
+}
+
+int camera::get_dS()
+{
+  return _dS;
+}
+
+int camera::get_dSSoft()
+{
+  return _dSSoft;
 }
 
 bool camera::is_first_data_received()

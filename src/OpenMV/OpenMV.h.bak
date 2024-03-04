@@ -4,6 +4,7 @@
 #include "pin_setup.h"
 #include "tools.h"
 #include "time_service.h"
+#include "math.h"
 
 class camera
 {
@@ -76,7 +77,10 @@ class camera
     uint8_t _state;
     uint32_t _ball_d_timer, _ball_timer;
     float _ball_k;
-    int _ball_x_soft, _ball_y_soft;
+    float _ball_x_soft, _ball_y_soft;
+    int _dS, _dSSoft;
+    float _robot_k, k_dSSoft;
+    float _robot_x_soft, _robot_y_soft;
     
     uint8_t _length_between_gates;
 };

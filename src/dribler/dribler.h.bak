@@ -7,9 +7,9 @@ enum dribler_speed
 {
   stop_dribler_speed = 300,
   standart_dribler_speed = 350,
-  MINIMAL_DRIBLER_SPEED = 315,
-  KECK_DRIBLER_SPEED = 235,
-  MIN_KECK_SPEED = 265
+  minimal_dribler_speed = 315,
+  keck_dribler_speed = 235,
+  min_keck_speed = 265
   
 };
 

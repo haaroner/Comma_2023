@@ -1,14 +1,14 @@
 import sensor, utime, image, time, pyb, math #import librares
 
-EXPOSURE_TIME_SCALE = 0.7
+EXPOSURE_TIME_SCALE = 1.1
 
 
-yellow_threshold = [(59, 89, -128, 30, 26, 127)] #yellow gates threshold
+yellow_threshold = [(0, 100, -128, 127, 127, 127)] #yellow gates threshold
 blue_threshold = [(0, 100, -128, 127, -128, -22)] #blue gates threshold
-red_threshold = [(0, 100, 25, 127, 15, 127)]
+red_threshold = [(0, 100, 21, 127, 1, 127)]
 
 
-center1 = [159, 126]
+center1 = [165, 120]
 center2 = [162, 133]
 
 center = center1
@@ -68,35 +68,28 @@ yellow_is_see = False
 blue_is_see = False
             #sm   pxl
 distance = [
-            [210, 127],
-            [200, 126],
-            [190, 125],
-            [180, 122],
-            [165, 120],
-            [150, 119],
-            [140, 117],
-            [130, 116],
-            [120, 115],
-            [110, 111],
-            [100, 110],
-            [95, 109],
-            [90, 108],
-            [85, 107],
-            [80, 105],
-            [75, 103],
-            [70, 101],
-            [65, 99],
-            [60, 95],
-            [55, 90],
-            [50, 84],
+            [210, 144],
+            [140, 128],
+            [130, 126],
+            [120, 123],
+            [110, 120],
+            [100, 117],
+            [90, 114],
+            [80, 109],
+            [75, 107],
+            [70, 106],
+            [65, 103],
+            [60, 99],
+            [55, 93],
+            [50, 89],
             [45, 78],
-            [40, 73],
-            [35, 66],
-            [30, 60],
-            [25, 53],
-            [20, 43],
-            [15, 32],
-            [10, 18]
+            [40, 77],
+            [35, 70],
+            [30, 65],
+            [25, 57],
+            [20, 52],
+            [15, 39],
+            [10, 27]
                     ]
 
 clock = time.clock()
@@ -220,7 +213,7 @@ def send_data(num1, num2, num3, num4, num5, num6):
 while(True):
     clock.tick()
     #print(utime.ticks_ms())
-    img = sensor.snapshot().mask_circle(center[0], center[1] + 5, 130)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
+    img = sensor.snapshot().mask_circle(center[0], center[1], 145)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
     img.draw_circle(center[0], center[1], 30, (0, 0, 0), fill = True)
     old_area = 0
 
@@ -228,7 +221,7 @@ while(True):
     blue_is_see = False
 
     #detecting yellow gate
-    for blob in img.find_blobs(yellow_threshold, pixels_threshold=75, area_threshold=50, merge=True, margin = 10):#finding gates
+    for blob in img.find_blobs(yellow_threshold, pixels_threshold=50, area_threshold=30, merge=True, margin = 20):#finding gates
         if(blob[2] * blob[3] > old_area):
             old_area = blob[2] * blob[3]
             img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (200, 200, 0), 2)
@@ -254,7 +247,11 @@ while(True):
             blue_x = blue[4] - center[0]
             blue_y = blue[5] - center[1]
             blue_distance = linearize(get_distance(blue_x, blue_y))
-            blue_angle = math.floor(math.atan2(blue_x, blue_y) * 57.3) + 180
+            blue_angle = math.floor(math.atan2(blue_x, blue_y) * 57.3) + 90
+            if(blue_angle > 360):
+                blue_angle -= 360
+            elif(blue_angle < 0):
+                blue_angle += 360
     if(old_area < 100):
         blue_distance = 0
     old_area = 0
@@ -267,10 +264,14 @@ while(True):
             img.draw_rectangle(blob[0]- 5, blob[1] - 5, blob[2] + 5, blob[3] + 5, (0, 0, 0), 1)
             #blue = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3], blob.cx(), blob.cy()]
             ball = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3],(blob[0] + int(blob[2] / 2)), (blob[1] + int(blob[3] / 2))]
-            ball_x = ball[4] - center[0]
-            ball_y = ball[5] - center[1]
+            ball_x = -(ball[4] - center[0])
+            ball_y = -(ball[5] - center[1])
             ball_distance = linearize(get_distance(ball_x, ball_y))
-            ball_angle = math.floor(math.atan2(ball_x, ball_y) * 57.3) + 180
+            ball_angle = math.floor(math.atan2(ball_x, ball_y) * 57.3) + 90
+            if(ball_angle > 360):
+                ball_angle -= 360
+            elif(ball_angle < 0):
+                ball_angle += 360
     if(old_area >= 400 or old_area <= 20):
         ball_distance = 0
     old_area = 0
@@ -284,7 +285,7 @@ while(True):
         blue_angle -= 360
     if ball_angle > 359:
         ball_angle -= 360
-    print(ball_distance)
+    print(ball_angle)
     send_data(yellow_angle, yellow_distance, blue_angle, blue_distance, ball_angle, ball_distance)
     #send_data(4, 150, 180, 50, 0, 50)
     img.draw_circle(blue[4], blue[5], 3, (255, 255, 255))

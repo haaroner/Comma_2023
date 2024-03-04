@@ -20,12 +20,14 @@
 int lead_to_degree_borders(int _num);
 int lead_to_borders(int max, int min, int _num);
 bool is_in_the_angle_borders(int max, int min, int _num);
+bool is_in_the_borders(int max, int min, int num);
 int constrain(int max, int min, int _num);
 
 struct point
 {
   int x;
   int y;
+  int angle;
 };
 
 struct polar_vector

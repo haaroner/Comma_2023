@@ -57,6 +57,7 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _robot_k = 0.85;
   _robot_x_soft = 0;
   _robot_y_soft = 90;
+  k_dSSoft = 0.4;
   
 }
 void camera::getData()
@@ -242,6 +243,9 @@ void camera::calculate_pos(int16_t angle, bool side)
       _dby = _old_y - _ball_abs_y;
       _old_x = _ball_abs_x;
       _old_y = _ball_abs_y;
+      _dS = sqrt(pow(double(_dbx), 2) + pow(double(_dby), 2)) / 0.1f;
+    
+      _dSSoft = k_dSSoft * _dS + (1 - k_dSSoft) * _dSSoft;
       _ball_d_timer = time_service::getCurTime();
     }
     _received = false;
@@ -355,6 +359,16 @@ int16_t camera::get_dbx()
 int camera::get_dby()
 {
   return _dby;
+}
+
+int camera::get_dS()
+{
+  return _dS;
+}
+
+int camera::get_dSSoft()
+{
+  return _dSSoft;
 }
 
 bool camera::is_first_data_received()

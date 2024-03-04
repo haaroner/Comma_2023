@@ -97,7 +97,7 @@ polar_vector get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _poi
 polar_vector get_angle_to_point(point point1, point point2)
 {
   _x_result = point2.x - point1.x;
-  _y_result = _point_y - _robot_y;
+  _y_result = point2.y - point1.y;
   
   if(_x_result == 0) _x_result = 1;
   if(_y_result == 0) _y_result = 1;
@@ -137,10 +137,3 @@ void calculate_angle_near_side_out(int16_t robot_x, int16_t angle, double speed,
 
 }
 
-point test()
-{
-  struct point test;
-  test.x = 0;
-  test.y = 0;
-  return test;
-}

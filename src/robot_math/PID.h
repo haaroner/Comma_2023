@@ -40,11 +40,11 @@ class PID
         if(i > max_i) i = max_i;
         else if(i < -max_i) i = -max_i;
         
-        u = p + i + d;
+        u = p;
         e_old = e;
         time = time_service::getCurTime();
       }
-      return u;
+      return -u;
     }
   private:
     float kp, ki, kd;

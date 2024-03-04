@@ -59,8 +59,7 @@ void motors::moveRobot(double _maxPower,
 										 double _angle,
 										 double _inc,
                      uint32_t _time,
-                     uint32_t _instant_start_timer,
-                     int16_t _gyro)
+                     uint32_t _instant_start_timer)
 {
   //_maxPower = calculate_power(_maxPower);
   //_maxPower_angle = calculate_power(_maxPower_angle);
@@ -99,18 +98,18 @@ void motors::moveRobot(double _maxPower,
   
 	ang = (_angle + 135) * DEG2RAD;
 	opowers = int(_maxPower * cos(ang));
-	opowers += _inc;
+	opowers -= _inc;
 	_m2.motorMove(opowers);
 	
 	ang = (_angle - 135) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
-	opowers -= _inc;
+	opowers += _inc;
 	_m1.motorMove(opowers);
 
 	
 	ang = (_angle + 45) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
-	opowers -= _inc;
+	opowers += _inc;
 	_m3.motorMove(opowers);
 
 	

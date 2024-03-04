@@ -11,7 +11,7 @@
 #include "motors.h"
 #include "OpenMv.h"
 #include "ball_detour.h"
-//#include "robot_math.h"
+#include "robot_math.h"
 #include "adc.h"
 #include "dma.h"
 #include "flashka.h"

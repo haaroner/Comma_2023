@@ -8,7 +8,7 @@
 #define RAD2DEG	57.2957795130823208767
 #define DEG2RAD	0.01745329251994329576
 
-int ang_result = 0, len_result = 0;
+int ang_result = 0, len_result = 0, result = 0;
 int x1 = 0, x2 = 0, y1 = 0, y2 = 0, _x_result = 0, _y_result = 0, x3, t;
 
 double convert_data(double max, double data)
@@ -137,10 +137,13 @@ void calculate_angle_near_side_out(int16_t robot_x, int16_t angle, double speed,
 
 }
 
-point test()
+int map(int num, int min1, int max1, int min2, int max2)
 {
-  struct point test;
-  test.x = 0;
-  test.y = 0;
-  return test;
+  int len1 = max1 - min1, len2 = max2 - min2;
+  double k12 = len2 / len1;
+  result = ((num - min1) * k12) + min2;
+  return result;
+
+  
+  
 }

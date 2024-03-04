@@ -98,24 +98,24 @@ void motors::moveRobot(double _maxPower,
   
 	ang = (_angle + 135) * DEG2RAD;
 	opowers = int(_maxPower * cos(ang));
-	opowers += _inc;
+	opowers -= _inc;
 	_m2.motorMove(opowers);
 	
 	ang = (_angle - 135) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
-	opowers -= _inc;
+	opowers += _inc;
 	_m1.motorMove(opowers);
 
 	
 	ang = (_angle + 45) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
-	opowers -= _inc;
+	opowers += _inc;
 	_m3.motorMove(opowers);
 
 	
 	ang = (_angle - 45) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
-	opowers -= _inc;
+	opowers += _inc;
 	_m4.motorMove(opowers);
 }
 

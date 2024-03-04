@@ -7,38 +7,46 @@ class Queue
     {
       length = 20;
       for(int i = 0; i < length; i++)
-        mas[i] = 0;
+      {
+        masX[i] = 0;
+        masY[i] = 0;
+        masA[i] = 0;
+      }
       counter = 0;
       _sub = 0;      
     }
     
-    void push(int _num)
+    void push(point _point)
     {
       if(counter < length - 1)
       {
-        mas[counter] = _num;
+        masX[counter] = _point.x;
+        masY[counter] = _point.y;
+        masA[counter] = _point.angle;
         counter++;
       }
     }
     
-    int pop()
+    point pop()
     {
+      point _sub_point;
+      _sub_point.x = 0;
+      _sub_point.y = 0;
+      _sub_point.angle = 0;
       if(counter > 0)
       {
-        _sub = mas[0];
+        _sub_point.x = masX[0];
+        _sub_point.y = masY[0];
+        _sub_point.angle = masA[0];
         for(int i = 1; i < length - 1; i++)
-          mas[i - 1] = mas[i];
-        
+        {
+          masX[i - 1] = masX[i];
+          masY[i - 1] = masY[i];
+          masA[i - 1] = masA[i];
+        }
         counter--;
       }
-      return _sub;
-    }
-    
-    int read(uint8_t _addr)
-    {
-      if(_addr < length)
-        return mas[_addr];
-      return 0;
+      return _sub_point;
     }
     
     int get_length()
@@ -49,11 +57,15 @@ class Queue
     void clear()
     {
       for(int i = 0; i < length; i++)
-        mas[i] = 0;
+      {
+        masX[i] = 0;
+        masY[i] = 0;
+        masA[i] = 0;
+      }
       counter = 0;
     }
     
     private:
       uint8_t length;
-      volatile int mas[20], counter, _sub;
+      volatile int masX[20], masY[20], masA[20], counter, _sub;
 };
