@@ -760,7 +760,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>kicker</GroupName>
+          <GroupName>kecker</GroupName>
           <Files>
             <File>
               <FileName>kicker.h</FileName>
@@ -921,6 +921,16 @@
               <FileName>flashka.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\flashka\flashka.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Field</GroupName>
+          <Files>
+            <File>
+              <FileName>Position.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Field\Position.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,6 +1,5 @@
 #pragma once
 #include "project_config.h"
-#include "UART.h"
 
 namespace usart2
 {

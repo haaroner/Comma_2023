@@ -3,6 +3,9 @@
 #pragma once
 
 #define OTLADKA 0
+#define USE_DISPLAY false
+#define USE_DRIBLER true
+#define USE_FRONT_CAMERA false
 
 #define STOP_DRIBLER_SPEED 300
 #define GRAB_DRIBLER_SPEED 350
@@ -45,3 +48,6 @@
 #define KICK_OFF_DURATION 1000
 
 #define STANDART_ROBOTS_ROLE_FROM_FLASH 255
+
+#define FAST_POINT_MOVEMENT_SPEED 255
+#define SLOW_POINT_MOVEMENT_SPEED -255

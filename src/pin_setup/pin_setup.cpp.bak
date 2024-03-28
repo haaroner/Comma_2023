@@ -173,7 +173,7 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
     _AFGPIO = GPIO_AF_TIM3;
     pin::pinInit();
-    pin::pwmInit(RCC_APB1ENR_TIM5EN, 840, 4000, 0, 4, TIM5, 1);
+    pin::pwmInit(RCC_APB1ENR_TIM3EN, 840, 4000, 0, 4, TIM3, 1);
   }
   if(function != dribler_) pin::pinInit();
 }

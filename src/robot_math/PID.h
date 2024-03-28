@@ -28,11 +28,11 @@ class PID
       max_i = _max_i;
     }
     
-    int calculate(int x0, int _data, int _max_data)
+    int calculate(int x0, int _data)
     {
       if(time_service::getCurTime() - time > 0)
       {
-        e = lead_to_borders(_max_data, -_max_data, x0 - _data);
+        e = lead_to_degree_borders(x0 - _data);
         p = e * kp;
         d = (e - e_old) * kd;
         i += e * ki;

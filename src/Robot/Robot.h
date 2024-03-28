@@ -5,16 +5,15 @@
 #include "tools.h"
 
 namespace Robot
-{
-  
+{ 
   pin led1('A', 0, write_UP); 
   pin led2('A', 1, write_UP); 
   pin led3('A', 2, write_UP); 
   
-  Motor m1('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);					
-  Motor m3('B', 3, tim2, CHANNEL2, 'B', 4, tim3, CHANNEL1);
-  Motor m2('E', 13, tim1, CHANNEL3, 'E', 14, tim1, CHANNEL4);
-  Motor m4('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
+  Motor m2('E', 13, tim1, CHANNEL3, 'E', 14, tim1, CHANNEL4);					
+  Motor m3('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);
+  Motor m1('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
+  Motor m4('B', 10, tim2, CHANNEL3, 'B', 11, tim2, CHANNEL4);
   motors motors(m1, m2, m3, m4, 100, 7);//1.5
   
   pin spi2_sck('B', 13, spi2);
@@ -29,7 +28,7 @@ namespace Robot
   pin gyro_reset('B', 0, read_UP);	
   pin cap_charge('B', 9, write_);
   pin cap_discharge('E', 0, write_);
-  pin dribler_control('A', 3, dribler_);
+  pin dribler_control('C', 8, dribler_);
   pin adc_voltage_pin('C', 5, adc);
   pin ball_sen('A', 7, adc);
     
@@ -42,8 +41,8 @@ namespace Robot
   pin tssp_right_read('C', 2, read_DOWN);  
   
   pin up('B', 5, read_UP);
-  pin reset_gyro('B', 6, read_UP);
-  pin enter('B', 7, read_UP);
+  pin reset_gyro('B', 8, read_UP);
+  pin enter('E', 3, read_UP);
   
   pin spi3_mosi('C', 12, spi3);
   pin spi3_sck('C', 10, spi3);
@@ -53,17 +52,19 @@ namespace Robot
   pin usart2_rx('D', 6, uart2);
   pin usart2_tx('D', 7, uart2);
   
+  pin Kecker('E', 9, write_);
+  
   SSD1306 display(3, spi3_dc, spi3_rst, spi3_cs, 1, 1, 1);
     
-  camera camera(usart6_tx, usart6_rx);
+  camera camera(omni_camera, usart2_tx, usart2_rx);
     
-  TSSP ball(digital ,tssp_write_4, tssp_write_3, tssp_write_2, 
+  TSSP ball(digital, tssp_write_4, tssp_write_3, tssp_write_2, 
   tssp_write_1, tssp_left_read, tssp_right_read, 1//,// tssp_left_read_dma, 
   /*tssp_right_read_dma*/);
   mpu9250_spi mpu_sensor(spi2_ck);
   IMU mpu(mpu_sensor);
   
-  PID angle_pid(-0.16, -0.005, 0, 5);
+  PID angle_pid(-0.13, -0, 0, 0);
   Queue trajectory;
   
   Adc test_adc(ADC2, 15);
@@ -84,13 +85,13 @@ namespace Robot
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
-    old_time = 0, prediction_timer = 0;
+    old_time = 0, prediction_timer = 0, keck_timer = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle,
-  moving_point[4] = {-1000, -1000, -1000, -1000}, dribler_speed = 200, 
-  gyro_zero_angle = 0;
+  moving_point[4] = {-1000, -1000, -1000, -1000}, dribler_speed = 240, 
+  gyro_zero_angle = 0, waiting_angle = 0;
   
   volatile int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
@@ -104,11 +105,12 @@ namespace Robot
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
+  volatile bool side = 1, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
-  init_image = true, _game_state = 0, _callibrated = 0, moving_to_point = false,
+  init_image = true, _game_state = 0, is_callibrated = 0, moving_to_point = false,
   is_ball_seen = 0, use_trajectory = 0, trajectory_is_in_progress = 0, 
-  trajectory_finished = 0, point_reached = false;
+  trajectory_finished = 0, point_reached = false, side_keck_finished = false,
+  waiting = false, wait_rotating = false;
   
   float k_dSSoft = 0.1;
   
@@ -120,17 +122,25 @@ namespace Robot
     time_service::init();
     time_service::startTime();
     
+    Kecker.resetBit();
+    
     control_led(0, OFF);
     
-    usart2::usart2Init(115200, 8, 1);//gyro
-    usart6::usart6Init(460800, 8, 1);//camera
+    usart2::usart2Init(115200, 8, 1);//camera
+    usart6::usart6Init(115200, 8, 1);//gyro
     
     test_dma.fullDmaInitForAdc();
-       
-    display.begin();
-    //display.clear();
-    //drawString(display, "Comma,", 6, 2);
-    display.display();
+    #if USE_DISPLAY
+      display.begin();
+      display.display();
+    #endif
+    
+    dribler_control.pwm(200);
+    time_service::delay_ms(500);
+    dribler_control.pwm(300);
+    time_service::delay_ms(500);
+    dribler_control.pwm(200);
+    time_service::delay_ms(500);
     
     init_timer = time;
     
@@ -179,8 +189,11 @@ namespace Robot
 
   void change_game_state()
   {
-    if(_callibrated)
+    //if(is_callibrated)
       _game_state = my_abs(_game_state - 1);
+    callibrate_gyro();
+    control_led(2, ON);
+    time_service::delay_ms(500);
   }
 
   void motors_on_off(bool _state)
@@ -193,19 +206,25 @@ namespace Robot
     motors.moveRobot(0, 0, 0, 0, 0, 0);
     control_led(2, ON);
     time_service::delay_ms(500);
-    mpu.calibrate(1000);
-    mpu.setZeroAngle();
-    //while(usart2::available() == 0);
-    //gyro_zero_angle = lead_to_degree_borders((usart2::read() * -1.411));
+    //mpu.calibrate(1000);
+    //mpu.setZeroAngle();
+    while(usart6::available() == 0);
+    gyro_zero_angle = lead_to_degree_borders((usart6::read() * 1.411));
     control_led(2, OFF);
    // motors_on_off(OFF);
-    _callibrated = true;
+    is_callibrated = true;
   }
   
-  void set_dribler_speed(int16_t _speed)
+//  void set_dribler_speed(int16_t _speed)
+//  {
+//    if(is_in_the_borders(100, 0, _speed)) dribler_speed = 200 + _speed;
+//    else _speed = 200;
+//  }
+  
+  void set_dribler_speed(uint16_t _speed)
   {
-    if(is_in_the_borders(100, 0, _speed)) dribler_speed = 200 + _speed;
-    else _speed = 200;
+    if(_speed > 239 && _speed < 271) dribler_speed = _speed;
+    else dribler_speed = _speed;
   }
   
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
@@ -341,11 +360,11 @@ namespace Robot
   }
   
   
-  void set_blinking(uint8_t _led_num, uint32_t _duration)
+  void set_blinking(uint8_t _led_num, uint32_t blinking_duration)
   {
    for(int i = 0; i < 3; i++)
       blinking_leds[i] = OFF;
-    if(_duration > 0)
+    if(blinking_duration > 0)
     {
       switch(_led_num)
       {
@@ -359,14 +378,28 @@ namespace Robot
     {
       control_led(_led_num, OFF);
     }
-    blinking_durations = _duration;
+    blinking_durations = blinking_duration;
+  }
+  
+  void keck(uint8_t _duration = 15)
+  {
+    if(_duration > 20) _duration = 20;
+    if(time_service::getCurTime() - keck_timer > 700)
+    {
+      ENTER_CRITICAL_SECTION();
+      Kecker.setBit();
+      time_service::delay_ms(_duration);
+      Kecker.resetBit();
+      keck_timer = time_service::getCurTime();
+      EXIT_CRITICAL_SECTION();
+    }
   }
   
   void moveRobot(int16_t _angle, uint8_t _speed)
   {
     move_angle = lead_to_degree_borders(_angle);
     if(_speed > 100) _speed = 0;
-    move_speed = _speed;
+      move_speed = _speed;
   }
   
   void moveRobotAbs(int16_t _angle, uint16_t _speed)
@@ -405,15 +438,46 @@ namespace Robot
   uint8_t enable_trajectory(bool _state)
   {
     use_trajectory = _state;
+    if(_state) trajectory_finished = false;
   }
   
   void setAngle(int16_t x0_angle, int16_t _max_angular_speed)
   {
-    angular_speed = angle_pid.calculate(x0_angle, gyro, 180);
+    angular_speed = angle_pid.calculate(x0_angle, gyro);
+    if(angular_speed > _max_angular_speed)
+      angular_speed = _max_angular_speed;
+    else if(angular_speed < -_max_angular_speed)
+      angular_speed = -_max_angular_speed;
     max_angular_speed = _max_angular_speed;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 15)
+  void moveToAngle(int16_t x0_angle, int16_t _max_angular_speed, uint32_t timeout)
+  {
+    uint32_t _start_time = time_service::getCurTime(), x0_angle_tim = 0;
+    waiting = true;
+    wait_rotating = true;
+    while(_start_time + timeout > time_service::getCurTime())
+    {
+      setAngle(x0_angle, _max_angular_speed);
+      update();
+      time_service::delay_ms(1);
+      if(my_abs(gyro - x0_angle) < 5)
+      {
+        if(x0_angle_tim == 0)
+          x0_angle_tim = time_service::getCurTime();
+        if(time_service::getCurTime() - x0_angle_tim > 500)
+          break;
+      }
+      else
+      {
+        x0_angle_tim = 0;
+      }
+    }
+    waiting = false;
+    wait_rotating = false;
+  }
+  
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 10)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -427,7 +491,7 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 12) move_speed = 0;
+    if(_speed == 0 || point_distance < 8) move_speed = 0;
     else if(_speed == -1)
     {
       if(use_trajectory)
@@ -435,7 +499,7 @@ namespace Robot
         d_1_Speed = _max_speed - _min_speed;
         accel_1_Length = my_abs(d_1_Speed / 1.5); //1.5 - tg of line
         d_2_speed = _max_speed - _min_speed;
-        accel_2_Length = my_abs(d_2_speed / 1.5);
+        accel_2_Length = my_abs(d_2_speed / 1.0f);
         whole_path = get_angle_to_point(start_trajectory, _point).length;
         if(accel_1_Length + accel_2_Length < whole_path)
         {
@@ -445,7 +509,7 @@ namespace Robot
           }
           else if(point_distance < accel_2_Length) // stop
           {
-            move_speed = (1.5 * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
+            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
           }
           else
           {
@@ -458,7 +522,7 @@ namespace Robot
           if(point_distance > whole_path / 2)
              move_speed = (1.5 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
           else
-            move_speed = (1.5 * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
+            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
         }
         if(_angle == -255)
         {
@@ -472,10 +536,10 @@ namespace Robot
     
     moveRobotAbs(move_angle, move_speed);
     
-    return point_distance < 12;
+    return point_distance < 8;
   }
   
-  bool moveToPoint(int _x, int _y, int16_t _speed)
+  uint16_t moveToPoint(int _x, int _y, int16_t _speed)
   {
     use_trajectory = false;
     _sub_point.x = _x;
@@ -487,13 +551,13 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 5) move_speed = 0;
+    if(_speed == 0 || point_distance < 7) move_speed = 0;
     else if(_speed == -1) move_speed = point_distance * 1.25;
     else move_speed = _speed;
     
     moveRobotAbs(move_angle, move_speed);
     
-    return point_distance < 20;
+    return point_distance;
   }
   
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
@@ -549,20 +613,38 @@ namespace Robot
     return camera.is_ball_seen(_T);
   }
   
-  void side_keck(int16_t _keck_angle, int16_t _keck_speed)
+  bool side_keck(int16_t _keck_angle, int16_t _keck_speed)
   {
-    rotateRobot(_keck_speed * (my_abs(gyro - _keck_angle)) < 5);
+    rotateRobot(_keck_speed * (my_abs(gyro - _keck_angle) > 10), _keck_speed);
+    move_speed = 0;
+    side_keck_finished = my_abs(lead_to_degree_borders(gyro - _keck_angle)) < 30;
+    return (my_abs(gyro - _keck_angle)) < 10;
   }
   
-  void update()
+  void wait(uint32_t _duration,bool en_rotation = false, int16_t _angle = 0, uint8_t rotation_speed = 10)
   {
+    uint32_t _start_time = time_service::getCurTime();
+    waiting = true;
+    wait_rotating = en_rotation;
+    waiting_angle = _angle;
+    while(_start_time + _duration > time_service::getCurTime())
+    {
+      if(en_rotation) setAngle(_angle, rotation_speed);
+      update();
+      time_service::delay_ms(1);
+    }
+    waiting = false;
+  }
+  
+ void update()
+ {
     old_time = time;
-    //draw_menu();
     time = time_service::getCurTime();
     loop_delay = time - old_time;
     
-    mpu.update();
-    gyro = lead_to_degree_borders(mpu.getAngle());
+    //mpu.update();
+
+   gyro = lead_to_degree_borders((usart6::read() * 1.411) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
     
    // ball.get_data();
     //ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
@@ -602,12 +684,20 @@ namespace Robot
     backward_distance = camera.get_backward_distance();
 //    
 //    voltage = test_dma.dataReturn(0);
-    
-    draw_menu();
-    
+    #if USE_DISPLAY
+      draw_menu();
+    #else
+      if(check_button(DOWN_BUTTON))
+        callibrate_gyro();
+      if(check_button(UP_BUTTON) && time - init_timer > 5000)
+        change_game_state();
+      if(check_button(ENTER_BUTTON))
+        change_game_state();
+      //control_led(0, ON);
+      #endif
     check_buttons();
     
-    if(time - blinking_timer > blinking_durations)
+    if(time - blinking_timer > blinking_durations && blinking_durations > 0)
     {
       leds_state = my_abs(leds_state - 1);
       for(int i   = 0; i < 3; i++)
@@ -634,7 +724,7 @@ namespace Robot
         start_trajectory_vector.length = move_speed;
       }
       //if distance less than const
-      if(getDistanceToPoint(robot_move.x, robot_move.y) < 12 && trajectory.get_length() > 0)
+      if(getDistanceToPoint(robot_move.x, robot_move.y) < 8 && trajectory.get_length() > 0)
       {
         robot_move = trajectory.pop();
         moving_point[0] = robot_move.x;
@@ -645,7 +735,7 @@ namespace Robot
         start_trajectory_vector.length = move_speed;
       }
       
-      if(getDistanceToPoint(robot_move.x, robot_move.y) < 12  && trajectory.get_length() <= 0)
+      if(getDistanceToPoint(robot_move.x, robot_move.y) < 8  && trajectory.get_length() <= 0)
       {
         trajectory_finished = true;
         trajectory_is_in_progress = false;
@@ -655,24 +745,33 @@ namespace Robot
         trajectory_finished = false;
         trajectory_is_in_progress = true;
       }
-      
-      point_reached = moveToPoint(robot_move, -1);
-      
-      
+      if(getDistanceToPoint(robot_move.x, robot_move.y) > 12)
+        point_reached = moveToPoint(robot_move, -1);     
     }
     else
       trajectory_is_in_progress = false;
-    
+    if(waiting)
+    {
+      move_speed = 0;
+      if(!wait_rotating)
+        angular_speed = 0;
+      else
+      {
+        if(my_abs(gyro - waiting_angle) < 10) angular_speed = 0;
+      }
+    }
     if(motors_state)
     {
-      motors.moveRobot(move_speed, 35, move_angle, angular_speed, time, 0);
-      dribler_speed = change_dribler_speed(dribler_speed);
-      if(dribler_speed < 300 && dribler_speed >= 200) //unnecessary if will delete it later haha 
-        dribler_control.pwm(dribler_speed);
+      motors.moveRobot(move_speed, 30, move_angle, angular_speed, time, 0);
+      dribler_control.pwm(dribler_speed);
+//      if(dribler_speed < 300 && dribler_speed >= 200) //unnecessary if will delete it later haha 
+//        dribler_control.pwm(dribler_speed);
     }
     else
+    {
       motors.disableMotors();
-      //dribler_control.pwm(200);
+      dribler_control.pwm(STOP_DRIBLER_SPEED);
+    }
     
   }
 }

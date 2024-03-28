@@ -22,11 +22,9 @@ uint8_t camera::crc8(uint8_t* data, int len)
 //    return num;
 //    }
 
-camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
+camera::camera(bool Camera_pos, pin &tx, pin &rx):m_tx(tx), m_rx(rx)
 {
-  m_tx.pinInit();
-  m_rx.pinInit();
-  
+  _camera_pos = Camera_pos;
   sign = 1;
   num = 0;
   _x = 0;
@@ -62,58 +60,60 @@ camera::camera(pin &tx, pin &rx):m_tx(tx), m_rx(rx)
 }
 void camera::getData()
 {
-  if(usart6::available() > 7)
+  if(_camera_pos == omni_camera)
   {
-    camera_data = usart6::read();
-    if(camera_data == 255)
+    if(usart2::available() > 7)
     {
-      for(int i = 0; i < 7; i++)
-        data[i] = usart6::read();
+      camera_data = 0;
+      while(usart2::available() > 7 &&  camera_data != 255)
+        camera_data = usart2::read();
+        for(int i = 0; i < 7; i++)
+          data[i] = usart2::read();
 
-      if(data[6] == crc8(data, 6))
-      {
-        _state = 1;
-        if(data[1] != 0)
+        if(data[6] == crc8(data, 6))
         {
-          _yellow_angle = data[0]  * 4;
-          _yellow_distance = data[1] * 4;
-          _yellow_first_receive = true;
-        }
-        else
-        {
-          _yellow_first_receive = false;
-          _state = 0;
-        }
+          _state = 1;
+          if(data[1] != 0)
+          {
+            _yellow_angle = data[0]  * 4;
+            _yellow_distance = data[1] * 4;
+            _yellow_first_receive = true;
+          }
+          else
+          {
+            _yellow_first_receive = false;
+            _state = 0;
+          }
 
-        if(data[3] != 0)
-        {
-          _blue_angle = data[2] * 4;
-          _blue_distance = data[3] * 4;
-          _blue_first_receive = true;
-        }
-        else
-        {
-          _blue_first_receive = false;
-          _state = 2;
-        }
-        
-        if(data[5] != 0)
-        {
-          _ball_angle = data[4] * 4;
-          _ball_distance = data[5] * 4;
-          _ball_timer = time_service::getCurTime();
-          _ball_is_seen = true;
-        }
-        else
-        {
-          _ball_is_seen = false;
-        }
+          if(data[3] != 0)
+          {
+            _blue_angle = data[2] * 4;
+            _blue_distance = data[3] * 4;
+            _blue_first_receive = true;
+          }
+          else
+          {
+            _blue_first_receive = false;
+            _state = 2;
+          }
+          
+          if(data[5] != 0)
+          {
+            _ball_angle = data[4] * 4;
+            _ball_distance = data[5] * 4;
+            _ball_timer = time_service::getCurTime();
+            _ball_is_seen = true;
+          }
+          else
+          {
+            _ball_is_seen = false;
+          }
 
-        if(data[1] == 0 && data[3] == 0)
-          _state = 8; 
-        _received = true;
-        _first_receive = true;
-     }
+          if(data[1] == 0 && data[3] == 0)
+            _state = 8; 
+          _received = true;
+          _first_receive = true;
+       }
     }
   }
 }
@@ -220,6 +220,7 @@ void camera::calculate_pos(int16_t angle, bool side)
       _ball_loc_x = sinf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       _ball_loc_y = cosf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       
+     // _ball_loc_angle = _ball_loc_angle * 0. + _ball_angle * 0.2;
       
       _ball_loc_x = int(ceil(double(_ball_loc_x)));
       _ball_loc_y = int(ceil(double(_ball_loc_y)));

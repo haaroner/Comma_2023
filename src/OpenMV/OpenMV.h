@@ -1,15 +1,21 @@
 #pragma once
 #include "project_config.h"
-#include "usart6.h"
+#include "usart2.h"
 #include "pin_setup.h"
 #include "tools.h"
 #include "time_service.h"
 #include "math.h"
 
+enum camera_pos
+{
+  front_camera,
+  omni_camera
+};
+
 class camera
 {
 	public:
-		camera(pin &tx, pin &rx);
+		camera(bool Camera_pos, pin &tx, pin &rx);
 		void getData();
     //uint16_t lead_to_degree_borders(int num);
     void calculate_pos(int16_t angle, bool side);
@@ -37,6 +43,7 @@ class camera
     bool is_ball_seen(uint16_t _dT = 1000);
 
 	private:
+    bool _camera_pos;
 		int8_t sign;
 		pin m_rx, m_tx;
 		uint8_t camera_data;
@@ -46,6 +53,7 @@ class camera
     int _blue_distance;
 		volatile int _blue_angle;
     int _ball_angle;
+    int _ball_loc_angle;
     int _abs_ball_angle;
     int _ball_distance;
     int _ball_loc_x, _ball_loc_y;
