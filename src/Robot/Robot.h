@@ -14,7 +14,7 @@ namespace Robot
   Motor m3('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);
   Motor m1('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
   Motor m4('B', 10, tim2, CHANNEL3, 'B', 11, tim2, CHANNEL4);
-  motors motors(m1, m2, m3, m4, 100, 7);//1.5
+  motors motors(m1, m2, m3, m4, 100, 15);//1.5
   
   pin spi2_sck('B', 13, spi2);
   pin spi2_mosi('B', 15, spi2);
@@ -64,7 +64,7 @@ namespace Robot
   mpu9250_spi mpu_sensor(spi2_ck);
   IMU mpu(mpu_sensor);
   
-  PID angle_pid(-0.13, -0, 0, 0);
+  PID angle_pid(-0.07, -0, 0, 0);
   Queue trajectory;
   
   Adc test_adc(ADC2, 15);
@@ -85,7 +85,7 @@ namespace Robot
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
-    old_time = 0, prediction_timer = 0, keck_timer = 0;
+    old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -105,7 +105,7 @@ namespace Robot
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  volatile bool side = 1, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
+  volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
   init_image = true, _game_state = 0, is_callibrated = 0, moving_to_point = false,
   is_ball_seen = 0, use_trajectory = 0, trajectory_is_in_progress = 0, 
@@ -126,7 +126,7 @@ namespace Robot
     
     control_led(0, OFF);
     
-    usart2::usart2Init(115200, 8, 1);//camera
+    usart2::usart2Init(230400, 8, 1);//camera
     usart6::usart6Init(115200, 8, 1);//gyro
     
     test_dma.fullDmaInitForAdc();
@@ -151,8 +151,8 @@ namespace Robot
     
     role = 1;
     
-    mpu.init();
-    mpu.update();
+    //mpu.init();
+    //mpu.update();
   }
   
   void check_buttons()
@@ -441,8 +441,9 @@ namespace Robot
     if(_state) trajectory_finished = false;
   }
   
-  void setAngle(int16_t x0_angle, int16_t _max_angular_speed)
+  void setAngle(int16_t x0_angle, int16_t _max_angular_speed, float _kp = 0)
   {
+    if (_kp != 0) angle_pid.set_ratio(_kp, 0, 0, 0);
     angular_speed = angle_pid.calculate(x0_angle, gyro);
     if(angular_speed > _max_angular_speed)
       angular_speed = _max_angular_speed;
@@ -477,7 +478,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 10)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 15, int16_t _min_speed = 7)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -539,7 +540,7 @@ namespace Robot
     return point_distance < 8;
   }
   
-  uint16_t moveToPoint(int _x, int _y, int16_t _speed)
+  uint32_t moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
   {
     use_trajectory = false;
     _sub_point.x = _x;
@@ -551,13 +552,18 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 7) move_speed = 0;
+    if(_speed == 0 || point_distance < 8) move_speed = 0;
     else if(_speed == -1) move_speed = point_distance * 1.25;
     else move_speed = _speed;
     
+    if(point_distance < 15) move_speed = constrain(8, 0, move_speed);
+    else move_speed = constrain(_max_speed, _min_speed, move_speed);
+    
     moveRobotAbs(move_angle, move_speed);
     
-    return point_distance;
+    if(point_distance > 12) point_reached_timer = time_service::getCurTime();
+    
+    return point_reached_timer;
   }
   
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
@@ -643,7 +649,7 @@ namespace Robot
     loop_delay = time - old_time;
     
     //mpu.update();
-
+   if(usart6::available() > 0)
    gyro = lead_to_degree_borders((usart6::read() * 1.411) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
     
    // ball.get_data();

@@ -64,9 +64,9 @@ void camera::getData()
   {
     if(usart2::available() > 7)
     {
-      camera_data = 0;
-      while(usart2::available() > 7 &&  camera_data != 255)
-        camera_data = usart2::read();
+      camera_data = usart2::read();
+      if(camera_data == 255)
+      {
         for(int i = 0; i < 7; i++)
           data[i] = usart2::read();
 
@@ -114,6 +114,7 @@ void camera::getData()
           _received = true;
           _first_receive = true;
        }
+      }
     }
   }
 }
@@ -207,11 +208,11 @@ void camera::calculate_pos(int16_t angle, bool side)
       }
     }
     
-    _robot_x_soft = _x * _robot_k + _robot_x_soft * (1 - _robot_k);
-    _robot_y_soft = _y * _robot_k + _robot_y_soft * (1 - _robot_k);
+    //_robot_x_soft = _x * _robot_k + _robot_x_soft * (1 - _robot_k);
+    //_robot_y_soft = _y * _robot_k + _robot_y_soft * (1 - _robot_k);
     
-    _x = int(ceil(double(_robot_x_soft))) * -1;
-    _y = int(ceil(double(_robot_y_soft))); 
+    _x = int(ceil(double(_x))) * -1;
+    _y = int(ceil(double(_y))); 
     
     if(_ball_is_seen)
     {

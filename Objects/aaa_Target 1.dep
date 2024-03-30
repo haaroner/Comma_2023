@@ -1,7 +1,7 @@
 Dependencies for Project 'aaa', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\main.cpp)(0x66046765)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (.\src\Robot\Robot.h)(0x660467C0)
+F (.\main.cpp)(0x6608691E)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (.\src\Robot\Robot.h)(0x6606C909)
 I (..\Comma_2023_open\Settings.h)(0x660433E9)
 I (.\src\main\libs.h)(0x65D1FD3A)
 I (.\src\main\project_config.h)(0x6582F478)
@@ -46,7 +46,7 @@ I (.\src\pin_setup\pin_setup.h)(0x64074EAC)
 I (.\src\time_service\time_service.h)(0x63A08BC8)
 I (.\src\UART\usart6\usart6.h)(0x654E4680)
 I (.\src\UART\usart3\usart3.h)(0x654E461A)
-I (.\src\UART\usart2\usart2.h)(0x65F4502F)
+I (.\src\UART\usart2\usart2.h)(0x6606C39F)
 I (.\src\i2c\soft_i2c.h)(0x63739B48)
 I (.\src\motor\motor.h)(0x6501CAD7)
 I (.\src\motors\motors.h)(0x65AAA021)
@@ -164,7 +164,7 @@ I (.\src\main\tools.h)(0x65E5ECF6)
 I (D:\keil\sys_files\ARM\ARMCC\include\math.h)(0x5E8E7502)
 F (.\Settings.cpp)(0x65674C9B)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\settings.o --omf_browse .\objects\settings.crf --depend .\objects\settings.d)
 I (Settings.h)(0x660433E9)
-F (.\src\Robot\Robot.h)(0x660467C0)()
+F (.\src\Robot\Robot.h)(0x6606C909)()
 F (.\src\ball_detour\ball_detour.h)(0x65B3F18F)()
 F (.\src\robot_math\robot_math.h)(0x65C255E0)()
 F (.\src\robot_math\points_movement.h)(0x6565FD5E)()
@@ -253,8 +253,8 @@ I (.\src\spl4\inc\stm32f4xx_dcmi.h)(0x5CCB2BB4)
 I (.\src\spl4\inc\stm32f4xx_fsmc.h)(0x5CCB2BB4)
 I (D:\keil\sys_files\ARM\ARMCC\include\math.h)(0x5E8E7502)
 I (D:\keil\sys_files\ARM\ARMCC\include\string.h)(0x5E8E7502)
-F (.\src\UART\usart2\uart2.cpp)(0x65F4502F)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\uart2.o --omf_browse .\objects\uart2.crf --depend .\objects\uart2.d)
-I (src\UART\usart2\usart2.h)(0x65F4502F)
+F (.\src\UART\usart2\uart2.cpp)(0x6606C39F)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\uart2.o --omf_browse .\objects\uart2.crf --depend .\objects\uart2.d)
+I (src\UART\usart2\usart2.h)(0x6606C39F)
 I (.\src\main\project_config.h)(0x6582F478)
 I (.\src\global_macros\global_macros.h)(0x5CCB2BB4)
 I (.\src\global_macros\stm32f4xx_global_macros.h)(0x5CCB2BB4)
@@ -293,7 +293,7 @@ I (.\src\spl4\inc\stm32f4xx_dcmi.h)(0x5CCB2BB4)
 I (.\src\spl4\inc\stm32f4xx_fsmc.h)(0x5CCB2BB4)
 I (D:\keil\sys_files\ARM\ARMCC\include\math.h)(0x5E8E7502)
 I (D:\keil\sys_files\ARM\ARMCC\include\string.h)(0x5E8E7502)
-F (.\src\UART\usart2\usart2.h)(0x65F4502F)()
+F (.\src\UART\usart2\usart2.h)(0x6606C39F)()
 F (.\src\UART\usart3\usart3.h)(0x654E461A)()
 F (.\src\UART\usart3\usart3.cpp)(0x654E461A)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\usart3.o --omf_browse .\objects\usart3.crf --depend .\objects\usart3.d)
 I (src\UART\usart3\usart3.h)(0x654E461A)
@@ -591,7 +591,7 @@ I (.\src\motor\motor.h)(0x6501CAD7)
 I (.\src\pin_setup\pin_setup.h)(0x64074EAC)
 I (.\src\main\tools.h)(0x65E5ECF6)
 F (.\src\OpenMV\OpenMV.h)(0x66030340)()
-F (.\src\OpenMV\OpenMV.cpp)(0x66030969)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\openmv.o --omf_browse .\objects\openmv.crf --depend .\objects\openmv.d)
+F (.\src\OpenMV\OpenMV.cpp)(0x6606C642)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I .\src\main -I .\src\external -I .\src\spl4 -I .\src\global_macros -I .\src\spl4\inc -I .\src\spl4\src -I .\src\support_pacage\inc -I .\src\support_pacage\arm -I .\src\support_pacage\gcc -I .\src\support_pacage\gcc\linker -I .\src\support_pacage -I .\src\cmsis -I .\src\OpenMV -I .\src\pin_setup -I .\src\motor -I .\src\motors -I .\src\IRLocator -I .\src\time_service -I .\src\kicker -I .\src\i2c -I .\src\SPI -I .\src\ball_detour -I .\src\UART -I .\src\robot_math -I .\src\dribler -I .\src\adc -I .\src\dma -I .\src\main -I .\src\voltmeter -I .\src\mpu9250_spi -I .\src\SPI_DOT -I .\src\UART\usart2 -I .\src\UART\usart3 -I .\src\UART\usart6 -I .\src\Robot -I ..\Comma_2023_open -I .\src\TSSP -I .\src\Actions -I .\src\Queue -I .\src\Display\SSD1306 -I .\src\Display -I .\src\flashka-ID:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\keil\sys_files\ARM\CMSIS\Include-D__UVISION_VERSION="533" -DSTM32F407xx -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_HSE-o .\objects\openmv.o --omf_browse .\objects\openmv.crf --depend .\objects\openmv.d)
 I (src\OpenMV\OpenMV.h)(0x66030340)
 I (.\src\main\project_config.h)(0x6582F478)
 I (.\src\global_macros\global_macros.h)(0x5CCB2BB4)
@@ -631,7 +631,7 @@ I (.\src\spl4\inc\stm32f4xx_dcmi.h)(0x5CCB2BB4)
 I (.\src\spl4\inc\stm32f4xx_fsmc.h)(0x5CCB2BB4)
 I (D:\keil\sys_files\ARM\ARMCC\include\math.h)(0x5E8E7502)
 I (D:\keil\sys_files\ARM\ARMCC\include\string.h)(0x5E8E7502)
-I (.\src\UART\usart2\usart2.h)(0x65F4502F)
+I (.\src\UART\usart2\usart2.h)(0x6606C39F)
 I (.\src\pin_setup\pin_setup.h)(0x64074EAC)
 I (.\src\main\tools.h)(0x65E5ECF6)
 I (.\src\time_service\time_service.h)(0x63A08BC8)
