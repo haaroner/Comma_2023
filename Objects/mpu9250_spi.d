@@ -4,8 +4,7 @@
 .\objects\mpu9250_spi.o: .\src\SPI_DOT\SPI2_DOT.h
 .\objects\mpu9250_spi.o: .\src\main\project_config.h
 .\objects\mpu9250_spi.o: .\src\global_macros\global_macros.h
-.\objects\mpu9250_spi.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\mpu9250_spi.o: .\src\main\project_config.h
+.\objects\mpu9250_spi.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\mpu9250_spi.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\mpu9250_spi.o: .\src\cmsis\core_cm4.h
 .\objects\mpu9250_spi.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -40,6 +39,8 @@
 .\objects\mpu9250_spi.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\mpu9250_spi.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\mpu9250_spi.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\mpu9250_spi.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\mpu9250_spi.o: .\src\main\project_config.h
 .\objects\mpu9250_spi.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\mpu9250_spi.o: .\src\pin_setup\pin_setup.h
 .\objects\mpu9250_spi.o: .\src\main\project_config.h

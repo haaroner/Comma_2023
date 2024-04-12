@@ -2,8 +2,7 @@
 .\objects\uart2.o: src\UART\usart2\usart2.h
 .\objects\uart2.o: .\src\main\project_config.h
 .\objects\uart2.o: .\src\global_macros\global_macros.h
-.\objects\uart2.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\uart2.o: .\src\main\project_config.h
+.\objects\uart2.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\uart2.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\uart2.o: .\src\cmsis\core_cm4.h
 .\objects\uart2.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,5 +37,7 @@
 .\objects\uart2.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\uart2.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\uart2.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\uart2.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\uart2.o: .\src\main\project_config.h
 .\objects\uart2.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\uart2.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h

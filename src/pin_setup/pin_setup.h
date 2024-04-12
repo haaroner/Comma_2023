@@ -54,6 +54,7 @@ class pin
 	void resetBit();
   void write(bool _data);
   uint8_t read();
+  uint8_t abvgd();
 	GPIO_TypeDef* getGPIOx();
   TIM_TypeDef* getTimerx();
   uint8_t getChannel();

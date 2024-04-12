@@ -2,8 +2,7 @@
 .\objects\dma.o: src\dma\dma.h
 .\objects\dma.o: .\src\main\project_config.h
 .\objects\dma.o: .\src\global_macros\global_macros.h
-.\objects\dma.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\dma.o: .\src\main\project_config.h
+.\objects\dma.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\dma.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\dma.o: .\src\cmsis\core_cm4.h
 .\objects\dma.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,6 +37,8 @@
 .\objects\dma.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\dma.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\dma.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\dma.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\dma.o: .\src\main\project_config.h
 .\objects\dma.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\dma.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\dma.o: .\src\adc\adc.h

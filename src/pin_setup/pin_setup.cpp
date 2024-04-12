@@ -231,6 +231,11 @@ GPIO_TypeDef* pin::getGPIOx()
 {
 	return _GPIOx;
 }
+
+uint8_t pin::abvgd()
+{
+  return getGPIOx() -> IDR;
+}
 	
 uint16_t pin::getPinNumber()
 {

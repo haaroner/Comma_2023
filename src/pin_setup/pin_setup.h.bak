@@ -3,7 +3,7 @@
 
 enum pin_function
 {
-  read,
+  read_,
   read_UP,
   read_DOWN,
   write_,

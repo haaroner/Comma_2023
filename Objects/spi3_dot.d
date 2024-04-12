@@ -2,8 +2,7 @@
 .\objects\spi3_dot.o: src\SPI_DOT\SPI3_DOT.h
 .\objects\spi3_dot.o: .\src\main\project_config.h
 .\objects\spi3_dot.o: .\src\global_macros\global_macros.h
-.\objects\spi3_dot.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\spi3_dot.o: .\src\main\project_config.h
+.\objects\spi3_dot.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\spi3_dot.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\spi3_dot.o: .\src\cmsis\core_cm4.h
 .\objects\spi3_dot.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,5 +37,7 @@
 .\objects\spi3_dot.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\spi3_dot.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\spi3_dot.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\spi3_dot.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\spi3_dot.o: .\src\main\project_config.h
 .\objects\spi3_dot.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\spi3_dot.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h

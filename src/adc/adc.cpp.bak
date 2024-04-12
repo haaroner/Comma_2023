@@ -1,11 +1,10 @@
 #include "adc.h"
 
 Adc::Adc(ADC_TypeDef* ADCx,
-				 uint8_t numberOfChannels,
-          uint8_t curChannel,          
-				 pin &sig):m_sig(sig)
+          uint8_t curChannel)//,          
+				 //pin &sig):m_sig(sig)
 {
-	m_numberOfChannels = numberOfChannels;
+	m_numberOfChannels = 1;
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
   if(ADCx == ADC1)
@@ -19,7 +18,7 @@ Adc::Adc(ADC_TypeDef* ADCx,
 
 void Adc::adcInit(uint8_t _num_of_cycles)
 {
-	m_sig.pinInit();
+	//m_sig.pinInit();
 	RCC_APB2PeriphClockCmd(m_RCC_APB2Periph_ADCx, ENABLE);
 	ADC_CommonInitTypeDef cADC;
 	cADC.ADC_Mode = ADC_Mode_Independent;

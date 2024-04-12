@@ -14,7 +14,7 @@ namespace Robot
   Motor m3('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);
   Motor m1('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
   Motor m4('B', 10, tim2, CHANNEL3, 'B', 11, tim2, CHANNEL4);
-  motors motors(m1, m2, m3, m4, 100, 15);//1.5
+  motors motors(m1, m2, m3, m4, 100, 5);//1.5
   
   pin spi2_sck('B', 13, spi2);
   pin spi2_mosi('B', 15, spi2);
@@ -29,7 +29,6 @@ namespace Robot
   pin cap_charge('B', 9, write_);
   pin cap_discharge('E', 0, write_);
   pin dribler_control('C', 8, dribler_);
-  pin adc_voltage_pin('C', 5, adc);
   pin ball_sen('A', 7, adc);
     
   pin tssp_write_4('D', 8, write_DOWN);
@@ -41,7 +40,7 @@ namespace Robot
   pin tssp_right_read('C', 2, read_DOWN);  
   
   pin up('B', 5, read_UP);
-  pin reset_gyro('B', 8, read_UP);
+  pin down('B', 8, read_UP);
   pin enter('E', 3, read_UP);
   
   pin spi3_mosi('C', 12, spi3);
@@ -52,7 +51,9 @@ namespace Robot
   pin usart2_rx('D', 6, uart2);
   pin usart2_tx('D', 7, uart2);
   
-  pin Kecker('E', 9, write_);
+  pin Kecker('E', 9, write_DOWN);
+  
+  pin battery_charge('C', 5, adc);
   
   SSD1306 display(3, spi3_dc, spi3_rst, spi3_cs, 1, 1, 1);
     
@@ -67,8 +68,8 @@ namespace Robot
   PID angle_pid(-0.07, -0, 0, 0);
   Queue trajectory;
   
-  Adc test_adc(ADC2, 15);
-  Dma test_dma(test_adc);
+  Adc adc_voltage(ADC2, 1, 15, RCC_APB2Periph_ADC2, battery_charge);
+  Dma dma_voltage(RCC_AHB1Periph_DMA2, adc_voltage);
    
   void init_robot(uint8_t role);
   void callibrate_gyro();
@@ -82,6 +83,7 @@ namespace Robot
   void update();
 
   int a = 0;
+  
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
@@ -129,7 +131,9 @@ namespace Robot
     usart2::usart2Init(230400, 8, 1);//camera
     usart6::usart6Init(115200, 8, 1);//gyro
     
-    test_dma.fullDmaInitForAdc();
+    //adc_voltage.sendMeChannel(15);
+    dma_voltage.dmaInit(DMA2_Stream2, DMA_Channel_1, 1);
+    dma_voltage.adcInitInDma(5);
     #if USE_DISPLAY
       display.begin();
       display.display();
@@ -140,7 +144,7 @@ namespace Robot
     dribler_control.pwm(300);
     time_service::delay_ms(500);
     dribler_control.pwm(200);
-    time_service::delay_ms(500);
+    time_service::delay_ms(1000);
     
     init_timer = time;
     
@@ -158,8 +162,10 @@ namespace Robot
   void check_buttons()
   {
     buttons_data[0] = up.read();
-    buttons_data[1] = reset_gyro.read();
+    buttons_data[1] = GPIOB -> IDR & GPIO_Pin_8; // Idk why standart class reading isnt working on this pin
     buttons_data[2] = enter.read();
+    
+    
     for(int i = 0; i < 3; i++)
     {
       if(buttons_data[i] == 0 && buttons_old_data[i] == 1)//is pressed
@@ -189,11 +195,8 @@ namespace Robot
 
   void change_game_state()
   {
-    //if(is_callibrated)
+    if(is_callibrated)
       _game_state = my_abs(_game_state - 1);
-    callibrate_gyro();
-    control_led(2, ON);
-    time_service::delay_ms(500);
   }
 
   void motors_on_off(bool _state)
@@ -223,8 +226,7 @@ namespace Robot
   
   void set_dribler_speed(uint16_t _speed)
   {
-    if(_speed > 239 && _speed < 271) dribler_speed = _speed;
-    else dribler_speed = _speed;
+    dribler_speed = STOP_DRIBLER_SPEED + constrain(30, 0, _speed);
   }
   
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
@@ -320,7 +322,7 @@ namespace Robot
         else
           display_draw_string("Side  Blue", 0, 1);
         display_draw_string("RUN", 0, 2);
-        display_data("voltage", 7, voltage, 1, 0, 3);
+        display_data("voltage", 7, dma_voltage.dataReturn(0), 1, 0, 3);
         display_draw_string("Test data", 0, 4);
       }
       else if(menu_level == 11)
@@ -381,17 +383,17 @@ namespace Robot
     blinking_durations = blinking_duration;
   }
   
-  void keck(uint8_t _duration = 15)
+  void keck(uint8_t _duration = 10)
   {
     if(_duration > 20) _duration = 20;
     if(time_service::getCurTime() - keck_timer > 700)
     {
-      ENTER_CRITICAL_SECTION();
+      //ENTER_CRITICAL_SECTION();
       Kecker.setBit();
       time_service::delay_ms(_duration);
       Kecker.resetBit();
       keck_timer = time_service::getCurTime();
-      EXIT_CRITICAL_SECTION();
+      //EXIT_CRITICAL_SECTION();
     }
   }
   
@@ -540,7 +542,7 @@ namespace Robot
     return point_distance < 8;
   }
   
-  uint32_t moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
+  bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
   {
     use_trajectory = false;
     _sub_point.x = _x;
@@ -552,18 +554,18 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 8) move_speed = 0;
+    if(_speed == 0 || point_distance < 5) move_speed = 0;
     else if(_speed == -1) move_speed = point_distance * 1.25;
     else move_speed = _speed;
     
-    if(point_distance < 15) move_speed = constrain(8, 0, move_speed);
+    if(point_distance < 15) move_speed = constrain(10, 7, move_speed);
     else move_speed = constrain(_max_speed, _min_speed, move_speed);
     
     moveRobotAbs(move_angle, move_speed);
     
-    if(point_distance > 12) point_reached_timer = time_service::getCurTime();
+    if(point_distance > 6) point_reached_timer = time_service::getCurTime();
     
-    return point_reached_timer;
+    return time_service::getCurTime() - point_reached_timer > 250;
   }
   
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
@@ -619,27 +621,70 @@ namespace Robot
     return camera.is_ball_seen(_T);
   }
   
-  bool side_keck(int16_t _keck_angle, int16_t _keck_speed)
-  {
-    rotateRobot(_keck_speed * (my_abs(gyro - _keck_angle) > 10), _keck_speed);
-    move_speed = 0;
-    side_keck_finished = my_abs(lead_to_degree_borders(gyro - _keck_angle)) < 30;
-    return (my_abs(gyro - _keck_angle)) < 10;
-  }
-  
-  void wait(uint32_t _duration,bool en_rotation = false, int16_t _angle = 0, uint8_t rotation_speed = 10)
+  void wait(uint32_t _duration,bool en_rotation = false, int16_t _angle = 255, uint8_t rotation_speed = 10, int16_t _keck_angle = 255)
   {
     uint32_t _start_time = time_service::getCurTime();
     waiting = true;
     wait_rotating = en_rotation;
     waiting_angle = _angle;
+    int16_t _delta = gyro - _keck_angle;
     while(_start_time + _duration > time_service::getCurTime())
     {
-      if(en_rotation) setAngle(_angle, rotation_speed);
+      if(en_rotation && my_abs(_angle) <= 180) setAngle(_angle, rotation_speed);
+      if((my_abs(gyro - _keck_angle) < 5 || (_delta >= 0 && gyro - _keck_angle < 0))
+        && _keck_angle != 255)
+      {
+        set_dribler_speed(0);
+        wait(7);
+        keck();
+      }
       update();
       time_service::delay_ms(1);
     }
     waiting = false;
+  }
+  
+  void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0)
+  {
+    uint32_t _timeout = 1500;
+    uint32_t _start_tim = time;
+    bool _keck_done = false;
+    if(_start_angle != 255)
+    {
+      while(my_abs(gyro - _start_angle) > 10 && time - _start_tim < _timeout)
+      {
+        setAngle(_start_angle, 6);
+        update();
+      }
+    }
+    wait(250);
+    _start_tim = time;
+    int16_t _delta = gyro - _keck_angle;
+    if(_stop_angle != 255)
+    {
+      while(my_abs(gyro - _stop_angle) > 10 && time - _start_tim < _timeout)
+      {
+        if((my_abs(gyro - _keck_angle) < 5 || 
+          ((_delta >= 0 && lead_to_degree_borders(gyro - _keck_angle < 0)) ||
+          (_delta <= 0 && lead_to_degree_borders(gyro - _keck_angle > 0))))
+          && _keck_angle != 255 && !_keck_done)
+        {
+          set_dribler_speed(0);
+          wait(7);
+          keck(7);
+          _keck_done = true;
+        }
+        Robot::wait(1, true, _stop_angle, _speed, _keck_angle);
+      }
+    }
+  }
+  
+  void direct_keck(uint8_t _stop_dribler_time = 7)
+  {
+    set_dribler_speed(0);
+    wait(_stop_dribler_time);
+    keck(20);
+    wait(50);
   }
   
  void update()
@@ -766,6 +811,7 @@ namespace Robot
         if(my_abs(gyro - waiting_angle) < 10) angular_speed = 0;
       }
     }
+    
     if(motors_state)
     {
       motors.moveRobot(move_speed, 30, move_angle, angular_speed, time, 0);
@@ -777,7 +823,6 @@ namespace Robot
     {
       motors.disableMotors();
       dribler_control.pwm(STOP_DRIBLER_SPEED);
-    }
-    
+    }  
   }
 }

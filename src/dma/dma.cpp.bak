@@ -51,7 +51,7 @@ void Dma::fullDmaInitForAdc()
   else if(_ADCx == ADC2) _dma_channelx = DMA_Channel_1;
   else if(_ADCx == ADC3) _dma_channelx = DMA_Channel_2;
   
-  m_adcx.sendMeChannel(m_adcx.getChannel());
+  m_adcx.sendMeChannel(15);//m_adcx.getChannel());
   dmaInit(_dmax_streamx, _dma_channelx, 1);
   adcInitInDma(5);
 }

@@ -4,8 +4,7 @@
 .\objects\main.o: .\src\main\libs.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\global_macros\global_macros.h
-.\objects\main.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\main.o: .\src\main\project_config.h
+.\objects\main.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\main.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\main.o: .\src\cmsis\core_cm4.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -40,6 +39,8 @@
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\main.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: .\src\pin_setup\pin_setup.h

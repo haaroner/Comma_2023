@@ -173,7 +173,7 @@ pin::pin(char pin_gpio, uint8_t pin_num, uint16_t function)
 		_pupdGpio = GPIO_PuPd_NOPULL;
     _AFGPIO = GPIO_AF_TIM3;
     pin::pinInit();
-    pin::pwmInit(RCC_APB1ENR_TIM3EN, 840, 4000, 0, 4, TIM3, 1);
+    pin::pwmInit(RCC_APB1ENR_TIM3EN, 840, 4000, 0, 3, TIM3, 1);
   }
   if(function != dribler_) pin::pinInit();
 }
@@ -202,6 +202,7 @@ void pin::pinInit()
 	{
 		GPIO_PinAFConfig(_GPIOx,_pinSourceGPIO, _AFGPIO);
 	}		
+  ADC_RegularChannelConfig
 }
 
 void pin::setBit()
@@ -230,6 +231,11 @@ uint8_t pin::read()
 GPIO_TypeDef* pin::getGPIOx()
 {
 	return _GPIOx;
+}
+
+uint8_t pin::abvgd()
+{
+  return getGPIOx() -> IDR;
 }
 	
 uint16_t pin::getPinNumber()

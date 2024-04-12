@@ -2,8 +2,7 @@
 .\objects\usart6.o: src\UART\usart6\usart6.h
 .\objects\usart6.o: .\src\main\project_config.h
 .\objects\usart6.o: .\src\global_macros\global_macros.h
-.\objects\usart6.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\usart6.o: .\src\main\project_config.h
+.\objects\usart6.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\usart6.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\usart6.o: .\src\cmsis\core_cm4.h
 .\objects\usart6.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,5 +37,7 @@
 .\objects\usart6.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\usart6.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\usart6.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\usart6.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\usart6.o: .\src\main\project_config.h
 .\objects\usart6.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\usart6.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h

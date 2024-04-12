@@ -996,16 +996,16 @@ void SystemInit_ExtMemCtl(void)
         RCC->CFGR |= RCC_CFGR_SW_PLL;
         
         // Ждём успешного переключения на PLL
-//        bool isPll;
-//        do
-//        {
-//            // Читаем SWS
-//            uint32_t sws = RCC->CFGR;
-//            sws &= 0x0000000C;
-//            sws >>= 2;
-//            isPll = ( sws == 2 );
-//        }
-//        while (!isPll);
+        bool isPll;
+        do
+        {
+            // Читаем SWS
+            uint32_t sws = RCC->CFGR;
+            sws &= 0x0000000C;
+            sws >>= 2;
+            isPll = ( sws == 2 );
+        }
+        while (!isPll);
     }
 #endif /* USE_HSE */
 ////////////////////////////////////////////////////////////////////////////////

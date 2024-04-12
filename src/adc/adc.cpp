@@ -1,24 +1,21 @@
 #include "adc.h"
 
 Adc::Adc(ADC_TypeDef* ADCx,
-          uint8_t curChannel)//,          
-				 //pin &sig):m_sig(sig)
+				 uint8_t numberOfChannels,
+          uint8_t curChannel,          
+				 uint32_t RCC_APB2Periph_ADCx,
+				 pin &sig):m_sig(sig)
 {
-	m_numberOfChannels = 1;
+	m_numberOfChannels = numberOfChannels;
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
-  if(ADCx == ADC1)
-    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC1;
-  else if(ADCx == ADC2)
-    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC2;
-  else if(ADCx == ADC3)
-    m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC3;
+	m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADCx;
   cur = 1;
 }
 
 void Adc::adcInit(uint8_t _num_of_cycles)
 {
-	//m_sig.pinInit();
+	m_sig.pinInit();
 	RCC_APB2PeriphClockCmd(m_RCC_APB2Periph_ADCx, ENABLE);
 	ADC_CommonInitTypeDef cADC;
 	cADC.ADC_Mode = ADC_Mode_Independent;
@@ -69,11 +66,6 @@ void Adc::setChannel()
 ADC_TypeDef* Adc::getAdc()
 {
 	return m_ADCx;
-}
-
-uint8_t Adc::getChannel()
-{
-  return m_curChannel;
 }
 
 void Adc::adcDmaInit()

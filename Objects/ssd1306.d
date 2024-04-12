@@ -3,8 +3,7 @@
 .\objects\ssd1306.o: .\src\SPI_DOT\SPI3_DOT.h
 .\objects\ssd1306.o: .\src\main\project_config.h
 .\objects\ssd1306.o: .\src\global_macros\global_macros.h
-.\objects\ssd1306.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\ssd1306.o: .\src\main\project_config.h
+.\objects\ssd1306.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\ssd1306.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\ssd1306.o: .\src\cmsis\core_cm4.h
 .\objects\ssd1306.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -39,6 +38,8 @@
 .\objects\ssd1306.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\ssd1306.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\ssd1306.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\ssd1306.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\ssd1306.o: .\src\main\project_config.h
 .\objects\ssd1306.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\ssd1306.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\ssd1306.o: src\Display\SSD1306\SSD1306.h

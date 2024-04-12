@@ -2,8 +2,7 @@
 .\objects\voltmeter.o: src\voltmeter\voltmeter.h
 .\objects\voltmeter.o: .\src\main\project_config.h
 .\objects\voltmeter.o: .\src\global_macros\global_macros.h
-.\objects\voltmeter.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\voltmeter.o: .\src\main\project_config.h
+.\objects\voltmeter.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\voltmeter.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\voltmeter.o: .\src\cmsis\core_cm4.h
 .\objects\voltmeter.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,6 +37,8 @@
 .\objects\voltmeter.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\voltmeter.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\voltmeter.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\voltmeter.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\voltmeter.o: .\src\main\project_config.h
 .\objects\voltmeter.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\voltmeter.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\voltmeter.o: .\src\pin_setup\pin_setup.h

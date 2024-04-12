@@ -2,8 +2,7 @@
 .\objects\motor.o: src\motor\motor.h
 .\objects\motor.o: .\src\main\project_config.h
 .\objects\motor.o: .\src\global_macros\global_macros.h
-.\objects\motor.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\motor.o: .\src\main\project_config.h
+.\objects\motor.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\motor.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\motor.o: .\src\cmsis\core_cm4.h
 .\objects\motor.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,6 +37,8 @@
 .\objects\motor.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\motor.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\motor.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\motor.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\motor.o: .\src\main\project_config.h
 .\objects\motor.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\motor.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\motor.o: .\src\pin_setup\pin_setup.h

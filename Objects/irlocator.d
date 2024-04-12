@@ -2,8 +2,7 @@
 .\objects\irlocator.o: .\src\IRLocator\IRlocator.h
 .\objects\irlocator.o: .\src\main\project_config.h
 .\objects\irlocator.o: .\src\global_macros\global_macros.h
-.\objects\irlocator.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\irlocator.o: .\src\main\project_config.h
+.\objects\irlocator.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\irlocator.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\irlocator.o: .\src\cmsis\core_cm4.h
 .\objects\irlocator.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,6 +37,8 @@
 .\objects\irlocator.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\irlocator.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\irlocator.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\irlocator.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\irlocator.o: .\src\main\project_config.h
 .\objects\irlocator.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\irlocator.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\irlocator.o: .\src\pin_setup\pin_setup.h

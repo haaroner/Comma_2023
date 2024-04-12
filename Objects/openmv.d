@@ -2,8 +2,7 @@
 .\objects\openmv.o: src\OpenMV\OpenMV.h
 .\objects\openmv.o: .\src\main\project_config.h
 .\objects\openmv.o: .\src\global_macros\global_macros.h
-.\objects\openmv.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\openmv.o: .\src\main\project_config.h
+.\objects\openmv.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\openmv.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\openmv.o: .\src\cmsis\core_cm4.h
 .\objects\openmv.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,6 +37,8 @@
 .\objects\openmv.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\openmv.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\openmv.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\openmv.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\openmv.o: .\src\main\project_config.h
 .\objects\openmv.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\openmv.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
 .\objects\openmv.o: .\src\UART\usart2\usart2.h

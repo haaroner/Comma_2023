@@ -2,8 +2,7 @@
 .\objects\time_service.o: src\time_service\time_service.h
 .\objects\time_service.o: .\src\main\project_config.h
 .\objects\time_service.o: .\src\global_macros\global_macros.h
-.\objects\time_service.o: .\src\global_macros\stm32f4xx_global_macros.h
-.\objects\time_service.o: .\src\main\project_config.h
+.\objects\time_service.o: .\src\spl4\inc\stm32f4xx_rcc.h
 .\objects\time_service.o: .\src\support_pacage\inc\stm32f4xx.h
 .\objects\time_service.o: .\src\cmsis\core_cm4.h
 .\objects\time_service.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\stdint.h
@@ -38,5 +37,7 @@
 .\objects\time_service.o: .\src\spl4\inc\stm32f4xx_dac.h
 .\objects\time_service.o: .\src\spl4\inc\stm32f4xx_dcmi.h
 .\objects\time_service.o: .\src\spl4\inc\stm32f4xx_fsmc.h
+.\objects\time_service.o: .\src\global_macros\stm32f4xx_global_macros.h
+.\objects\time_service.o: .\src\main\project_config.h
 .\objects\time_service.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\time_service.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
