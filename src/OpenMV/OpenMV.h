@@ -44,6 +44,7 @@ class camera
 
 	private:
     bool _camera_pos;
+    polar_vector get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y);
 		int8_t sign;
 		pin m_rx, m_tx;
 		uint8_t camera_data;

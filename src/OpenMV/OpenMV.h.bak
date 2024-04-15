@@ -5,6 +5,7 @@
 #include "tools.h"
 #include "time_service.h"
 #include "math.h"
+#include "robot_math.h"
 
 enum camera_pos
 {
@@ -53,6 +54,7 @@ class camera
     int _blue_distance;
 		volatile int _blue_angle;
     int _ball_angle;
+    int _ball_loc_angle;
     int _abs_ball_angle;
     int _ball_distance;
     int _ball_loc_x, _ball_loc_y;

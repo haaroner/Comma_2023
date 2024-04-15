@@ -13,6 +13,21 @@ uint8_t camera::crc8(uint8_t* data, int len)
     return crc;
 }
 
+polar_vector camera::get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _point_x, int16_t _point_y)
+{
+  int32_t _x_result = _point_x - _robot_x;
+  int32_t _y_result = _point_y - _robot_y;
+  
+  if(_x_result == 0) _x_result = 1;
+  if(_y_result == 0) _y_result = 1;
+  
+  struct polar_vector result;
+  result.angle = atan2(double(_x_result), double(_y_result)) * RAD2DEG;
+  result.length = sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
+  
+  return result;
+}
+
 //uint16_t camera::lead_to_degree_borders(int num)
 //{
 //    if (num > 360)
@@ -125,7 +140,6 @@ void camera::calculate_pos(int16_t angle, bool side)
   _blue_angle = _blue_angle + angle;
   _yellow_angle = lead_to_degree_borders(_yellow_angle);
   _blue_angle = lead_to_degree_borders(_blue_angle);
-  _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
   if(_received)
   {
     //angle = lead_to_degree_borders(angle);
@@ -218,6 +232,8 @@ void camera::calculate_pos(int16_t angle, bool side)
     {
      // _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
       
+      _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
+      
       _ball_loc_x = sinf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       _ball_loc_y = cosf(_abs_ball_angle * DEG2RAD) * _ball_distance;
       
@@ -236,9 +252,15 @@ void camera::calculate_pos(int16_t angle, bool side)
       _ball_loc_y = int(ceil(double(_ball_loc_y)));
       
       _ball_abs_x = _x + _ball_loc_x;
-      _ball_abs_y = _y + _ball_loc_y;
-      
+      _ball_abs_y = _y + _ball_loc_y;     
     }
+//    else
+//    {
+//      _abs_ball_angle = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).angle;
+//      _ball_distance = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).length;
+//      _ball_angle = lead_to_degree_borders(_abs_ball_angle - angle);
+//    }
+    
     if(time_service::getCurTime() - _ball_d_timer > 100)
     {
       _dbx = _ball_abs_x - _old_x;

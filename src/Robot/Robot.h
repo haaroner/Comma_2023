@@ -212,7 +212,7 @@ namespace Robot
     //mpu.calibrate(1000);
     //mpu.setZeroAngle();
     while(usart6::available() == 0);
-    gyro_zero_angle = lead_to_degree_borders((usart6::read() * 1.411));
+    gyro_zero_angle = lead_to_degree_borders((usart6::read() * 2));
     control_led(2, OFF);
    // motors_on_off(OFF);
     is_callibrated = true;
@@ -480,7 +480,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 15, int16_t _min_speed = 7)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 22, int16_t _min_speed = 11)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -494,7 +494,7 @@ namespace Robot
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
-    if(_speed == 0 || point_distance < 8) move_speed = 0;
+    if(_speed == 0 || point_distance < 7) move_speed = 0;
     else if(_speed == -1)
     {
       if(use_trajectory)
@@ -529,7 +529,7 @@ namespace Robot
         }
         if(_angle == -255)
         {
-          setAngle(_point.angle, 25);
+          setAngle(_point.angle, 4);
         }
       }
       else
@@ -539,7 +539,11 @@ namespace Robot
     
     moveRobotAbs(move_angle, move_speed);
     
-    return point_distance < 8;
+    if(point_distance > 6) point_reached_timer = time_service::getCurTime();
+    
+    point_reached = time_service::getCurTime() - point_reached_timer > 250;
+    
+    return time_service::getCurTime() - point_reached_timer > 250;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
@@ -683,7 +687,7 @@ namespace Robot
   {
     set_dribler_speed(0);
     wait(_stop_dribler_time);
-    keck(20);
+    keck(20); 
     wait(50);
   }
   
@@ -695,7 +699,7 @@ namespace Robot
     
     //mpu.update();
    if(usart6::available() > 0)
-   gyro = lead_to_degree_borders((usart6::read() * 1.411) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
+   gyro = lead_to_degree_borders((usart6::read() * 2) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
     
    // ball.get_data();
     //ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
@@ -773,9 +777,11 @@ namespace Robot
         start_trajectory.y = robot_y;
         start_trajectory_vector.angle = move_angle;
         start_trajectory_vector.length = move_speed;
+        point_reached = false;
+        point_reached_timer = time_service::getCurTime();
       }
       //if distance less than const
-      if(getDistanceToPoint(robot_move.x, robot_move.y) < 8 && trajectory.get_length() > 0)
+      if(point_reached && trajectory.get_length() > 0)
       {
         robot_move = trajectory.pop();
         moving_point[0] = robot_move.x;
@@ -784,9 +790,11 @@ namespace Robot
         start_trajectory.y = robot_y;
         start_trajectory_vector.angle = move_angle;
         start_trajectory_vector.length = move_speed;
+        point_reached = false;
+        point_reached_timer = time_service::getCurTime();
       }
       
-      if(getDistanceToPoint(robot_move.x, robot_move.y) < 8  && trajectory.get_length() <= 0)
+      if(point_reached  && trajectory.get_length() <= 0)
       {
         trajectory_finished = true;
         trajectory_is_in_progress = false;
@@ -796,8 +804,7 @@ namespace Robot
         trajectory_finished = false;
         trajectory_is_in_progress = true;
       }
-      if(getDistanceToPoint(robot_move.x, robot_move.y) > 12)
-        point_reached = moveToPoint(robot_move, -1);     
+      moveToPoint(robot_move, -1);     
     }
     else
       trajectory_is_in_progress = false;

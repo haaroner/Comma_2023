@@ -3,11 +3,11 @@
 #pragma once
 
 #define OTLADKA 0
-#define USE_DISPLAY true
+#define USE_DISPLAY false
 #define USE_DRIBLER true
 #define USE_FRONT_CAMERA false
 
-#define STOP_DRIBLER_SPEED 250
+#define STOP_DRIBLER_SPEED 260
 #define GRAB_DRIBLER_SPEED 20
 #define DRIBLER_REVERSE_KICK_SPEED 0
 #define DRIBLER_KICKING_SPEED 0
