@@ -195,9 +195,9 @@ void camera::calculate_pos(int16_t angle, bool side)
     _forward_sin = sin(double(_front_angle) / 57.3);
     _backward_sin = sin(double(_backward_angle) / 57.3);
 
-    if(_state == 0)
+    if(_state == 0 || _backward_distance < 90)
       _x = _backward_distance * _backward_sin;
-    else if(_state == 2)
+    else if(_state == 2 || _front_distance < 90)
       _x = _front_distance * _forward_sin;
     else if(_state == 1)
       _x = (_front_distance * _forward_sin + _backward_distance * _backward_sin) / 2;

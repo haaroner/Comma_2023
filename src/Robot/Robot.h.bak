@@ -14,7 +14,7 @@ namespace Robot
   Motor m3('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);
   Motor m1('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
   Motor m4('B', 10, tim2, CHANNEL3, 'B', 11, tim2, CHANNEL4);
-  motors motors(m1, m2, m3, m4, 100, 5);//1.5
+  motors motors(m1, m2, m3, m4, 100, 2);//1.5
   
   pin spi2_sck('B', 13, spi2);
   pin spi2_mosi('B', 15, spi2);
@@ -87,7 +87,8 @@ namespace Robot
   
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
-    old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0;
+    old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0, 
+    dribler_speed_change_speed = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -106,6 +107,10 @@ namespace Robot
   
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
+  
+  uint16_t change_speed_time = 25;
+  
+  uint8_t cur_dribler_speed = 0;
   
   volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
@@ -226,7 +231,17 @@ namespace Robot
   
   void set_dribler_speed(uint16_t _speed)
   {
-    dribler_speed = STOP_DRIBLER_SPEED + constrain(30, 0, _speed);
+    _speed = constrain(30, 0, _speed);
+    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || _speed == 0)
+    {
+      if(my_abs(_speed - dribler_speed) <= 2 || _speed == 0) cur_dribler_speed = _speed;
+      else
+      {
+        cur_dribler_speed += 2 * my_sgn(_speed - cur_dribler_speed);
+      }
+      dribler_speed = STOP_DRIBLER_SPEED + constrain(30, 0, cur_dribler_speed);
+      dribler_speed_change_speed = time_service::getCurTime();
+    }
   }
   
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
@@ -440,6 +455,7 @@ namespace Robot
   uint8_t enable_trajectory(bool _state)
   {
     use_trajectory = _state;
+    if(!_state) trajectory.clear();
     if(_state) trajectory_finished = false;
   }
   
@@ -480,7 +496,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 17, int16_t _min_speed = 9)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 22, int16_t _min_speed = 11)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -537,7 +553,7 @@ namespace Robot
     }
     else move_speed = _speed;
     
-    moveRobotAbs(move_angle, move_speed);
+    moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     
     if(point_distance > 6) point_reached_timer = time_service::getCurTime();
     

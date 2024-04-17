@@ -195,9 +195,9 @@ void camera::calculate_pos(int16_t angle, bool side)
     _forward_sin = sin(double(_front_angle) / 57.3);
     _backward_sin = sin(double(_backward_angle) / 57.3);
 
-    if(_state == 0)
+    if(_state == 0 || _backward_distance < 70)
       _x = _backward_distance * _backward_sin;
-    else if(_state == 2)
+    else if(_state == 2 || _front_distance < 70)
       _x = _front_distance * _forward_sin;
     else if(_state == 1)
       _x = (_front_distance * _forward_sin + _backward_distance * _backward_sin) / 2;
@@ -254,12 +254,12 @@ void camera::calculate_pos(int16_t angle, bool side)
       _ball_abs_x = _x + _ball_loc_x;
       _ball_abs_y = _y + _ball_loc_y;     
     }
-    else
-    {
-      _abs_ball_angle = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).angle;
-      _ball_distance = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).length;
-      _ball_angle = lead_to_degree_borders(_abs_ball_angle - angle);
-    }
+//    else
+//    {
+//      _abs_ball_angle = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).angle;
+//      _ball_distance = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).length;
+//      _ball_angle = lead_to_degree_borders(_abs_ball_angle - angle);
+//    }
     
     if(time_service::getCurTime() - _ball_d_timer > 100)
     {

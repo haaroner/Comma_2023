@@ -27,7 +27,37 @@ Project File Date:  04/13/2024
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\keil\sys_files\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\aaa.axf" - 0 Error(s), 0 Warning(s).
+compiling main.cpp...
+.\src\robot_math\robot_math.h(149): warning:  #1-D: last line of file ends without a newline
+  }
+.\src\adc\adc.h(28): warning:  #1-D: last line of file ends without a newline
+  };
+.\src\dma\dma.h(16): warning:  #1-D: last line of file ends without a newline
+  };
+.\src\flashka\flashka.h(19): warning:  #111-D: statement is unreachable
+    FLASH_Lock();
+.\src\Display\SSD1306\SSD1306.h(155): warning:  #1-D: last line of file ends without a newline
+  #endif
+.\src\Display\font.h(1598): warning:  #1-D: last line of file ends without a newline
+  #endif
+.\src\main\libs.h(28): warning:  #1-D: last line of file ends without a newline
+  #include "dribler.h"
+.\src\Robot\Robot.h(460): warning:  #940-D: missing return statement at end of non-void function "Robot::enable_trajectory" 
+    }
+.\src\Robot\Robot.h(502): warning:  #550-D: variable "start_point_distance"  was set but never used
+      int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
+main.cpp(121): warning:  #177-D: variable "max_robotx"  was declared but never referenced
+          int16_t max_robotx[2] = {87, -72};
+.\src\Display\font.h(1499): warning:  #186-D: pointless comparison of unsigned integer with zero
+  	if (x < 0)
+          detected during:
+            instantiation of "char *toPrint(T, short) [with T=unsigned short]"  at line 1591
+            instantiation of "void printTml(SSD1306 &, T, int, int, int) [with T=unsigned short]"  at line 264 of ".\src\Robot\Robot.h"
+            instantiation of "void Robot::display_data(const char *, unsigned int, N, unsigned int, unsigned int, unsigned int) [with N=unsigned short]"  at line 340 of ".\src\Robot\Robot.h"
+main.cpp: 11 warnings, 0 errors
+linking...
+Program Size: Code=50224 RO-data=3164 RW-data=8728 ZI-data=11744  
+".\Objects\aaa.axf" - 0 Error(s), 11 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -40,7 +70,7 @@ Package Vendor: Keil
   D:\keil\pack_folder\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
