@@ -4,7 +4,7 @@
 
 #define OTLADKA 0
 #define USE_DISPLAY true
-#define USE_DRIBLER true
+#define USE_DRIBLER false
 #define USE_FRONT_CAMERA false
 
 #define STOP_DRIBLER_SPEED 260

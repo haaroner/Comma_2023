@@ -3,7 +3,7 @@
 #pragma once
 
 #define OTLADKA 0
-#define USE_DISPLAY false
+#define USE_DISPLAY true
 #define USE_DRIBLER true
 #define USE_FRONT_CAMERA false
 

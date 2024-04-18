@@ -88,7 +88,7 @@ namespace Robot
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
     old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0, 
-    dribler_speed_change_speed = 0;
+    dribler_speed_change_speed = 0, ball_grab_timer = 0;;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -111,6 +111,8 @@ namespace Robot
   uint16_t change_speed_time = 25;
   
   uint8_t cur_dribler_speed = 0;
+  
+  bool _use_dribler = false;
   
   volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
@@ -144,12 +146,14 @@ namespace Robot
       display.display();
     #endif
     
-    dribler_control.pwm(200);
-    time_service::delay_ms(500);
-    dribler_control.pwm(300);
-    time_service::delay_ms(500);
-    dribler_control.pwm(200);
-    time_service::delay_ms(1000);
+    #if USE_DRIBLER
+      dribler_control.pwm(200);
+      time_service::delay_ms(500);
+      dribler_control.pwm(300);
+      time_service::delay_ms(500);
+      dribler_control.pwm(200);
+      time_service::delay_ms(1000);
+    #endif
     
     init_timer = time;
     
@@ -162,6 +166,11 @@ namespace Robot
     
     //mpu.init();
     //mpu.update();
+  }
+  
+  void use_dribler(bool _data)
+  {
+    _use_dribler = _data;
   }
   
   void check_buttons()
@@ -707,6 +716,12 @@ namespace Robot
     wait(50);
   }
   
+  bool is_ball_captured(uint16_t wait_duration = 2000)
+  {
+    if((ball_distance > 20 || my_abs(ball_loc_angle) > 20) && (Robot::is_ball_seen_T(75))) ball_grab_timer = time;
+    return time - ball_grab_timer > wait_duration;
+  }
+  
  void update()
  {
     old_time = time;
@@ -753,7 +768,8 @@ namespace Robot
     forward_distance = camera.get_forward_distance();
     backward_angle = camera.get_backward_angle();
     backward_distance = camera.get_backward_distance();
-//    
+    
+    is_ball_captured();
 //    voltage = test_dma.dataReturn(0);
     #if USE_DISPLAY
       draw_menu();
@@ -838,14 +854,25 @@ namespace Robot
     if(motors_state)
     {
       motors.moveRobot(move_speed, 30, move_angle, angular_speed, time, 0);
-      dribler_control.pwm(dribler_speed);
+      #if USE_DRIBLER
+      if(_use_dribler)
+        dribler_control.pwm(dribler_speed);
+      else
+        dribler_control.pwm(STOP_DRIBLER_SPEED);
+      #else
+        dribler_control.pwm(0);
+      #endif
 //      if(dribler_speed < 300 && dribler_speed >= 200) //unnecessary if will delete it later haha 
 //        dribler_control.pwm(dribler_speed);
     }
     else
     {
       motors.disableMotors();
-      dribler_control.pwm(STOP_DRIBLER_SPEED);
+      #if USE_DRIBLER
+        dribler_control.pwm(STOP_DRIBLER_SPEED);
+      #else
+        dribler_control.pwm(0);
+      #endif
     }  
   }
 }
