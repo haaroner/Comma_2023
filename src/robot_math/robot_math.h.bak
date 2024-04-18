@@ -8,7 +8,7 @@
 #define RAD2DEG	57.2957795130823208767
 #define DEG2RAD	0.01745329251994329576
 
-int ang_result = 0, len_result = 0;
+int ang_result = 0, len_result = 0, result = 0;
 int x1 = 0, x2 = 0, y1 = 0, y2 = 0, _x_result = 0, _y_result = 0, x3, t;
 
 double convert_data(double max, double data)
@@ -41,7 +41,7 @@ int my_abs(int _num)
   return int(abs(double(_num)));
 }
 
-double my_pow(int _num, int _exp)
+double my_pow(float _num, float _exp)
 {
   return double(pow(double(_num), double(_exp)));
 }
@@ -137,3 +137,13 @@ void calculate_angle_near_side_out(int16_t robot_x, int16_t angle, double speed,
 
 }
 
+int map(int num, int min1, int max1, int min2, int max2)
+{
+  int len1 = max1 - min1, len2 = max2 - min2;
+  double k12 = len2 / len1;
+  result = ((num - min1) * k12) + min2;
+  return result;
+
+  
+  
+}

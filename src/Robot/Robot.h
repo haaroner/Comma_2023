@@ -124,6 +124,7 @@ namespace Robot
   float k_dSSoft = 0.1;
   
   struct point robot_position, robot_move, _sub_point, start_trajectory;
+  point predicted_point;
   struct polar_vector start_trajectory_vector;
   
   void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
@@ -607,15 +608,17 @@ namespace Robot
   {
    _alpha = atan2(_dxb, _dyb);
     
-   if(_dSSoft > 90 && _dyb > 35)
+   if(_dSSoft > 50 && _dyb > 20)
    {
      _y1b = ball_abs_y - 37;
      _x1b = tan(_alpha) * _y1b;
      if(my_abs(_x1b + camera.get_old_b_x()) < 45)
      {
       _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
-      _defender_predicted_y = 37;
+      _defender_predicted_y = 35;
       prediction_timer = time_service::getCurTime();
+      predicted_point.x = _defender_predicted_x;
+      predicted_point.y = _defender_predicted_y;
       return true;
      }
      else
@@ -623,7 +626,9 @@ namespace Robot
        if(time - prediction_timer < 2000)
        {
          _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
-         _defender_predicted_y = 37;
+         _defender_predicted_y = 35;
+         predicted_point.x = _defender_predicted_x;
+         predicted_point.y = _defender_predicted_y;
          return true;
        }
      }
@@ -632,12 +637,14 @@ namespace Robot
    {
      if(time - prediction_timer < 2000)
      {
-       _y1b = ball_abs_y - 37;
+       _y1b = ball_abs_y - 35;
        _x1b = tan(_alpha) * _y1b;
        if(my_abs(_x1b + camera.get_old_b_x()) < 45)
        {
         _defender_predicted_x = _x1b * 1.3 + camera.get_old_b_x();
-        _defender_predicted_y = 37;
+        _defender_predicted_y = 35;
+        predicted_point.x = _defender_predicted_x;
+        predicted_point.y = _defender_predicted_y;
         return true;
        }
      }

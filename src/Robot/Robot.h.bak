@@ -88,7 +88,7 @@ namespace Robot
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
     old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0, 
-    dribler_speed_change_speed = 0;
+    dribler_speed_change_speed = 0, ball_grab_timer = 0;;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -124,6 +124,7 @@ namespace Robot
   float k_dSSoft = 0.1;
   
   struct point robot_position, robot_move, _sub_point, start_trajectory;
+  point predicted_point;
   struct polar_vector start_trajectory_vector;
   
   void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
@@ -716,6 +717,12 @@ namespace Robot
     wait(50);
   }
   
+  bool is_ball_captured(uint16_t wait_duration = 2000)
+  {
+    if((ball_distance > 20 || my_abs(ball_loc_angle) > 20) && (Robot::is_ball_seen_T(75))) ball_grab_timer = time;
+    return time - ball_grab_timer > wait_duration;
+  }
+  
  void update()
  {
     old_time = time;
@@ -762,7 +769,8 @@ namespace Robot
     forward_distance = camera.get_forward_distance();
     backward_angle = camera.get_backward_angle();
     backward_distance = camera.get_backward_distance();
-//    
+    
+    is_ball_captured();
 //    voltage = test_dma.dataReturn(0);
     #if USE_DISPLAY
       draw_menu();

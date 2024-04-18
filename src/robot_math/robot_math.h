@@ -41,7 +41,7 @@ int my_abs(int _num)
   return int(abs(double(_num)));
 }
 
-double my_pow(int _num, int _exp)
+double my_pow(double _num, double _exp)
 {
   return double(pow(double(_num), double(_exp)));
 }
