@@ -41,6 +41,7 @@ class camera
     int get_dby();
     bool is_first_data_received();
     bool is_ball_seen(uint16_t _dT = 1000);
+    uint32_t get_ball_seen_time();
 
 	private:
     bool _camera_pos;
@@ -67,7 +68,7 @@ class camera
     int _center_angle;
     int _x, _y;
     int _old_x, _old_y;
-    int _dbx, _dby;
+    volatile int _dbx, _dby;
     int _x_centered, _y_centered;
     int _center_y;
     double _forward_sin, _backward_sin;
@@ -92,6 +93,6 @@ class camera
     int _dS, _dSSoft;
     float _robot_k, k_dSSoft;
     float _robot_x_soft, _robot_y_soft;
-    
+    double _gates_average_k;    
     uint8_t _length_between_gates;
 };

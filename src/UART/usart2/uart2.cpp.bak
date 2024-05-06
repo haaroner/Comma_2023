@@ -9,7 +9,7 @@ extern "C"
 		{
 			usart2::rx[usart2::_rxCnt] = USART2->DR;
 			usart2::_rxCnt++;
-			if(usart2::_rxCnt == 16)
+			if(usart2::_rxCnt == 25)
 			{
 				usart2::_rxCnt = 0;
 			}
@@ -21,7 +21,7 @@ extern "C"
 			{
 				(USART2->DR) = usart2::tx[usart2::_sendCnt];
 				usart2::_sendCnt++;
-				if(usart2::_sendCnt == 16)
+				if(usart2::_sendCnt == 25)
 				{
 					usart2::_sendCnt = 0;
 				}
@@ -41,8 +41,8 @@ extern "C"
 
 namespace usart2
 {
-  volatile uint8_t tx[16];
-  volatile uint8_t rx[16];
+  volatile uint8_t tx[25];
+  volatile uint8_t rx[25];
   volatile uint16_t _rxCnt;
   volatile uint16_t _txCnt;
   volatile bool flag;
@@ -89,7 +89,7 @@ namespace usart2
 		ENTER_CRITICAL_SECTION();
 		dt = rx[_readCnt];
 		_readCnt++;
-		if(_readCnt == 16)
+		if(_readCnt == 25)
 		{
 		 _readCnt = 0;
 		}
@@ -113,7 +113,7 @@ namespace usart2
 		{
 		 tx[_txCnt] = _byte;
 		 _txCnt++;
-		 if(_txCnt == 16)
+		 if(_txCnt == 25)
 		 {
 		 _txCnt = 0;
 		 }

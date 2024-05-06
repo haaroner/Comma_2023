@@ -22,7 +22,10 @@ namespace Robot
   pin spi2_ck('B', 12, write_DOWN);
   
   pin usart6_tx('C', 6,  uart6);	
-  pin usart6_rx('C', 7,  uart6);    
+  pin usart6_rx('C', 7,  uart6);   
+
+  pin usart1_tx('B', 6, uart1);
+  pin usart1_rx('B', 7, uart1);
     
   pin motors_move('B', 1, read_UP);
   pin gyro_reset('B', 0, read_UP);	
@@ -88,7 +91,8 @@ namespace Robot
   volatile uint32_t time, button_timers[3], blinking_timer = 0, blinking_durations,
     init_timer = 0, display_timer = 0, voltage = 0, loop_delay = 0, 
     old_time = 0, prediction_timer = 0, keck_timer = 0, point_reached_timer = 0, 
-    dribler_speed_change_speed = 0, ball_grab_timer = 0;;
+    dribler_speed_change_speed = 0, ball_grab_timer = 0, 
+    bluetooth_send_timer = 0, bluetooth_receive_time = 0;
   
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
@@ -98,8 +102,10 @@ namespace Robot
   
   volatile int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
-  _dS = 0,_dSSoft = 0, _x1b = 0, _y1b = 0, _defender_predicted_x = 0,
-  _defender_predicted_y = 0, display_data_1 = 0, display_data_2 = 0, display_delay_update_time = 30;
+    ball_bluetooth_x = 0, ball_bluetooth_y = 0, _dS = 0,_dSSoft = 0, 
+    _x1b = 0, _y1b = 0, _defender_predicted_x = 0, 
+    _defender_predicted_y = 0, display_data_1 = 0, display_data_2 = 0,
+    display_delay_update_time = 30;
   
   double _dxb = 0, _dyb = 0;
   
@@ -136,6 +142,7 @@ namespace Robot
     
     control_led(0, OFF);
     
+    usartik1::usart1Init(9600, 8, 1);//bluetooth
     usart2::usart2Init(230400, 8, 1);//camera
     usart6::usart6Init(115200, 8, 1);//gyro
     
@@ -167,6 +174,16 @@ namespace Robot
     
     //mpu.init();
     //mpu.update();
+  }
+  
+  void send_bluetooth_data(int _num1, int _num2)
+  {
+    usartik1::abcde(255);
+    _num1 = constrain(255, 0, int((_num1 / 2) + 50));
+    _num2 = constrain(255, 0, int((_num2 / 2) + 50));
+    usartik1::abcde(_num1);
+    usartik1::abcde(_num2);
+    return;
   }
   
   void use_dribler(bool _data)
@@ -241,7 +258,7 @@ namespace Robot
   
   void set_dribler_speed(uint16_t _speed)
   {
-    _speed = constrain(30, 0, _speed);
+    _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
     if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || _speed == 0)
     {
       if(my_abs(_speed - dribler_speed) <= 2 || _speed == 0) cur_dribler_speed = _speed;
@@ -249,7 +266,7 @@ namespace Robot
       {
         cur_dribler_speed += 2 * my_sgn(_speed - cur_dribler_speed);
       }
-      dribler_speed = STOP_DRIBLER_SPEED + constrain(30, 0, cur_dribler_speed);
+      dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, cur_dribler_speed);
       dribler_speed_change_speed = time_service::getCurTime();
     }
   }
@@ -461,6 +478,10 @@ namespace Robot
     trajectory.push(_point);
   }
   
+  void add_stop_to_route(point _point, int _angle = 0) //:)
+  {
+    trajectory.push(_point);
+  }
   
   uint8_t enable_trajectory(bool _state)
   {
@@ -506,7 +527,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 22, int16_t _min_speed = 11)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 17)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -567,9 +588,9 @@ namespace Robot
     
     if(point_distance > 6) point_reached_timer = time_service::getCurTime();
     
-    point_reached = time_service::getCurTime() - point_reached_timer > 250;
+    point_reached = time_service::getCurTime() - point_reached_timer > 100;
     
-    return time_service::getCurTime() - point_reached_timer > 250;
+    return time_service::getCurTime() - point_reached_timer > 100;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
@@ -604,52 +625,74 @@ namespace Robot
     max_angular_speed = _max_angular_speed;
   }
   
-  bool predict()
+//  bool predict()
+//  {
+//   _alpha = atan2(_dxb, _dyb);
+//   
+//   if(_dSSoft > 70 && _dyb > 20)
+//   {
+//     _y1b = ball_abs_y - 37;
+//     _x1b = tan(_alpha) * _y1b;
+//     if(my_abs(_x1b + camera.get_old_b_x()) < 45)
+//     {
+//      _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+//      _defender_predicted_y = 35;
+//      prediction_timer = time_service::getCurTime();
+//      predicted_point.x = _defender_predicted_x;
+//      predicted_point.y = _defender_predicted_y;
+//      return true;
+//     }
+//     else
+//     {
+//       if(time - prediction_timer < 2000)
+//       {
+//         _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
+//         _defender_predicted_y = 35;
+//         predicted_point.x = _defender_predicted_x;
+//         predicted_point.y = _defender_predicted_y;
+//         return true;
+//       }
+//     }
+//   }
+//   else
+//   {
+//     if(time - prediction_timer < 2000)
+//     {
+//       _y1b = ball_abs_y - 35;
+//       _x1b = tan(_alpha) * _y1b;
+//       if(my_abs(_x1b + camera.get_old_b_x()) < 45)
+//       {
+//        _defender_predicted_x = _x1b * 1.3 + camera.get_old_b_x();
+//        _defender_predicted_y = 35;
+//        predicted_point.x = _defender_predicted_x;
+//        predicted_point.y = _defender_predicted_y;
+//        return true;
+//       }
+//     }
+//   }
+//   return false;
+//  }
+  bool predict(uint8_t min_speed = 50)
   {
-   _alpha = atan2(_dxb, _dyb);
-    
-   if(_dSSoft > 50 && _dyb > 20)
-   {
-     _y1b = ball_abs_y - 37;
-     _x1b = tan(_alpha) * _y1b;
-     if(my_abs(_x1b + camera.get_old_b_x()) < 45)
-     {
-      _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
-      _defender_predicted_y = 35;
-      prediction_timer = time_service::getCurTime();
-      predicted_point.x = _defender_predicted_x;
-      predicted_point.y = _defender_predicted_y;
-      return true;
-     }
-     else
-     {
-       if(time - prediction_timer < 2000)
-       {
+    _alpha = atan2(_dxb, _dyb);
+     
+    if(_dSSoft > 0/* && _dyb > 20*/)
+    {
+      if(my_abs(_alpha) < 90)
+      {
+        _y1b = ball_abs_y - 35;
+        _x1b = tan(_alpha) * _y1b;
+      }
+      if(my_abs(_x1b + camera.get_old_b_x()) < 45)
+      {
          _defender_predicted_x = _x1b * 1.4 + camera.get_old_b_x();
          _defender_predicted_y = 35;
+         prediction_timer = time_service::getCurTime();
          predicted_point.x = _defender_predicted_x;
          predicted_point.y = _defender_predicted_y;
          return true;
-       }
-     }
-   }
-   else
-   {
-     if(time - prediction_timer < 2000)
-     {
-       _y1b = ball_abs_y - 35;
-       _x1b = tan(_alpha) * _y1b;
-       if(my_abs(_x1b + camera.get_old_b_x()) < 45)
-       {
-        _defender_predicted_x = _x1b * 1.3 + camera.get_old_b_x();
-        _defender_predicted_y = 35;
-        predicted_point.x = _defender_predicted_x;
-        predicted_point.y = _defender_predicted_y;
-        return true;
-       }
-     }
-   }
-   return false;
+      }
+    }
   }
   
   bool is_ball_seen_T(uint16_t _T)
@@ -667,6 +710,7 @@ namespace Robot
     while(_start_time + _duration > time_service::getCurTime())
     {
       if(en_rotation && my_abs(_angle) <= 180) setAngle(_angle, rotation_speed);
+      if(en_rotation && _keck_angle == 255 && my_abs(gyro - _angle) < 7) break;
       if((my_abs(gyro - _keck_angle) < 5 || (_delta >= 0 && gyro - _keck_angle < 0))
         && _keck_angle != 255)
       {
@@ -777,6 +821,35 @@ namespace Robot
     backward_distance = camera.get_backward_distance();
     
     is_ball_captured();
+    if(time - bluetooth_send_timer > 100)
+    {
+      if(is_ball_seen_T(350))
+        send_bluetooth_data(ball_abs_x, ball_abs_y);
+      else
+        send_bluetooth_data(0, 0);
+    }
+    
+    if(usartik1::available() >= 3)
+    {
+      if(usartik1::read() == 255)
+      {
+        bluetooth_receive_time = time;
+        ball_bluetooth_x = (usartik1::read() - 50) * 2;
+        ball_bluetooth_y = (usartik1::read() - 50) * 2;
+      }
+    }
+    
+    if(!is_ball_seen_T(350) && camera.get_ball_seen_time() > bluetooth_receive_time + 1000)
+    {
+      ball_abs_x = ball_bluetooth_x;
+      ball_abs_y = ball_bluetooth_y;
+      ball_loc_x = ball_abs_x - robot_x;
+      ball_loc_y = ball_abs_y - robot_y;
+      ball_abs_angle = getAngleToPoint(ball_abs_x, ball_abs_y);
+      ball_loc_angle = lead_to_degree_borders(ball_abs_angle - gyro);
+      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
+    }
+    
 //    voltage = test_dma.dataReturn(0);
     #if USE_DISPLAY
       draw_menu();

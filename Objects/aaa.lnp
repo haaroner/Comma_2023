@@ -10,6 +10,7 @@
 ".\objects\uart2.o"
 ".\objects\usart3.o"
 ".\objects\usart6.o"
+".\objects\usartik1.o"
 ".\objects\soft_i2c.o"
 ".\objects\adc.o"
 ".\objects\dma.o"

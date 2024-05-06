@@ -176,7 +176,9 @@ void camera::calculate_pos(int16_t angle, bool side)
         else if(_state == 2)
           _state = 0;
      }
-    
+     
+     _gates_average_k = (1 - (_front_distance / (_front_distance + _backward_distance)));
+     
      switch(_state)
      {
        case 0: _front_angle = 0; break;
@@ -195,12 +197,14 @@ void camera::calculate_pos(int16_t angle, bool side)
     _forward_sin = sin(double(_front_angle) / 57.3);
     _backward_sin = sin(double(_backward_angle) / 57.3);
 
-    if(_state == 0 || _backward_distance < 90)
+    if(_state == 0)
       _x = _backward_distance * _backward_sin;
-    else if(_state == 2 || _front_distance < 90)
+    else if(_state == 2)
       _x = _front_distance * _forward_sin;
     else if(_state == 1)
-      _x = (_front_distance * _forward_sin + _backward_distance * _backward_sin) / 2;
+      _x = _front_distance * _forward_sin * _gates_average_k + 
+            _backward_distance * _backward_sin * (1 - _gates_average_k);
+      //_x = (_front_distance * _forward_sin + _backward_distance * _backward_sin) / 2;
 
     
     if(_state == 1)
@@ -210,8 +214,11 @@ void camera::calculate_pos(int16_t angle, bool side)
 //      else if(_backward_distance < 70)
 //        _y = _backward_distance * abs(cos(_backward_angle * DEG2RAD));
 //      else
-        _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
-      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
+      _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD))) * _gates_average_k + 
+      (_backward_distance * abs(cos(_backward_angle * DEG2RAD))) * (1 - _gates_average_k);//!!!
+      
+//        _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
+//      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
     }
     else
     {
@@ -252,7 +259,19 @@ void camera::calculate_pos(int16_t angle, bool side)
       _ball_loc_y = int(ceil(double(_ball_loc_y)));
       
       _ball_abs_x = _x + _ball_loc_x;
-      _ball_abs_y = _y + _ball_loc_y;     
+      _ball_abs_y = _y + _ball_loc_y;  
+
+      if(time_service::getCurTime() - _ball_d_timer > 100)
+      {
+         _dbx = _ball_abs_x - _old_x;
+         _dby = _old_y - _ball_abs_y;
+         _old_x = _ball_abs_x;
+         _old_y = _ball_abs_y;
+         _dS = sqrt(pow(double(_dbx), 2) + pow(double(_dby), 2)) / 0.1;
+        
+         _dSSoft = k_dSSoft * _dS + (1 - k_dSSoft) * _dSSoft;
+         _ball_d_timer = time_service::getCurTime();
+      }
     }
 //    else
 //    {
@@ -260,18 +279,6 @@ void camera::calculate_pos(int16_t angle, bool side)
 //      _ball_distance = get_angle_to_point(_x, _y, _ball_abs_x, _ball_abs_y).length;
 //      _ball_angle = lead_to_degree_borders(_abs_ball_angle - angle);
 //    }
-    
-    if(time_service::getCurTime() - _ball_d_timer > 100)
-    {
-      _dbx = _ball_abs_x - _old_x;
-      _dby = _old_y - _ball_abs_y;
-      _old_x = _ball_abs_x;
-      _old_y = _ball_abs_y;
-      _dS = sqrt(pow(double(_dbx), 2) + pow(double(_dby), 2)) / 0.1f;
-    
-      _dSSoft = k_dSSoft * _dS + (1 - k_dSSoft) * _dSSoft;
-      _ball_d_timer = time_service::getCurTime();
-    }
     _received = false;
   }
 }
@@ -403,4 +410,9 @@ bool camera::is_first_data_received()
 bool camera::is_ball_seen(uint16_t _dT)
 {
   return (time_service::getCurTime() - _ball_timer) < _dT;
+}
+
+uint32_t camera::get_ball_seen_time()
+{
+  return _ball_timer;
 }
