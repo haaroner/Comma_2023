@@ -120,6 +120,8 @@ namespace Robot
   
   bool _use_dribler = false;
   
+  bool use_delays = true, ball_distance_delay_disable = true;
+  
   volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
   init_image = true, _game_state = 0, is_callibrated = 0, moving_to_point = false,
@@ -702,61 +704,118 @@ namespace Robot
   
   void wait(uint32_t _duration,bool en_rotation = false, int16_t _angle = 255, uint8_t rotation_speed = 10, int16_t _keck_angle = 255)
   {
-    uint32_t _start_time = time_service::getCurTime();
-    waiting = true;
-    wait_rotating = en_rotation;
-    waiting_angle = _angle;
-    int16_t _delta = gyro - _keck_angle;
-    while(_start_time + _duration > time_service::getCurTime())
-    {
-      if(en_rotation && my_abs(_angle) <= 180) setAngle(_angle, rotation_speed);
-      if((my_abs(gyro - _keck_angle) < 5 || (_delta >= 0 && gyro - _keck_angle < 0))
-        && _keck_angle != 255)
+      uint32_t _start_time = time_service::getCurTime();
+      waiting = true;
+      wait_rotating = en_rotation;
+      waiting_angle = _angle;
+      int16_t _delta = gyro - _keck_angle;
+      while(_start_time + _duration > time_service::getCurTime())
       {
-        set_dribler_speed(0);
-        wait(7);
-        keck();
+        if(en_rotation && my_abs(_angle) <= 180) setAngle(_angle, rotation_speed);
+        if(en_rotation && _keck_angle == 255 && my_abs(gyro - _angle) < 7) break;
+        if((my_abs(gyro - _keck_angle) < 5 || (_delta >= 0 && gyro - _keck_angle < 0))
+          && _keck_angle != 255)
+        {
+          set_dribler_speed(0);
+          wait(7);
+          keck();
+        }
+        
+        if(!use_delays || ball_distance_delay_disable)
+        {
+          if(!use_delays)
+          {
+            waiting = false;
+            return;
+          }
+            
+          if(ball_distance_delay_disable)
+          {
+            if(is_ball_seen_T(200) && (ball_distance > 17 || my_abs(ball_loc_angle) > 17))
+            {  
+              waiting = false;
+              return;
+            }
+          }
+        }
+        
+        update();
+        time_service::delay_ms(1);
       }
-      update();
-      time_service::delay_ms(1);
-    }
-    waiting = false;
+      waiting = false;
   }
   
   void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0)
   {
-    uint32_t _timeout = 1500;
-    uint32_t _start_tim = time;
-    bool _keck_done = false;
-    if(_start_angle != 255)
-    {
-      while(my_abs(gyro - _start_angle) > 10 && time - _start_tim < _timeout)
+      uint32_t _timeout = 1500;
+      uint32_t _start_tim = time;
+      bool _keck_done = false;
+      if(_start_angle != 255)
       {
-        setAngle(_start_angle, 6);
-        update();
-      }
-    }
-    wait(250);
-    _start_tim = time;
-    int16_t _delta = gyro - _keck_angle;
-    if(_stop_angle != 255)
-    {
-      while(my_abs(gyro - _stop_angle) > 10 && time - _start_tim < _timeout)
-      {
-        if((my_abs(gyro - _keck_angle) < 5 || 
-          ((_delta >= 0 && lead_to_degree_borders(gyro - _keck_angle < 0)) ||
-          (_delta <= 0 && lead_to_degree_borders(gyro - _keck_angle > 0))))
-          && _keck_angle != 255 && !_keck_done)
+        while(my_abs(gyro - _start_angle) > 10 && time - _start_tim < _timeout)
         {
-          set_dribler_speed(0);
-          wait(7);
-          keck(7);
-          _keck_done = true;
+          setAngle(_start_angle, 6);
+          update();
+          
+          if(!use_delays || ball_distance_delay_disable)
+          {
+            if(!use_delays)
+            {
+              _keck_done = true;
+              return;
+            }
+              
+            if(ball_distance_delay_disable)
+            {
+              if(is_ball_seen_T(200) && (ball_distance > 17 || my_abs(ball_loc_angle) > 17))
+              {  
+                _keck_done = true;
+                return;
+              }
+            }
+          }
         }
-        Robot::wait(1, true, _stop_angle, _speed, _keck_angle);
       }
-    }
+      wait(250);
+      _start_tim = time;
+      int16_t _delta = gyro - _keck_angle;
+      if(_stop_angle != 255)
+      {
+        while(my_abs(gyro - _stop_angle) > 10 && time - _start_tim < _timeout)
+        {
+          if((my_abs(gyro - _keck_angle) < 5 || 
+            ((_delta >= 0 && lead_to_degree_borders(gyro - _keck_angle < 0)) ||
+            (_delta <= 0 && lead_to_degree_borders(gyro - _keck_angle > 0))))
+            && _keck_angle != 255 && !_keck_done)
+          {
+            set_dribler_speed(0);
+            wait(7);
+            keck(15);
+            _keck_done = true;
+          }
+          
+          if(!use_delays || ball_distance_delay_disable)
+          {
+            if(!use_delays) 
+            {
+              _keck_done = true;
+              return;
+            }
+            if(ball_distance_delay_disable)
+            {
+              if(is_ball_seen_T(200) && (ball_distance > 17 || my_abs(ball_loc_angle) > 17))
+              {
+                _keck_done = true;
+                return;
+              }
+            }
+          }
+          
+          Robot::wait(1, true, _stop_angle, _speed, _keck_angle);
+        }
+      }
   }
+  
   
   void direct_keck(uint8_t _stop_dribler_time = 7)
   {
@@ -770,6 +829,21 @@ namespace Robot
   {
     if((ball_distance > 20 || my_abs(ball_loc_angle) > 20) && (Robot::is_ball_seen_T(75))) ball_grab_timer = time;
     return time - ball_grab_timer > wait_duration;
+  }
+  
+  void enable_delay()
+  {
+    use_delays = true;
+  }
+  
+  void disable_delay()
+  {
+    use_delays = false;
+  }
+  
+  void ball_distance_disable_delay(bool _data)
+  {
+    ball_distance_delay_disable = _data;
   }
   
  void update()

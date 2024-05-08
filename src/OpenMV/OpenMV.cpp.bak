@@ -40,6 +40,7 @@ polar_vector camera::get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int1
 camera::camera(bool Camera_pos, pin &tx, pin &rx):m_tx(tx), m_rx(rx)
 {
   _camera_pos = Camera_pos;
+  get_ball_new_value_timer = 0;
   sign = 1;
   num = 0;
   _x = 0;
@@ -114,8 +115,8 @@ void camera::getData()
           
           if(data[5] != 0)
           {
-            _ball_angle = data[4] * 4;
-            _ball_distance = data[5] * 4;
+            ball_new_loc_angle = data[4] * 4;
+            ball_new_distance = data[5] * 4;
             _ball_timer = time_service::getCurTime();
             _ball_is_seen = true;
           }
@@ -214,8 +215,11 @@ void camera::calculate_pos(int16_t angle, bool side)
 //      else if(_backward_distance < 70)
 //        _y = _backward_distance * abs(cos(_backward_angle * DEG2RAD));
 //      else
-        _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
-      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
+      _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD))) * _gates_average_k + 
+      (_backward_distance * abs(cos(_backward_angle * DEG2RAD))) * (1 - _gates_average_k);//!!!
+      
+//        _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
+//      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
     }
     else
     {
@@ -236,27 +240,40 @@ void camera::calculate_pos(int16_t angle, bool side)
     {
      // _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
       
-      _abs_ball_angle = lead_to_degree_borders(_ball_angle + angle);
+      ball_new_abs_angle = lead_to_degree_borders(ball_new_loc_angle + angle);
       
-      _ball_loc_x = sinf(_abs_ball_angle * DEG2RAD) * _ball_distance;
-      _ball_loc_y = cosf(_abs_ball_angle * DEG2RAD) * _ball_distance;
+      ball_new_loc_x = sinf(ball_new_abs_angle * DEG2RAD) * ball_new_distance;
+      ball_new_loc_y = cosf(ball_new_abs_angle * DEG2RAD) * ball_new_distance;
       
      // _ball_loc_angle = _ball_loc_angle * 0. + _ball_angle * 0.2;
       
-      _ball_loc_x = int(ceil(double(_ball_loc_x)));
-      _ball_loc_y = int(ceil(double(_ball_loc_y)));
+      ball_new_loc_x = int(ceil(double(ball_new_loc_x)));
+      ball_new_loc_y = int(ceil(double(ball_new_loc_y)));
       
       _ball_x_soft = _ball_loc_x * _ball_k + _ball_x_soft * (1 - _ball_k);
-      _ball_loc_x = _ball_x_soft;
+      //_ball_loc_x = _ball_x_soft;
       
       _ball_y_soft = _ball_loc_y * _ball_k + _ball_y_soft * (1 - _ball_k);
-      _ball_loc_y = _ball_y_soft;
+      //_ball_loc_y = _ball_y_soft;
       
-      _ball_loc_x = int(ceil(double(_ball_loc_x)));
-      _ball_loc_y = int(ceil(double(_ball_loc_y)));
+     // _ball_loc_x = int(ceil(double(_ball_loc_x)));
+      // _ball_loc_y = int(ceil(double(_ball_loc_y)));
       
-      _ball_abs_x = _x + _ball_loc_x;
-      _ball_abs_y = _y + _ball_loc_y;  
+      ball_new_abs_x = _x + ball_new_loc_x;
+      ball_new_abs_y = _y + ball_new_loc_x;  
+      
+      if(get_angle_to_point(ball_new_abs_x, ball_new_abs_y, _ball_abs_x, _ball_abs_y).length < 40 
+        || (time_service::getCurTime() - get_ball_new_value_timer > 200))
+      {
+        get_ball_new_value_timer = time_service::getCurTime();
+        _ball_loc_angle = ball_new_loc_angle;
+        _abs_ball_angle = ball_new_abs_angle;
+        _ball_distance = ball_new_distance;
+        _ball_loc_x = ball_new_loc_x;
+        _ball_loc_y = ball_new_loc_y;
+        _ball_abs_x = ball_new_abs_x;
+        _ball_abs_y = ball_new_abs_y;      
+      }
 
       if(time_service::getCurTime() - _ball_d_timer > 100)
       {

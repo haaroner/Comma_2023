@@ -92,10 +92,6 @@ void motors::moveRobot(double _maxPower,
 	else if(_inc < -_maxPower_angle)
 		_inc =  -_maxPower_angle;
   
-  
-  
-  _angle *= -1;
-  
 	ang = (_angle + 135) * DEG2RAD;
 	opowers = int(_maxPower * -cos(ang));
 	opowers -= _inc;

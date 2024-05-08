@@ -89,10 +89,12 @@ class camera
     uint8_t _state;
     uint32_t _ball_d_timer, _ball_timer;
     float _ball_k;
+    int ball_new_abs_x, ball_new_abs_y;
+    int ball_new_loc_x, ball_new_loc_y, ball_new_loc_angle, ball_new_abs_angle, ball_new_distance;
     float _ball_x_soft, _ball_y_soft;
     int _dS, _dSSoft;
     float _robot_k, k_dSSoft;
     float _robot_x_soft, _robot_y_soft;
-    
+    double _gates_average_k;    
     uint8_t _length_between_gates;
 };
