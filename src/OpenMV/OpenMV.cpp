@@ -328,12 +328,12 @@ int16_t camera::get_backward_angle()
 
 int16_t camera::get_ball_angle()
 {
-  if (_ball_angle > 180)
-    _ball_angle -= 360;
-  else if (_ball_angle < -180)
-    _ball_angle += 360;
+  if (_ball_loc_angle > 180)
+    _ball_loc_angle -= 360;
+  else if (_ball_loc_angle < -180)
+    _ball_loc_angle += 360;
   
-  return _ball_angle;
+  return _ball_loc_angle;
 }
 
 int16_t camera::get_abs_ball_angle()

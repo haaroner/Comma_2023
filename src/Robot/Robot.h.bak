@@ -98,7 +98,7 @@ namespace Robot
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle,
   moving_point[4] = {-1000, -1000, -1000, -1000}, dribler_speed = 240, 
-  gyro_zero_angle = 0, waiting_angle = 0;
+  gyro_zero_angle = 0, waiting_angle = 0, abs_move_angle = 0;
   
   volatile int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
     old_b_x = 0, old_b_y = 0, ball_abs_x = 0, ball_abs_y = 0,
@@ -450,6 +450,7 @@ namespace Robot
   
   void moveRobotAbs(int16_t _angle, uint16_t _speed)
   {
+    abs_move_angle = _angle;
     move_angle = lead_to_degree_borders(_angle - gyro);
     if(_speed > 100) _speed = 100;
     move_speed = _speed;
@@ -471,7 +472,7 @@ namespace Robot
     return get_angle_to_point(robot_x, robot_y, _data.x, _data.y);
   }
   
-  void add_stop_to_route(int _x, int _y, int _angle = 0) //:)
+  void add_stop_to_route(int _x, int _y, int _angle = -255) //:)
   {
     point _point;
     _point.x = _x;
@@ -529,7 +530,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 17)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 11)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -540,6 +541,7 @@ namespace Robot
     move_angle = get_angle_to_point(robot_position, _point).angle;
     point_distance = get_angle_to_point(robot_position, _point).length;
     start_point_distance = get_angle_to_point(robot_position, start_trajectory).length;
+    _max_speed = _max_speed - constrain(20, 0, my_abs(angular_speed) * 2);
     // -1 - speed from reg
     // 0 - turn to point
     // 1 - standart speed
@@ -549,7 +551,7 @@ namespace Robot
       if(use_trajectory)
       {
         d_1_Speed = _max_speed - _min_speed;
-        accel_1_Length = my_abs(d_1_Speed / 1.5); //1.5 - tg of line
+        accel_1_Length = my_abs(d_1_Speed / 1.0); //1.5 - tg of line
         d_2_speed = _max_speed - _min_speed;
         accel_2_Length = my_abs(d_2_speed / 1.0f);
         whole_path = get_angle_to_point(start_trajectory, _point).length;
@@ -557,7 +559,7 @@ namespace Robot
         {
           if(point_distance > whole_path - accel_1_Length) // start
           {
-            move_speed = (1.5 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
+            move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
           }
           else if(point_distance < accel_2_Length) // stop
           {
@@ -572,11 +574,11 @@ namespace Robot
         else
         {
           if(point_distance > whole_path / 2)
-             move_speed = (1.5 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
+             move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
           else
             move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
         }
-        if(_angle == -255)
+        if(_point.angle != - 255)
         {
           setAngle(_point.angle, 4);
         }
@@ -588,7 +590,7 @@ namespace Robot
     
     moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     
-    if(point_distance > 6) point_reached_timer = time_service::getCurTime();
+    if(point_distance > 5) point_reached_timer = time_service::getCurTime();
     
     point_reached = time_service::getCurTime() - point_reached_timer > 100;
     
@@ -789,8 +791,8 @@ namespace Robot
             && _keck_angle != 255 && !_keck_done)
           {
             set_dribler_speed(0);
-            wait(7);
-            keck(15);
+            wait(10);
+            keck(10);
             _keck_done = true;
           }
           
@@ -912,16 +914,16 @@ namespace Robot
       }
     }
     
-    if(!is_ball_seen_T(350) && camera.get_ball_seen_time() > bluetooth_receive_time + 1000)
-    {
-      ball_abs_x = ball_bluetooth_x;
-      ball_abs_y = ball_bluetooth_y;
-      ball_loc_x = ball_abs_x - robot_x;
-      ball_loc_y = ball_abs_y - robot_y;
-      ball_abs_angle = getAngleToPoint(ball_abs_x, ball_abs_y);
-      ball_loc_angle = lead_to_degree_borders(ball_abs_angle - gyro);
-      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
-    }
+//    if(!is_ball_seen_T(350) && camera.get_ball_seen_time() > bluetooth_receive_time + 1000)
+//    {
+//      ball_abs_x = ball_bluetooth_x;
+//      ball_abs_y = ball_bluetooth_y;
+//      ball_loc_x = ball_abs_x - robot_x;
+//      ball_loc_y = ball_abs_y - robot_y;
+//      ball_abs_angle = getAngleToPoint(ball_abs_x, ball_abs_y);
+//      ball_loc_angle = lead_to_degree_borders(ball_abs_angle - gyro);
+//      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
+//    }
     
 //    voltage = test_dma.dataReturn(0);
     #if USE_DISPLAY

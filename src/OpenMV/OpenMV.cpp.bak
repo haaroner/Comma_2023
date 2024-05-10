@@ -260,7 +260,7 @@ void camera::calculate_pos(int16_t angle, bool side)
       // _ball_loc_y = int(ceil(double(_ball_loc_y)));
       
       ball_new_abs_x = _x + ball_new_loc_x;
-      ball_new_abs_y = _y + ball_new_loc_x;  
+      ball_new_abs_y = _y + ball_new_loc_y;  
       
       if(get_angle_to_point(ball_new_abs_x, ball_new_abs_y, _ball_abs_x, _ball_abs_y).length < 40 
         || (time_service::getCurTime() - get_ball_new_value_timer > 200))
