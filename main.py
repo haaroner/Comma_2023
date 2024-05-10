@@ -1,16 +1,16 @@
 import sensor, utime, image, time, pyb, math #import librares
 
-EXPOSURE_TIME_SCALE = 0.5
+EXPOSURE_TIME_SCALE = 0.8
 
 
 yellow_threshold = [(45, 86, -1, 32, 15, 127)]
-blue_threshold = [(13, 55, -52, 28, -128, -13)]
-red_threshold = [(40, 100, 38, 127, 21, 127)]
+blue_threshold = [(13, 90, -105, 27, -128, -25)]
+red_threshold = [(41, 100, 32, 127, 5, 75)]
 
 callibrate_center = False
 
 center1 = [154, 114]
-center2 = [165, 114]
+center2 = [162, 121]
 
 center = center2
 uart = pyb.UART(3, 230400, timeout = 100, timeout_char = 100)
@@ -205,7 +205,6 @@ def send_data(num1, num2, num3, num4, num5, num6):
        data[5] = num6
     data[6] = crc8(data, 6)
 
-    print(data[0])
     uart.writechar(int(data[0]))
     uart.writechar(int(data[1]))
     uart.writechar(int(data[2]))
@@ -222,13 +221,17 @@ while(True):
     if callibrate_center == False:
         img = sensor.snapshot().mask_circle(center[0], center[1], 145)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
         img.draw_circle(center[0], center[1], 22, (0, 0, 0), fill = True)
-        img.draw_line(149, 90, 177, 91, (0, 0, 0), 9)
-        img.draw_line(188, 110, 177, 85, (0, 0, 0), 9)
-        img.draw_line(188, 110, 180, 130, (0, 0, 0), 9)
-        img.draw_line(161, 135, 180, 130, (0, 0, 0), 9)
-        img.draw_line(143, 123, 166, 139, (0, 0, 0), 9)
-        img.draw_line(144, 129, 154, 137, (0, 0, 0), 4)
-        img.draw_line(141, 101, 148, 90, (0, 0, 0), 7)
+        img.draw_rectangle(142, 97, 36, 7, (0, 0, 0), 1, True)
+        img.draw_line(147, 95, 173, 95, (0, 0, 0), 5)
+        img.draw_line(143, 140, 171, 145, (0, 0, 0), 7)
+        img.draw_line(141, 106, 137, 115, (0, 0, 0), 7)
+        img.draw_line(143, 137, 138, 127, (0, 0, 0), 7)
+        img.draw_line(154, 146, 164, 148, (0, 0, 0), 7)
+        img.draw_line(148, 103, 143, 107, (0, 0, 0), 7)
+        img.draw_line(171, 142, 177, 147, (0, 0, 0), 7)
+        img.draw_line(178, 101, 187, 121, (0, 0, 0), 7)
+        img.draw_line(144, 145, 152, 145, (0, 0, 0), 5)
+        img.draw_line(136, 132, 139, 139, (0, 0, 0), 5)
     else:
         img = sensor.snapshot()
     old_area = 0
@@ -280,10 +283,10 @@ while(True):
         blue_distance = 0
     old_area = 0
 
-
+    ball_distance = 0
     #detecting ball
-    for blob in img.find_blobs(red_threshold, pixels_threshold = 2, area_threshold = 2, merge=True, margin = 2): #finding gates
-        if(blob[2] * blob[3] > old_area and blob[2] * blob[3] > 20 and blob[2] * blob[3] < 400):
+    for blob in img.find_blobs(red_threshold, pixels_threshold = 5, area_threshold = 5, merge=True, margin = 2): #finding gates
+        if(blob[2] * blob[3] > old_area and blob[2] * blob[3] > 5 and blob[2] * blob[3] < 400):
             old_area = blob[2] * blob[3]
             img.draw_rectangle(blob[0]- 5, blob[1] - 5, blob[2] + 10, blob[3] + 10, (0, 0, 0), 1)
             #blue = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3], blob.cx(), blob.cy()]
@@ -296,8 +299,6 @@ while(True):
                 ball_angle -= 360
             elif(ball_angle < 0):
                 ball_angle += 360
-    if(old_area >= 400 or old_area <= 20):
-        ball_distance = 0
     old_area = 0
 
     #img.draw_line(yellow[4], yellow[5], blue[4], blue[5], (255, 255, 255), 2) #line between centers of gates
@@ -309,11 +310,12 @@ while(True):
         blue_angle -= 360
     if ball_angle > 359:
         ball_angle -= 360
-    #print(yellow_angle)#start from yellow gate
+    print(ball_angle)#start from yellow gate
     #send_data(10, 20, 30, 40, 50, 60)
     send_data(yellow_angle, yellow_distance, blue_angle, blue_distance, ball_angle, ball_distance)
     img.draw_circle(blue[4], blue[5], 3, (255, 255, 255))
     img.draw_circle(yellow[4], yellow[5], 3, (255, 255, 255))
-    img.draw_circle(ball[4], ball[5], 3, (255, 255, 255))
+    if callibrate_center == False:
+        img.draw_circle(ball[4], ball[5], 3, (255, 255, 255))
     img.draw_circle(center[0], center[1], 3, (255, 255, 255))
 
