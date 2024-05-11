@@ -27,6 +27,7 @@ struct point
 {
   int x;
   int y;
+  int angle;
 };
 
 struct polar_vector

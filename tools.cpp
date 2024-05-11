@@ -58,3 +58,11 @@ int constrain(int max, int min, int _num)
   
   return _num;
 }
+
+float constrainf(float max, float min, float _num)
+{
+  if(_num > max) _num = max;
+  else if(_num < min) _num = min;
+  
+  return _num;
+}

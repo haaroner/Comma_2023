@@ -114,9 +114,9 @@ namespace Robot
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  uint16_t change_speed_time = 25;
+  uint16_t change_speed_time = 50;
   
-  uint8_t cur_dribler_speed = 0;
+  float cur_dribler_speed = 0;
   
   bool _use_dribler = false;
   
@@ -261,14 +261,14 @@ namespace Robot
   void set_dribler_speed(uint16_t _speed)
   {
     _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
-    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || _speed == 0)
+    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time/* || _speed == 0*/)
     {
-      if(my_abs(_speed - dribler_speed) <= 2 || _speed == 0) cur_dribler_speed = _speed;
+      if(my_abs(_speed - dribler_speed) <= 1.4/* || _speed == 0*/) cur_dribler_speed = _speed;
       else
       {
-        cur_dribler_speed += 2 * my_sgn(_speed - cur_dribler_speed);
+        cur_dribler_speed += 1.4 * my_sgn(_speed - cur_dribler_speed);
       }
-      dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, cur_dribler_speed);
+      dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
       dribler_speed_change_speed = time_service::getCurTime();
     }
   }
@@ -456,6 +456,19 @@ namespace Robot
     move_speed = _speed;
   }
   
+  void moveRobotAbs(polar_vector _vector)
+  {
+    abs_move_angle = _vector.angle;
+    move_angle = lead_to_degree_borders(abs_move_angle - gyro);
+    move_speed = _vector.length;
+    if(move_speed > 100) move_speed = 100;
+  }
+  
+  void setRobotSpeed(uint16_t _speed)
+  {
+    if(_speed > 100) _speed = 100;
+    move_speed = _speed;
+  }
   
   int getAngleToPoint(int _x, int _y)
   {
@@ -530,7 +543,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 11)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 9)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -594,7 +607,7 @@ namespace Robot
     
     point_reached = time_service::getCurTime() - point_reached_timer > 100;
     
-    return time_service::getCurTime() - point_reached_timer > 100;
+    return time_service::getCurTime() - point_reached_timer > 500;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
@@ -792,7 +805,7 @@ namespace Robot
           {
             set_dribler_speed(0);
             wait(10);
-            keck(10);
+            keck(8);
             _keck_done = true;
           }
           

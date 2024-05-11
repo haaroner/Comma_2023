@@ -30,6 +30,8 @@ int32_t robot_x = 0, robot_y = 80, ball_loc_x = 0, ball_loc_y = 20,
 bool point_reached = false;
 point robot_position, ball_abs_position;
 
+float bounds_k = 0;
+
 //attacker values
 volatile uint8_t role, attacker_state = 1, attacker_old_state = 1;
 volatile uint32_t out_diving_start_tim = 0, out_diving_stop_tim = 0,
@@ -188,7 +190,7 @@ int main()
           //if ball in dribler more than 3 scnds go to state 2
           if(time - ball_grab_timer > 1000 && attacker_old_state == 1)
           {
-            Robot::set_dribler_speed(27);
+            Robot::set_dribler_speed(30);
             Robot::wait(100);
             if(robot_y < 80)
               attacker_state = 4;
@@ -247,12 +249,12 @@ int main()
         /******attacker state bodies******/
         if(attacker_state == 1) //move to ball and grab it
         {         
-          if(ball_distance < 16 && my_abs(ball_loc_angle) < 10) 
-            Robot::set_dribler_speed(22);
+          if(ball_distance < 15 && my_abs(ball_loc_angle) < 15) 
+            Robot::set_dribler_speed(25, false);
           else 
           {
             if(my_abs(lead_to_degree_borders(backward_angle + 180) - gyro) > 20)
-              Robot::set_dribler_speed(0);
+              Robot::set_dribler_speed(0, false);
           }
           Robot::moveRobotAbs(ball_abs_angle, constrain(80, 16, (ball_distance - 8) * 2));
           Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 10, -0.3); //turn to ball 0.15
@@ -293,7 +295,7 @@ int main()
             
             Robot::setAngle(90, 11, -0.2);
           }
-
+  
           attacker_old_state = 1;       
         }       
         
@@ -306,14 +308,15 @@ int main()
             if(robot_y <= 140) Robot::add_stop_to_route(47 * my_sgn(robot_x), 140);
             Robot::add_stop_to_route(49 * my_sgn(robot_x), 165);
           }   
+          Robot::set_dribler_speed(35);
           Robot::setAngle(lead_to_degree_borders(forward_angle + 180), 9);
           
           if(Robot::trajectory_finished)
           {
             Robot::ball_distance_disable_delay(true);
             Robot::enable_trajectory(false);
-            Robot::set_dribler_speed(40);
-            Robot::wait(250);
+            Robot::set_dribler_speed(45);
+            Robot::wait(500);
             Robot::setAngle(0, 0, -0.1);
             
             Robot::wait(1000, true, 130 * my_sgn(attacker_start_state_point.x), 5);
@@ -418,12 +421,27 @@ int main()
           if(my_abs(robot_x) > 30 && backward_distance < 45)
             Robot::moveRobotAbs(lead_to_degree_borders(backward_angle + 180), 12);  
           
-          //side outs
-          if(robot_x > 85)
-            Robot::moveRobotAbs(-90, 12);
+          if(robot_x > 65)
+          {
+            bounds_k = constrainf(1, 0, 1 - my_abs(robot_y - 105) / 105);
+            move_angle = sum_of_vectors(Robot::abs_move_angle, constrain(30, 0, Robot::move_speed),
+              -90, constrain(50, 0, (robot_x - 85 - int(20 * bounds_k)) * 2));
+            move_speed = get_len_from_sum_of_vectors();
+            
+            Robot::moveRobotAbs(move_angle, move_speed);
+          }
           
-          if(robot_x < -85)
-            Robot::moveRobotAbs(90, 12);        
+          if(robot_x < -65)
+          {
+            bounds_k = constrainf(1, 0, 1 - my_abs(robot_y - 105) / 105);
+            move_angle = sum_of_vectors(Robot::abs_move_angle, constrain(30, 0, Robot::move_speed),
+              90, constrain(50, 0, (-105 - robot_x + int(17 * bounds_k)) * 2));
+            move_speed = get_len_from_sum_of_vectors();
+            
+            Robot::moveRobotAbs(move_angle, move_speed);
+          }
+            
+          
       }
       
       

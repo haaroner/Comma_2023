@@ -40,6 +40,7 @@
 ".\objects\stm32f4xx_flash.o"
 ".\objects\stm32f4xx_flash_ramfunc.o"
 ".\objects\ssd1306.o"
+".\objects\bounds.o"
 --strict --scatter ".\Objects\aaa.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

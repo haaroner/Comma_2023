@@ -46,7 +46,7 @@ bool is_in_the_angle_borders(int max, int min, int _num)
     return false;
 }
 
-inline bool is_in_the_borders(int max, int min, int num)
+bool is_in_the_borders(int max, int min, int num)
 {
   return ((num < max && num > min) || (num < max && num > min));
 }
@@ -58,3 +58,4 @@ int constrain(int max, int min, int _num)
   
   return _num;
 }
+
