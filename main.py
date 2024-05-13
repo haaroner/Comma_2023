@@ -1,11 +1,11 @@
 import sensor, utime, image, time, pyb, math #import librares
 
-EXPOSURE_TIME_SCALE = 0.7
+EXPOSURE_TIME_SCALE = 0.8
 
 
 yellow_threshold = [(45, 86, -1, 32, 15, 127)]
 blue_threshold = [(13, 90, -105, 27, -128, -25)]
-red_threshold = [(13, 100, 42, 127, 17, 127)]
+red_threshold = [(26, 100, 10, 127, 4, 127)]
 
 callibrate_center = False
 
@@ -36,6 +36,8 @@ sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
 sensor.set_auto_gain(False)
 sensor.set_auto_whitebal(False)
+print(sensor.get_rgb_gain_db())
+sensor.set_auto_whitebal(False, (-2.5, -7, -1.47639))
 sensor.set_auto_exposure(False)
 current_exposure_time_in_microseconds =  sensor.get_exposure_us()
 sensor.set_auto_exposure(False, \
@@ -222,7 +224,7 @@ while(True):
         img = sensor.snapshot().mask_circle(center[0], center[1], 145)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
         img.draw_circle(center[0], center[1], 22, (0, 0, 0), fill = True)
         img.draw_rectangle(142, 97, 36, 7, (0, 0, 0), 1, True)
-        img.draw_line(147, 95, 173, 95, (0, 0, 0), 5)
+        img.draw_line(147, 95, 173, 95, (0, 0, 0), 7)
         img.draw_line(143, 140, 171, 145, (0, 0, 0), 7)
         img.draw_line(141, 106, 137, 115, (0, 0, 0), 7)
         img.draw_line(143, 137, 138, 127, (0, 0, 0), 7)
@@ -310,7 +312,7 @@ while(True):
         blue_angle -= 360
     if ball_angle > 359:
         ball_angle -= 360
-    print(ball_angle)#start from yellow gate
+    #print(ball_angle)#start from yellow gate
     #send_data(10, 20, 30, 40, 50, 60)
     send_data(yellow_angle, yellow_distance, blue_angle, blue_distance, ball_angle, ball_distance)
     img.draw_circle(blue[4], blue[5], 3, (255, 255, 255))
