@@ -543,7 +543,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 60, int16_t _min_speed = 9)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 80, int16_t _min_speed = 15)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -563,39 +563,48 @@ namespace Robot
     {
       if(use_trajectory)
       {
-        d_1_Speed = _max_speed - _min_speed;
-        accel_1_Length = my_abs(d_1_Speed / 1.0); //1.5 - tg of line
-        d_2_speed = _max_speed - _min_speed;
-        accel_2_Length = my_abs(d_2_speed / 1.0f);
-        whole_path = get_angle_to_point(start_trajectory, _point).length;
-        if(accel_1_Length + accel_2_Length < whole_path)
-        {
-          if(point_distance > whole_path - accel_1_Length) // start
-          {
-            move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
-          }
-          else if(point_distance < accel_2_Length) // stop
-          {
-            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
-          }
-          else
-          {
-            move_speed = _max_speed;
-          }
-          move_speed = constrain(100, _min_speed, move_speed);
-        }
-        else
-        {
-          if(point_distance > whole_path / 2)
-             move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
-          else
-            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
-        }
+//        d_1_Speed = _max_speed - _min_speed;
+//        accel_1_Length = my_abs(d_1_Speed / 1.0); //1.5 - tg of line
+//        d_2_speed = _max_speed - _min_speed;
+//        accel_2_Length = my_abs(d_2_speed / 1.0f);
+//        whole_path = get_angle_to_point(start_trajectory, _point).length;
+//        if(accel_1_Length + accel_2_Length < whole_path)
+//        {
+//          if(point_distance > whole_path - accel_1_Length) // start
+//          {
+//            move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
+//          }
+//          else if(point_distance < accel_2_Length) // stop
+//          {
+//            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
+//          }
+//          else
+//          {
+//            move_speed = _max_speed;
+//          }
+//          move_speed = constrain(100, _min_speed, move_speed);
+//        }
+//        else
+//        {
+//          if(point_distance > whole_path / 2)
+//             move_speed = (1.0 * (point_distance - whole_path) + _min_speed * my_sgn(-d_1_Speed)) * my_sgn(-d_1_Speed);
+//          else
+//            move_speed = (1.0f * (point_distance) + _min_speed * my_sgn(d_2_speed)) * my_sgn(d_2_speed);
+//        }
         if(_point.angle != - 255)
         {
           setAngle(_point.angle, 4);
         }
-      }
+        
+        if(point_distance > start_point_distance / 2)
+        {
+          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 4);
+        }
+        else
+        {
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 4);
+        }
+      }//
       else
         move_speed = constrain(_max_speed, _min_speed, point_distance * 1.7);
     }
@@ -607,7 +616,7 @@ namespace Robot
     
     point_reached = time_service::getCurTime() - point_reached_timer > 100;
     
-    return time_service::getCurTime() - point_reached_timer > 500;
+    return time_service::getCurTime() - point_reached_timer > 300;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
@@ -791,7 +800,7 @@ namespace Robot
           }
         }
       }
-      wait(250);
+      wait(500);
       _start_tim = time;
       int16_t _delta = gyro - _keck_angle;
       if(_stop_angle != 255)
@@ -825,18 +834,18 @@ namespace Robot
               }
             }
           }
-          
           Robot::wait(1, true, _stop_angle, _speed, _keck_angle);
         }
       }
   }
   
   
-  void direct_keck(uint8_t _stop_dribler_time = 7)
+  void direct_keck(uint8_t _power = 20)
   {
+    _power = constrain(20, 0, _power);
     set_dribler_speed(0);
-    wait(_stop_dribler_time);
-    keck(20); 
+    wait(7);
+    keck(_power); 
     wait(50);
   }
   

@@ -13,8 +13,8 @@
 #define DRIBLER_REVERSE_KICK_SPEED 0
 #define DRIBLER_KICKING_SPEED 0
 
-#define ROBOT_MAX_X 45
-#define ROBOT_MIN_X -45
+#define ROBOT_MAX_X 80
+#define ROBOT_MIN_X -80
 
 #define ROBOT_MAX_Y 210
 #define ROBOT_MIN_Y 10

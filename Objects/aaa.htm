@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\aaa.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\aaa.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat May 11 20:04:06 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue May 14 20:09:45 2024
 <BR><P>
-<H3>Maximum Stack Usage =        736 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        728 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 <P>
@@ -27,7 +27,7 @@ Mutually Recursive functions
  <LI><a href="#[17]">DebugMon_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[17]">DebugMon_Handler</a><BR>
  <LI><a href="#[18]">PendSV_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[18]">PendSV_Handler</a><BR>
  <LI><a href="#[2c]">ADC_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2c]">ADC_IRQHandler</a><BR>
- <LI><a href="#[111]">Robot::wait(unsigned, bool, short, unsigned char, short)</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[111]">Robot::wait(unsigned, bool, short, unsigned char, short)</a><BR>
+ <LI><a href="#[112]">Robot::wait(unsigned, bool, short, unsigned char, short)</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[112]">Robot::wait(unsigned, bool, short, unsigned char, short)</a><BR>
 </UL>
 <P>
 <H3>
@@ -261,7 +261,7 @@ Global Symbols
 <P><STRONG><a name="[1c7]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[7e]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 736 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 728 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1308,7 +1308,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[e1]"></a>get_angle_to_point(short, short, short, short)</STRONG> (Thumb, 270 bytes, Stack size 72 bytes, main.o(i._Z18get_angle_to_pointssss))
@@ -1357,11 +1357,11 @@ Global Symbols
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::change_game_state()
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_captured(unsigned short)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::change_side()
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_sgn(int)
 </UL>
@@ -1372,8 +1372,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 </UL>
 
 <P><STRONG><a name="[c9]"></a>drawChar(SSD1306&, char, unsigned, unsigned)</STRONG> (Thumb, 212 bytes, Stack size 72 bytes, main.o(i._Z8drawCharR7SSD1306cjj))
@@ -1391,13 +1390,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::begin(unsigned char, bool)
 </UL>
 
-<P><STRONG><a name="[114]"></a>constrain(int, int, int)</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, tools.o(i._Z9constrainiii))
+<P><STRONG><a name="[110]"></a>constrain(int, int, int)</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, tools.o(i._Z9constrainiii))
 <BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::send_bluetooth_data(int, int)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char)
 </UL>
 
 <P><STRONG><a name="[15d]"></a>writeSPI3(unsigned short)</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, spi3_dot.o(i._Z9writeSPI3t))
@@ -1422,12 +1422,12 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::display_update(bool)
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID::calculate(int, int)
 </UL>
 
@@ -1443,8 +1443,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::begin(unsigned char, bool)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::callibrate_gyro()
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::init_robot(unsigned char)
 </UL>
@@ -1594,7 +1594,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::display()
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::begin(unsigned char, bool)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
 <LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::ssd1306_command(unsigned char)
 </UL>
 
@@ -1639,7 +1639,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::display()
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::begin(unsigned char, bool)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::init_robot(unsigned char)
 <LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::ssd1306_command(unsigned char)
 </UL>
@@ -1756,32 +1756,29 @@ Global Symbols
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::init_robot(unsigned char)
 </UL>
 
-<P><STRONG><a name="[10f]"></a>Robot::direct_keck(unsigned char)</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, main.o(i._ZN5Robot11direct_keckEh))
-<BR><BR>[Stack]<UL><LI>Max Depth = 600<LI>Call Chain = Robot::direct_keck(unsigned char) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
+<P><STRONG><a name="[10f]"></a>Robot::direct_keck(unsigned char)</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, main.o(i._ZN5Robot11direct_keckEh))
+<BR><BR>[Stack]<UL><LI>Max Depth = 592<LI>Call Chain = Robot::direct_keck(unsigned char) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[113]"></a>Robot::moveToPoint(point, short, short, short, short)</STRONG> (Thumb, 870 bytes, Stack size 136 bytes, main.o(i._ZN5Robot11moveToPointE5pointssss))
-<BR><BR>[Stack]<UL><LI>Max Depth = 496<LI>Call Chain = Robot::moveToPoint(point, short, short, short, short) &rArr; get_angle_to_point(point, point) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
+<P><STRONG><a name="[114]"></a>Robot::moveToPoint(point, short, short, short, short)</STRONG> (Thumb, 422 bytes, Stack size 88 bytes, main.o(i._ZN5Robot11moveToPointE5pointssss))
+<BR><BR>[Stack]<UL><LI>Max Depth = 448<LI>Call Chain = Robot::moveToPoint(point, short, short, short, short) &rArr; get_angle_to_point(point, point) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short, float)
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobotAbs(short, unsigned short)
-<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_sgn(int)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
@@ -1791,7 +1788,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 432<LI>Call Chain = Robot::moveToPoint(int, int, short, unsigned char, unsigned char) &rArr; get_angle_to_point(point, point) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveRobotAbs(short, unsigned short)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -1824,7 +1821,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[118]"></a>Robot::set_blinking(unsigned char, unsigned)</STRONG> (Thumb, 92 bytes, Stack size 16 bytes, main.o(i._ZN5Robot12set_blinkingEhj))
@@ -1869,7 +1866,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_captured(unsigned short)
 </UL>
 
@@ -1926,11 +1923,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[110]"></a>Robot::set_dribler_speed(unsigned short, bool)</STRONG> (Thumb, 232 bytes, Stack size 48 bytes, main.o(i._ZN5Robot17set_dribler_speedEtb))
+<P><STRONG><a name="[111]"></a>Robot::set_dribler_speed(unsigned short, bool)</STRONG> (Thumb, 232 bytes, Stack size 48 bytes, main.o(i._ZN5Robot17set_dribler_speedEtb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = Robot::set_dribler_speed(unsigned short, bool) &rArr; my_sgn(int) &rArr; my_abs(int) &rArr; __aeabi_d2iz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_sgn(int)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -1942,7 +1939,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char)
 </UL>
 
@@ -1958,7 +1955,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Robot::send_bluetooth_data(int, int)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usartik1::abcde(unsigned char)
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
 </UL>
@@ -1967,7 +1964,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[112]"></a>Robot::keck(unsigned char)</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, main.o(i._ZN5Robot4keckEh))
+<P><STRONG><a name="[113]"></a>Robot::keck(unsigned char)</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, main.o(i._ZN5Robot4keckEh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Robot::keck(unsigned char) &rArr; pin::resetBit() &rArr; GPIO_ResetBits
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pin::resetBit()
@@ -1976,32 +1973,32 @@ Global Symbols
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char)
 </UL>
 
-<P><STRONG><a name="[111]"></a>Robot::wait(unsigned, bool, short, unsigned char, short)</STRONG> (Thumb, 258 bytes, Stack size 40 bytes, main.o(i._ZN5Robot4waitEjbshs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 584 + In Cycle
+<P><STRONG><a name="[112]"></a>Robot::wait(unsigned, bool, short, unsigned char, short)</STRONG> (Thumb, 258 bytes, Stack size 40 bytes, main.o(i._ZN5Robot4waitEjbshs))
+<BR><BR>[Stack]<UL><LI>Max Depth = 576 + In Cycle
 <LI>Call Chain = Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::delay_ms(unsigned)
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short, float)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_seen_T(unsigned short)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char)
 </UL>
 
 <P><STRONG><a name="[12c]"></a>Robot::update()</STRONG> (Thumb, 962 bytes, Stack size 48 bytes, main.o(i._ZN5Robot6updateEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 544<LI>Call Chain = Robot::update() &rArr; Robot::moveToPoint(point, short, short, short, short) &rArr; get_angle_to_point(point, point) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
+<BR><BR>[Stack]<UL><LI>Max Depth = 536<LI>Call Chain = Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usartik1::available()
 <LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usartik1::read()
@@ -2039,7 +2036,7 @@ Global Symbols
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_captured(unsigned short)
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_seen_T(unsigned short)
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::check_buttons()
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::control_led(unsigned char, bool)
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Queue::pop()
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
@@ -2048,7 +2045,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 </UL>
 
 <P><STRONG><a name="[147]"></a>Robot::predict(unsigned char)</STRONG> (Thumb, 252 bytes, Stack size 48 bytes, main.o(i._ZN5Robot7predictEh))
@@ -2074,8 +2071,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[144]"></a>Robot::draw_menu()</STRONG> (Thumb, 618 bytes, Stack size 16 bytes, main.o(i._ZN5Robot9draw_menuEv))
@@ -2084,7 +2081,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::clear()
 <LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Dma::dataReturn(unsigned char)
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[14b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_draw_number&lang;int&rang;(T1, unsigned, unsigned, unsigned)
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_data&lang;unsigned short&rang;(const char*, unsigned, T1, unsigned, unsigned, unsigned)
@@ -2107,15 +2104,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[150]"></a>Robot::side_keck(short, short, unsigned char, short)</STRONG> (Thumb, 388 bytes, Stack size 40 bytes, main.o(i._ZN5Robot9side_keckEsshs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 624<LI>Call Chain = Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
+<P><STRONG><a name="[150]"></a>Robot::side_keck(short, short, unsigned char, short)</STRONG> (Thumb, 390 bytes, Stack size 40 bytes, main.o(i._ZN5Robot9side_keckEsshs))
+<BR><BR>[Stack]<UL><LI>Max Depth = 616<LI>Call Chain = Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short, float)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_seen_T(unsigned short)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 </UL>
@@ -2954,11 +2951,11 @@ Global Symbols
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 </UL>
 
-<P><STRONG><a name="[7f]"></a>main</STRONG> (Thumb, 5338 bytes, Stack size 112 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 736<LI>Call Chain = main &rArr; Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
+<P><STRONG><a name="[7f]"></a>main</STRONG> (Thumb, 5608 bytes, Stack size 112 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 728<LI>Call Chain = main &rArr; Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrain(int, int, int)
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;constrainf(float, float, float)
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short)
@@ -2966,9 +2963,9 @@ Global Symbols
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::setAngle(short, short, float)
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::ball_distance_disable_delay(bool)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::enable_trajectory(bool)
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::add_stop_to_route(int, int, int)
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::is_ball_captured(unsigned short)
@@ -2982,7 +2979,7 @@ Global Symbols
 <LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::display_data(int, int)
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::use_dribler(bool)
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char)
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::control_led(unsigned char, bool)
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::init_robot(unsigned char)
@@ -3104,7 +3101,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 </UL>
 
 <P><STRONG><a name="[18e]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
@@ -3121,8 +3118,7 @@ Global Symbols
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
@@ -3162,7 +3158,6 @@ Global Symbols
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;convert_dist(double, double)
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
@@ -3201,7 +3196,7 @@ Global Symbols
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
@@ -3223,7 +3218,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[19a]"></a>_dfixu</STRONG> (Thumb, 90 bytes, Stack size 32 bytes, dfixu.o(x$fpl$dfixu), UNUSED)
@@ -3240,9 +3234,9 @@ Global Symbols
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(double, int)
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::update()
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
@@ -3269,7 +3263,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_cdcmple
 </UL>
 <BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;convert_dist(double, double)
 </UL>
 
@@ -3293,9 +3287,9 @@ Global Symbols
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(int, int, short, unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exponential_detour(double, double, double, double, double, double)
@@ -3409,7 +3403,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usartik1::usart1Init(unsigned, unsigned char, float)
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart6::usart6Init(unsigned, unsigned char, float)
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart2::usart2Init(unsigned, unsigned char, float)
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
 </UL>
 
 <P><STRONG><a name="[1a2]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)

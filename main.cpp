@@ -5,7 +5,7 @@
 #define TEST_DRIBLER false
 #define TEST_MOTORS false
 #define TEST_BLUETOOTH false
-#define BALL_THRESHOLD 2
+#define BALL_THRESHOLD 4
 
 volatile double a = 0, b = 1, c = 10;
 uint8_t Putin = 5;
@@ -35,11 +35,13 @@ float bounds_k = 0;
 //attacker values
 volatile uint8_t role, attacker_state = 1, attacker_old_state = 1;
 volatile uint32_t out_diving_start_tim = 0, out_diving_stop_tim = 0,
-  attacker_4_to_1_tim = 0;
+  attacker_4_to_1_tim = 0, attacker_5_to_1_tim = 0, attacker_angry_tim = 0;
 
 bool out_diving = false;
   
-point attacker_start_state_point;  
+point attacker_start_state_point; 
+
+bool attacker_angry = false;
   
 //defender values
 volatile uint8_t defender_state = 1, defender_old_state = 0;
@@ -187,15 +189,30 @@ int main()
         if(attacker_state == 1)
         {
           Robot::enable_trajectory(false);
-          //if ball in dribler more than 3 scnds go to state 2
-          if(time - ball_grab_timer > 1000 && attacker_old_state == 1)
+          
+          if(my_abs(ball_abs_angle - forward_angle) > 45) attacker_angry_tim = time;
+          
+          if(time - attacker_angry_tim > 400) attacker_angry = true;
+          else attacker_angry = false;
+          
+          if(attacker_angry == false)
           {
-            Robot::set_dribler_speed(30);
-            Robot::wait(100);
-            if(robot_y < 80)
-              attacker_state = 4;
-            else
+            //if ball in dribler more than 3 scnds go to state 2
+            if(time - ball_grab_timer > 1000 && attacker_old_state == 1)
+            {
+              Robot::set_dribler_speed(30);
+              Robot::wait(100);
               attacker_state = 2;
+            }
+          }
+          else
+          {
+            if(time - ball_grab_timer > 500 && attacker_old_state == 1)
+            {
+              Robot::set_dribler_speed(30);
+              Robot::wait(100);
+              attacker_state = 5;
+            }
           }
           
          //!!!!REMAKE THIS IF STATEMENT AND FROM 2 to 1 state IF!!!!!!!!!!!
@@ -203,8 +220,13 @@ int main()
            // !(Robot::is_ball_seen_T(200))) ball_grab_timer = time;
           if(my_abs(ball_loc_angle) > 10 || ball_distance > 10) ball_grab_timer = time;
           
-          if(attacker_old_state != 1) ball_grab_timer = time;
-        }        
+          if(attacker_old_state != 1)
+          {
+            ball_grab_timer = time;
+            attacker_angry = false;
+          }
+        }   
+        
         // go with ball to gates
         if(attacker_state == 2) 
         {
@@ -246,19 +268,36 @@ int main()
             if(time - attacker_4_to_1_tim > 100) attacker_state = 1;
         }
         
+        if(attacker_state == 5)
+        {
+          if(ball_distance < 20 && my_abs(ball_loc_angle) < 20) attacker_5_to_1_tim = time;
+          
+          if(Robot::is_ball_seen_T(100))
+            if(time - attacker_5_to_1_tim > 100) attacker_state = 1;
+        }
+        
         /******attacker state bodies******/
         if(attacker_state == 1) //move to ball and grab it
         {         
+          Robot::enable_trajectory(false);
           if(ball_distance < 15 && my_abs(ball_loc_angle) < 15) 
-            Robot::set_dribler_speed(25, false);
+            Robot::set_dribler_speed(30, false);
           else 
           {
             if(my_abs(lead_to_degree_borders(backward_angle + 180) - gyro) > 20)
               Robot::set_dribler_speed(0, false);
           }
-          Robot::moveRobotAbs(ball_abs_angle, constrain(80, 16, (ball_distance - 8) * 2));
-          Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 10, -0.3); //turn to ball 0.15
-        
+          if(attacker_angry == false)
+          {
+            Robot::moveRobotAbs(ball_abs_angle, constrain(80, 25, (ball_distance - 5) * 2));
+            Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 10, -0.3); //turn to ball 0.15
+          }
+          else
+          {
+            Robot::moveRobotAbs(ball_abs_angle, constrain(80, 50, (ball_distance - 4) * 2));
+            Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 10, -0.3); //turn to ball 0.15
+          }
+          
           if(my_abs(lead_to_degree_borders(Robot::abs_move_angle - forward_angle)) < 45)
           {
             Robot::setRobotSpeed(constrain(40, 16, (ball_distance - 8) * 2));
@@ -316,12 +355,12 @@ int main()
             Robot::ball_distance_disable_delay(true);
             Robot::enable_trajectory(false);
             Robot::set_dribler_speed(45);
-            Robot::wait(500);
+            Robot::wait(100);
             Robot::setAngle(0, 0, -0.1);
             
-            Robot::wait(1000, true, 130 * my_sgn(attacker_start_state_point.x), 5);
+            //Robot::wait(100, true, 130 * my_sgn(attacker_start_state_point.x), 5);
             Robot::setAngle(0, 0, -0.4);
-            Robot::wait(250);
+            //Robot::wait(250);
             
             Robot::side_keck(160 * my_sgn(attacker_start_state_point.x), 
             10 * my_sgn(attacker_start_state_point.x), 12, 120  * my_sgn(attacker_start_state_point.x));
@@ -357,12 +396,43 @@ int main()
             Robot::wait(2000, true, -50 * my_sgn(attacker_start_state_point.x), 3);
             Robot::set_dribler_speed(10);
             Robot::wait(500);
-            Robot::direct_keck(10);
+            Robot::direct_keck();
             attacker_state = 1;
           }
           attacker_old_state = 3;
         }
         
+        if(attacker_state == 4)
+        {
+//          Robot::moveRobotAbs(forward_angle, 30);
+//          Robot::setAngle(-110, 7);
+//          Robot::set_dribler_speed(30);
+//          
+//          if(forward_distance < 85)
+//          {
+//            Robot::direct_keck(10);
+//            attacker_state = 1;
+//            attacker_angry = false;
+//          }
+//          attacker_old_state = 4;
+        }
+        
+        if(attacker_state == 5)
+        {
+          Robot::set_dribler_speed(15);
+          
+          Robot::moveRobotAbs(forward_angle, 90);
+          Robot::setAngle(forward_angle, 7);
+          
+          
+          if(forward_distance < 50 && time - attacker_angry_tim > 1500)
+          {
+            Robot::direct_keck();
+            attacker_state = 1;
+            attacker_angry = false;
+          }
+          attacker_old_state = 5;
+        }
         /*avoiding out of bounds*/
         
         //front gate

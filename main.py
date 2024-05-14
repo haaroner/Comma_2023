@@ -3,9 +3,9 @@ import sensor, utime, image, time, pyb, math #import librares
 EXPOSURE_TIME_SCALE = 0.8
 
 
-yellow_threshold = [(45, 86, -1, 32, 15, 127)]
+yellow_threshold = [(36, 70, -1, 127, 3, 127)]
 blue_threshold = [(13, 90, -105, 27, -128, -25)]
-red_threshold = [(26, 100, 10, 127, 4, 127)]
+red_threshold = [(13, 95, 32, 113, -2, 107)]
 
 callibrate_center = False
 
@@ -244,7 +244,7 @@ while(True):
     blue_is_see = False
 
     #detecting yellow gate
-    for blob in img.find_blobs(yellow_threshold, pixels_threshold=50, area_threshold=220, merge=True, margin = 20):#finding gates
+    for blob in img.find_blobs(yellow_threshold, pixels_threshold=50, area_threshold=300, merge=True, margin = 20):#finding gates
         if(blob[2] * blob[3] > old_area):
             old_area = blob[2] * blob[3]
             img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (200, 200, 0), 2)
