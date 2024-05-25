@@ -46,3 +46,4 @@
 .\objects\motors.o: .\src\pin_setup\pin_setup.h
 .\objects\motors.o: .\src\main\project_config.h
 .\objects\motors.o: .\src\main\tools.h
+.\objects\motors.o: .\src\main\project_config.h

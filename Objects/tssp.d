@@ -50,3 +50,4 @@
 .\objects\tssp.o: .\src\adc\adc.h
 .\objects\tssp.o: .\src\main\project_config.h
 .\objects\tssp.o: .\src\main\tools.h
+.\objects\tssp.o: .\src\main\project_config.h

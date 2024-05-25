@@ -9,7 +9,7 @@
 #define DEG2RAD	0.01745329251994329576
 
 int ang_result = 0, len_result = 0, result = 0;
-int x1 = 0, x2 = 0, y1 = 0, y2 = 0, _x_result = 0, _y_result = 0, x3, t;
+int x1 = 0, x2 = 0, y1 = 0, y2 = 0, _x_result = 0, _y_result = 0, x3, t, _sub;
 
 double convert_data(double max, double data)
 {
@@ -55,6 +55,18 @@ int my_sgn(int32_t num)
 
 int sum_of_vectors(int16_t ang1, uint16_t len1, int16_t ang2, uint16_t len2)
 {
+  if(len1 < 0)
+  {
+    len1 *= -1;
+    ang1 = lead_to_degree_borders(ang1 + 180);
+  }
+  
+  if(len2 < 0)
+  {
+    len2 *= -1;
+    ang2 = lead_to_degree_borders(ang2 + 180);
+  }
+  
   x1 = int(len1 * sin(double(ang1 * DEG2RAD)));
   y1 = int(len1 * cos(double(ang1 * DEG2RAD)));
           
@@ -89,7 +101,7 @@ polar_vector get_angle_to_point(int16_t _robot_x, int16_t _robot_y, int16_t _poi
   
   struct polar_vector result;
   result.angle = atan2(double(_x_result), double(_y_result)) * RAD2DEG;
-  result.length = sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
+  result.length = int(sqrt(powf(float(_x_result), 2) + powf(float(_y_result), 2)));
   
   return result;
 }
@@ -107,6 +119,18 @@ polar_vector get_angle_to_point(point point1, point point2)
   result.length = sqrt(pow(double(_x_result), 2) + pow(double(_y_result), 2));
   
   return result;
+}
+
+bool is_in_borders(int _max, int _min, int _num)
+{
+  if(_max < _min)
+  {
+    _sub  =_max;
+    _max = _min;
+    _min = _sub;
+  }
+  
+  return (_num < _max && _num > _min);
 }
 
 //int get_distance_to_point(int _a1, int _b1, int _a2, int _b2)

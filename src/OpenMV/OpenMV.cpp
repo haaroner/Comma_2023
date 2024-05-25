@@ -68,7 +68,7 @@ camera::camera(bool Camera_pos, pin &tx, pin &rx):m_tx(tx), m_rx(rx)
   _ball_x_soft = 0;
   _ball_y_soft = 20;
   
-  _robot_k = 0.85;
+  _robot_k = 0.9;
   _robot_x_soft = 0;
   _robot_y_soft = 90;
   k_dSSoft = 0.4;
@@ -178,7 +178,10 @@ void camera::calculate_pos(int16_t angle, bool side)
           _state = 0;
      }
      
-     _gates_average_k = (1 - (_front_distance / (_front_distance + _backward_distance)));
+     if(_front_distance < _backward_distance)
+       _gates_average_k = _front_distance / (_front_distance + _backward_distance);
+     else 
+       _gates_average_k = (1 - (_backward_distance / (_front_distance + _backward_distance)));
      
      switch(_state)
      {
@@ -203,8 +206,8 @@ void camera::calculate_pos(int16_t angle, bool side)
     else if(_state == 2)
       _x = _front_distance * _forward_sin;
     else if(_state == 1)
-      _x = _front_distance * _forward_sin * _gates_average_k + 
-            _backward_distance * _backward_sin * (1 - _gates_average_k);
+      _x = _front_distance * _forward_sin * (1 - _gates_average_k) + 
+            _backward_distance * _backward_sin * (_gates_average_k);
       //_x = (_front_distance * _forward_sin + _backward_distance * _backward_sin) / 2;
 
     
@@ -215,8 +218,8 @@ void camera::calculate_pos(int16_t angle, bool side)
 //      else if(_backward_distance < 70)
 //        _y = _backward_distance * abs(cos(_backward_angle * DEG2RAD));
 //      else
-      _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD))) * _gates_average_k + 
-      (_backward_distance * abs(cos(_backward_angle * DEG2RAD))) * (1 - _gates_average_k);//!!!
+      _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD))) * (1 - _gates_average_k) + 
+      (_backward_distance * abs(cos(_backward_angle * DEG2RAD))) * (_gates_average_k);//!!!
       
 //        _y = (_length_between_gates - _front_distance * abs(cos(_front_angle * DEG2RAD)) + 
 //      _backward_distance * abs(cos(_backward_angle * DEG2RAD))) / 2;//!!!
@@ -230,11 +233,11 @@ void camera::calculate_pos(int16_t angle, bool side)
       }
     }
     
-    //_robot_x_soft = _x * _robot_k + _robot_x_soft * (1 - _robot_k);
-    //_robot_y_soft = _y * _robot_k + _robot_y_soft * (1 - _robot_k);
+    _robot_x_soft = _x * _robot_k + _robot_x_soft * (1 - _robot_k);
+    _robot_y_soft = _y * _robot_k + _robot_y_soft * (1 - _robot_k);
     
-    _x = int(ceil(double(_x))) * -1;
-    _y = int(ceil(double(_y))); 
+    _x = int(ceil(double(_robot_x_soft))) * -1;
+    _y = int(ceil(double(_robot_y_soft))); 
     
     if(_ball_is_seen)
     {

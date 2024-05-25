@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math.h"
+#include "project_config.h"
 
 #define RAD2DEG	57.2957795130823208767
 #define DEG2RAD	0.01745329251994329576
@@ -29,6 +30,7 @@ struct point
   int x;
   int y;
   int angle;
+  uint8_t significanse;
 };
 
 struct polar_vector

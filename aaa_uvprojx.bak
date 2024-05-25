@@ -10,7 +10,6 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARMCC</pArmCC>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
@@ -946,6 +945,11 @@
               <FileName>Bounds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Field\Bounds.h</FilePath>
+            </File>
+            <File>
+              <FileName>Bounds.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Field\Bounds.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -62,6 +62,7 @@
 .\objects\main.o: .\src\motors\motors.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\main\tools.h
+.\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\OpenMV\OpenMv.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\time_service\time_service.h
