@@ -5,14 +5,30 @@ EXPOSURE_TIME_SCALE = 0.8
 
 yellow_threshold = [(36, 70, -1, 127, 3, 127)]
 blue_threshold = [(13, 90, -105, 27, -128, -25)]
-red_threshold = [(13, 95, 32, 113, -2, 107)]
+red_threshold = [(13, 95, 23, 113, -2, 107)]
 
 callibrate_center = False
 
-center1 = [154, 114]
-center2 = [162, 121]
+center1 = [160, 121]
+center2 = [158, 112]
 
-center = center2
+white1 = (-2.5, -7, -1.47639)
+white2 = (64, 60, 63)
+
+robot = 2
+
+if robot == 1:
+    center = center1
+    white = white1
+    EXPOSURE_TIME_SCALE = 0.8
+    img_radius = 145
+    robot_radius = 22
+else:
+    center = center2
+    white = white2
+    EXPOSURE_TIME_SCALE = 0.7
+    img_radius = 135
+    robot_radius = 11
 uart = pyb.UART(3, 230400, timeout = 100, timeout_char = 100)
 uart.init(230400, bits=8, parity=False, stop=1, timeout_char=100) #initialize UART
 
@@ -37,7 +53,7 @@ sensor.set_framesize(sensor.QVGA)
 sensor.set_auto_gain(False)
 sensor.set_auto_whitebal(False)
 print(sensor.get_rgb_gain_db())
-sensor.set_auto_whitebal(False, (-2.5, -7, -1.47639))
+sensor.set_auto_whitebal(False, white)#(-2.5, -7, -1.47639)
 sensor.set_auto_exposure(False)
 current_exposure_time_in_microseconds =  sensor.get_exposure_us()
 sensor.set_auto_exposure(False, \
@@ -221,19 +237,23 @@ while(True):
     clock.tick()
     #print(utime.ticks_ms())
     if callibrate_center == False:
-        img = sensor.snapshot().mask_circle(center[0], center[1], 145)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
-        img.draw_circle(center[0], center[1], 22, (0, 0, 0), fill = True)
-        img.draw_rectangle(142, 97, 36, 7, (0, 0, 0), 1, True)
-        img.draw_line(147, 95, 173, 95, (0, 0, 0), 7)
-        img.draw_line(143, 140, 171, 145, (0, 0, 0), 7)
-        img.draw_line(141, 106, 137, 115, (0, 0, 0), 7)
-        img.draw_line(143, 137, 138, 127, (0, 0, 0), 7)
-        img.draw_line(154, 146, 164, 148, (0, 0, 0), 7)
-        img.draw_line(148, 103, 143, 107, (0, 0, 0), 7)
-        img.draw_line(171, 142, 177, 147, (0, 0, 0), 7)
-        img.draw_line(178, 101, 187, 121, (0, 0, 0), 7)
-        img.draw_line(144, 145, 152, 145, (0, 0, 0), 5)
-        img.draw_line(136, 132, 139, 139, (0, 0, 0), 5)
+        img = sensor.snapshot().mask_circle(center[0], center[1], img_radius)#.binary(green_threshold, zero=True)#.binary(black_threshold, zero=True) #get corrected image
+        img.draw_circle(center[0], center[1], robot_radius, (0, 0, 0), fill = True)
+        if robot == 1:
+            img.draw_rectangle(142, 97, 36, 7, (0, 0, 0), 1, True)
+            img.draw_line(147, 95, 173, 95, (0, 0, 0), 7)
+            img.draw_line(143, 140, 171, 145, (0, 0, 0), 7)
+            img.draw_line(141, 106, 137, 115, (0, 0, 0), 7)
+            img.draw_line(143, 137, 138, 127, (0, 0, 0), 7)
+            img.draw_line(154, 146, 164, 148, (0, 0, 0), 7)
+            img.draw_line(148, 103, 143, 107, (0, 0, 0), 7)
+            img.draw_line(171, 142, 177, 147, (0, 0, 0), 7)
+            img.draw_line(178, 101, 187, 121, (0, 0, 0), 7)
+            img.draw_line(144, 145, 152, 145, (0, 0, 0), 5)
+            img.draw_line(136, 132, 139, 139, (0, 0, 0), 5)
+        else:
+            img.draw_line(145, 121, 153, 126, (0, 0, 0), 5)
+            img.draw_line(153, 126, 164, 125, (0, 0, 0), 5)
     else:
         img = sensor.snapshot()
     old_area = 0
@@ -244,7 +264,7 @@ while(True):
     blue_is_see = False
 
     #detecting yellow gate
-    for blob in img.find_blobs(yellow_threshold, pixels_threshold=50, area_threshold=300, merge=True, margin = 20):#finding gates
+    for blob in img.find_blobs(yellow_threshold, pixels_threshold=50, area_threshold=200, merge=True, margin = 20):#finding gates
         if(blob[2] * blob[3] > old_area):
             old_area = blob[2] * blob[3]
             img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (200, 200, 0), 2)
@@ -262,7 +282,7 @@ while(True):
     elif(yellow_angle < 0):
         yellow_angle += 360
 
-    if(old_area < 100):
+    if(old_area < 50):
         yellow_distance = 0
     old_area = 0
 
@@ -281,7 +301,7 @@ while(True):
                 blue_angle -= 360
             elif(blue_angle < 0):
                 blue_angle += 360
-    if(old_area < 100):
+    if(old_area < 50):
         blue_distance = 0
     old_area = 0
 

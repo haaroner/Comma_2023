@@ -467,6 +467,13 @@ namespace Robot
     if(move_speed > 100) move_speed = 100;
   }
   
+  void constrainRobotSpeed(uint8_t _max_speed, uint8_t _min_speed)
+  {
+    _max_speed = constrain(100, 0, _max_speed);
+    _min_speed = constrain(100, 0, _min_speed);
+    move_speed = constrain(_max_speed, _min_speed, move_speed);
+  }
+  
   void setRobotSpeed(uint16_t _speed)
   {
     if(_speed > 100) _speed = 100;
@@ -622,9 +629,7 @@ namespace Robot
     }
     
     if(_point.angle != - 255)
-    {
-      setAngle(_point.angle, 4);
-    }
+      setAngle(_point.angle, 5);
     
     if((point_distance > 5 && _point.significanse == 2) ||
        (point_distance > 15 && _point.significanse == 1) ||
@@ -638,9 +643,11 @@ namespace Robot
     return time_service::getCurTime() - point_reached_timer > 200;
   }
   
-  bool moveToPoint(int _x, int _y, int16_t _speed, uint8_t _max_speed = 12, uint8_t _min_speed = 6)
+  bool moveToPoint(int _x, int _y, int16_t _speed,  int16_t _x0_angle = -255)
   {
     use_trajectory = false;
+    uint8_t _max_speed = 70;
+    uint8_t _min_speed = 10;
     _sub_point.x = _x;
     _sub_point.y = _y;
     moving_point[2] = 0; //choosing angle will be added in the future
@@ -651,17 +658,16 @@ namespace Robot
     // 0 - turn to point
     // 1 - standart speed
     if(_speed == 0 || point_distance < 5) move_speed = 0;
-    else if(_speed == -1) move_speed = point_distance * 1.25;
+    else if(_speed == -1) move_speed = constrain(_max_speed, _min_speed, point_distance * 2);
     else move_speed = _speed;
     
-    if(point_distance < 15) move_speed = constrain(10, 7, move_speed);
-    else move_speed = constrain(_max_speed, _min_speed, move_speed);
-    
+    if(_x0_angle != - 255)
+      setAngle(_x0_angle, 5);
     moveRobotAbs(move_angle, move_speed);
     
-    if(point_distance > 10) point_reached_timer = time_service::getCurTime();
+    if(point_distance > 5) point_reached_timer = time_service::getCurTime();
     
-    return time_service::getCurTime() - point_reached_timer > 250;
+    return time_service::getCurTime() - point_reached_timer > 200;
   }
   
   void rotateRobot(int16_t _angular_speed, int16_t _max_angular_speed)
