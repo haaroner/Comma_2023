@@ -3,16 +3,20 @@
 #pragma once
 
 #define OTLADKA false
-#define USE_MOTORS false
+#define USE_MOTORS true
 #define USE_DISPLAY true
 #define USE_DRIBLER true
 #define USE_FRONT_CAMERA false
 
 #define STOP_DRIBLER_SPEED 200
-#define MAX_DRIBLER_SPEED 49
+#define MAX_DRIBLER_SPEED 20
 #define GRAB_DRIBLER_SPEED 20
 #define DRIBLER_REVERSE_KICK_SPEED 0
 #define DRIBLER_KICKING_SPEED 0
+
+#define POWER_SUPPLY 16
+#define STANDART_POWER 13
+#define POWER_K 0.9
 
 #define ROBOT_MAX_X 80
 #define ROBOT_MIN_X -80

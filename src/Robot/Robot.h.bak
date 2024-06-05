@@ -266,10 +266,10 @@ namespace Robot
     _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
     if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (_speed == 0 && fast_stop))
     {
-      if(my_abs(_speed - dribler_speed) <= 1.4 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
+      if(my_abs(_speed - dribler_speed) <= 0.7 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
       else
       {
-        cur_dribler_speed += 1.4 * my_sgn(_speed - cur_dribler_speed);
+        cur_dribler_speed += 0.7 * my_sgn(_speed - cur_dribler_speed);
       }
       dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
       dribler_speed_change_speed = time_service::getCurTime();
@@ -579,7 +579,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 70, int16_t _min_speed = 10)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 10)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -606,7 +606,7 @@ namespace Robot
       {
         if(_point.angle != - 255)
         {
-          setAngle(_point.angle, 4);
+          setAngle(_point.angle, 3);
         }
         
         if(point_distance > start_point_distance / 2)
@@ -615,11 +615,11 @@ namespace Robot
         }
         else
         {
-          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 2);
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.2);
         }
       }
       else
-        move_speed = constrain(_max_speed, _min_speed, point_distance * 2);
+        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.2);
       moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     }
     else
@@ -643,12 +643,11 @@ namespace Robot
     return time_service::getCurTime() - point_reached_timer > 200;
   }
   
-  bool moveToPoint(int _x, int _y, int16_t _speed/*,  int16_t _x0_angle = -255*/)
+  bool moveToPoint(int _x, int _y, int16_t _speed,  int16_t _x0_angle = -255)
   {
     use_trajectory = false;
-     uint8_t _max_speed = 70;
+    uint8_t _max_speed = 70;
     uint8_t _min_speed = 10;
-    int16_t _x0_angle = -255;
     _sub_point.x = _x;
     _sub_point.y = _y;
     moving_point[2] = 0; //choosing angle will be added in the future
