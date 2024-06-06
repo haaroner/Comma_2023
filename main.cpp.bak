@@ -47,6 +47,8 @@ point attack_point;
 
 volatile uint16_t out_of_bounds_victor = 0;
 
+point attacker_defence_point;
+
 bool out_diving = false;
   
 point attacker_start_state_point; 
@@ -140,6 +142,9 @@ int main()
   
   Robot::add_stop_to_route(0, 180);
   Robot::add_stop_to_route(30, 180);
+  
+  attacker_defence_point.x = 0;
+  attacker_defence_point.y = 180;
 
   while(true)
   {
@@ -294,17 +299,19 @@ int main()
         
         if(attacker_state == 3)
         {
-          if(attacker_old_state != 3)
-            attacker_start_state_point = robot_position;
-          
-          if(ball_distance < 20 && my_abs(ball_loc_angle) < 20) attacker_3_to_1_tim = time;
-          
-          if(time - attacker_3_to_2_tim > 6000) attacker_state = 2;
-          
-          if(Robot::is_ball_seen_T(100))
-            if(time - attacker_3_to_1_tim > 100) attacker_state = 1;
-          
-          out_diving = false;
+          attacker_2_to_1_tim = time;
+          attacker_state = 2;
+//          if(attacker_old_state != 3)
+//            attacker_start_state_point = robot_position;
+//          
+//          if(ball_distance < 20 && my_abs(ball_loc_angle) < 20) attacker_3_to_1_tim = time;
+//          
+//          if(time - attacker_3_to_2_tim > 6000) attacker_state = 2;
+//          
+//          if(Robot::is_ball_seen_T(100))
+//            if(time - attacker_3_to_1_tim > 100) attacker_state = 1;
+//          
+//          out_diving = false;
         }
 
         if(attacker_state == 4)
@@ -341,7 +348,7 @@ int main()
         {         
           Robot::enable_trajectory(false);
           if(ball_distance < 15 && my_abs(ball_loc_angle) < 15) 
-            Robot::set_dribler_speed(25, false);
+            Robot::set_dribler_speed(15, false);
           else 
           {
             if(my_abs(lead_to_degree_borders(backward_angle + 180) - gyro) > 20)
@@ -450,7 +457,7 @@ int main()
           }
           
           Robot::set_dribler_speed(40);
-          Robot::setAngle(lead_to_degree_borders(forward_angle + 180), 9);
+          Robot::setAngle(lead_to_degree_borders(Robot::getAngleToPoint(attacker_defence_point) + 180), 9);
           
           if(Robot::trajectory_finished)
           {

@@ -839,7 +839,7 @@ namespace Robot
           {
             set_dribler_speed(0);
             wait(10);
-            keck(8);
+            keck(6);
             _keck_done = true;
           }
           

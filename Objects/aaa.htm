@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\aaa.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\aaa.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Jun 05 19:05:40 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Jun 06 15:49:41 2024
 <BR><P>
 <H3>Maximum Stack Usage =        776 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2207,11 +2207,11 @@ Global Symbols
 <P><STRONG><a name="[139]"></a>camera::calculate_pos(short, bool)</STRONG> (Thumb, 2548 bytes, Stack size 120 bytes, openmv.o(i._ZN6camera13calculate_posEsb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 496<LI>Call Chain = camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
+<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lead_to_degree_borders(int)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(double, int)
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::abs(double)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
 <LI><a href="#[15c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
@@ -2570,9 +2570,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
+<BR>[Called By]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[16e]"></a>operator delete (void*)</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, delete.o(i._ZdlPv))
@@ -2649,13 +2649,13 @@ Global Symbols
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::predict(unsigned char)
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[15b]"></a>__hardfp_ceil</STRONG> (Thumb, 252 bytes, Stack size 40 bytes, ceil.o(i.__hardfp_ceil))
@@ -2785,11 +2785,11 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 </UL>
 
 <P><STRONG><a name="[e5]"></a>__hardfp_sqrtf</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, sqrtf.o(i.__hardfp_sqrtf))
@@ -3053,7 +3053,7 @@ Global Symbols
 <LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_tan
 </UL>
 
-<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 7362 bytes, Stack size 152 bytes, main.o(i.main))
+<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 7342 bytes, Stack size 152 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 776<LI>Call Chain = main &rArr; Robot::side_keck(short, short, unsigned char, short) &rArr; Robot::wait(unsigned, bool, short, unsigned char, short) &rArr;  Robot::wait(unsigned, bool, short, unsigned char, short) (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_service::getCurTime()
@@ -3222,8 +3222,7 @@ Global Symbols
 <P><STRONG><a name="[ce]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
@@ -3232,6 +3231,7 @@ Global Symbols
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;convert_dist(double, double)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 <LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
@@ -3298,8 +3298,7 @@ Global Symbols
 <P><STRONG><a name="[d7]"></a>__aeabi_d2iz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfix.o(x$fpl$dfix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
+<BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
@@ -3311,6 +3310,7 @@ Global Symbols
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exponential_detour(double, double, double, double, double, double)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::my_abs(int)
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[17d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
@@ -3333,8 +3333,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[d3]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
-<BR><BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
+<BR><BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
@@ -3348,6 +3347,7 @@ Global Symbols
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::my_abs(int)
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
@@ -3386,8 +3386,7 @@ Global Symbols
 <P><STRONG><a name="[d4]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
-<LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
+<BR>[Called By]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::_move_vector()
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::moveRobot(double, double, double, double, unsigned, unsigned)
@@ -3400,6 +3399,7 @@ Global Symbols
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(point, point)
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exponential_detour(double, double, double, double, double, double)
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_of_vectors(short, unsigned short, short, unsigned short)
+<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::get_angle_to_point(short, short, short, short)
 <LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
