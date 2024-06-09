@@ -54,7 +54,7 @@ namespace Robot
   pin usart2_rx('D', 6, uart2);
   pin usart2_tx('D', 7, uart2);
   
-  pin Kecker('E', 9, write_DOWN);
+  pin Kecker('E', 9, write_);
   
   pin battery_charge('C', 5, adc);
   
@@ -266,14 +266,15 @@ namespace Robot
     _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
     if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (_speed == 0 && fast_stop))
     {
-      if(my_abs(_speed - dribler_speed) <= 0.7 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
+      if(my_abs(_speed - dribler_speed) <= 1.4 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
       else
       {
-        cur_dribler_speed += 0.7 * my_sgn(_speed - cur_dribler_speed);
+        cur_dribler_speed += 1.4 * my_sgn(_speed - cur_dribler_speed);
       }
       dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
       dribler_speed_change_speed = time_service::getCurTime();
     }
+    dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(_speed));
   }
   
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
@@ -444,6 +445,19 @@ namespace Robot
     }
   }
   
+  void Ilya()
+  {
+    if(time_service::getCurTime() - keck_timer > 700)
+    {
+      //ENTER_CRITICAL_SECTION();
+      Kecker.setBit();
+      time_service::delay_ms(50);
+      Kecker.resetBit();
+      keck_timer = time_service::getCurTime();
+      //EXIT_CRITICAL_SECTION();
+    }
+  }
+  
   void moveRobot(int16_t _angle, uint8_t _speed)
   {
     move_angle = lead_to_degree_borders(_angle);
@@ -579,7 +593,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 10)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 45, int16_t _min_speed = 30)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -631,7 +645,7 @@ namespace Robot
     if(_point.angle != - 255)
       setAngle(_point.angle, 5);
     
-    if((point_distance > 5 && _point.significanse == 2) ||
+    if((point_distance > 8 && _point.significanse == 2) ||
        (point_distance > 15 && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
@@ -903,7 +917,7 @@ namespace Robot
     
     //mpu.update();
    if(usart6::available() > 0)
-   gyro = lead_to_degree_borders((usart6::read() * 2) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
+    gyro = lead_to_degree_borders((usart6::read() * 2) - gyro_zero_angle);//lead_to_degree_borders(mpu.getAngle());
     
    // ball.get_data();
     //ball_angle = lead_to_degree_borders(ball.get_angle() + gyro);
