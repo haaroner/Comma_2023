@@ -16,7 +16,7 @@
 
 #define POWER_SUPPLY 16
 #define STANDART_POWER 13
-#define POWER_K 0.9
+#define POWER_K 1
 
 #define ROBOT_MAX_X 80
 #define ROBOT_MIN_X -80

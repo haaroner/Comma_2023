@@ -15,7 +15,7 @@ center2 = [158, 112]
 white1 = (-2.5, -7, -1.47639)
 white2 = (64, 60, 63)
 
-robot = 2
+robot = 1
 
 if robot == 1:
     center = center1
@@ -340,4 +340,3 @@ while(True):
     if callibrate_center == False:
         img.draw_circle(ball[4], ball[5], 3, (255, 255, 255))
     img.draw_circle(center[0], center[1], 3, (255, 255, 255))
-

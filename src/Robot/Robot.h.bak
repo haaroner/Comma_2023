@@ -100,7 +100,7 @@ namespace Robot
   volatile int move_angle = 0, angular_speed = 0, max_angular_speed, gyro = 0,
   robot_x = 0, robot_y = 100, ball_loc_angle = 0, ball_abs_angle = 0, ball_loc_x = 0,
   ball_loc_y = ball_loc_x = 20, forward_angle = 0, backward_angle = 180, ball_angle,
-  moving_point[4] = {-1000, -1000, -1000, -1000}, dribler_speed = 240, 
+  moving_point[4] = {-1000, -1000, -1000, -1000}, dribler_speed = STOP_DRIBLER_SPEED, 
   gyro_zero_angle = 0, waiting_angle = 0, abs_move_angle = 0;
   
   volatile int ball_distance = 20, forward_distance = 100, backward_distance = 100, point_distance = 0, 
@@ -117,13 +117,15 @@ namespace Robot
   double _alpha = 0;
   unsigned select_arrow_y = 0, menu_level = 0, main_menu_arrow_y = 0;
   
-  uint16_t change_speed_time = 50, start_trajectory_length = 0;
+  uint16_t change_speed_time = 10, start_trajectory_length = 0;
   
-  float cur_dribler_speed = 0;
+  float cur_dribler_speed = STOP_DRIBLER_SPEED;
   
   bool _use_dribler = false, trajectory_started = false;
   
   bool use_delays = true, ball_distance_delay_disable = true;
+  
+  bool fast_stop = 0;
   
   volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
@@ -261,20 +263,23 @@ namespace Robot
 //    else _speed = 200;
 //  }
   
-  void set_dribler_speed(uint16_t _speed, bool fast_stop = true)
+  void set_dribler_speed(uint16_t _speed, bool _fast_stop = true)
   {
     _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
-    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (_speed == 0 && fast_stop))
-    {
-      if(my_abs(_speed - dribler_speed) <= 1.4 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
-      else
-      {
-        cur_dribler_speed += 1.4 * my_sgn(_speed - cur_dribler_speed);
-      }
-      dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
-      dribler_speed_change_speed = time_service::getCurTime();
-    }
-    dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(_speed));
+    dribler_speed = STOP_DRIBLER_SPEED + _speed;
+    fast_stop = _fast_stop;
+//    _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
+//    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (_speed == 0 && fast_stop))
+//    {
+//      if(my_abs(_speed - dribler_speed) <= 1.4 || (_speed == 0 && fast_stop)) cur_dribler_speed = _speed;
+//      else
+//      {
+//        cur_dribler_speed += 1.4 * my_sgn(_speed - cur_dribler_speed);
+//      }
+//      dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
+//      dribler_speed_change_speed = time_service::getCurTime();
+//    }
+//    dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(_speed));
   }
   
   inline void display_draw_string(const char* data, unsigned x = 0, unsigned y = 0)
@@ -593,7 +598,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 45, int16_t _min_speed = 30)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 38, int16_t _min_speed = 30)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -643,10 +648,10 @@ namespace Robot
     }
     
     if(_point.angle != - 255)
-      setAngle(_point.angle, 3);
+      setAngle(_point.angle, 5);
     
     if((point_distance > 8 && _point.significanse == 2) ||
-       (point_distance > 15 && _point.significanse == 1) ||
+       (point_distance > 8 && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
     
@@ -1070,6 +1075,19 @@ namespace Robot
       }
     }
     
+    if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (dribler_speed == STOP_DRIBLER_SPEED && fast_stop))
+    {
+      if(my_abs(cur_dribler_speed - dribler_speed) <= 0.15 || (dribler_speed == STOP_DRIBLER_SPEED && fast_stop)) cur_dribler_speed = dribler_speed;
+      else
+      {
+        cur_dribler_speed += 0.15 * my_sgn(dribler_speed - cur_dribler_speed);
+      }
+      //dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
+      dribler_speed_change_speed = time_service::getCurTime();
+    }
+    
+    cur_dribler_speed = constrainf(STOP_DRIBLER_SPEED + MAX_DRIBLER_SPEED, STOP_DRIBLER_SPEED, cur_dribler_speed);
+    display_data(cur_dribler_speed);
     if(motors_state && !OTLADKA)
     {
       #if USE_MOTORS
@@ -1080,7 +1098,7 @@ namespace Robot
       
       #if USE_DRIBLER
       if(_use_dribler)
-        dribler_control.pwm(dribler_speed);
+        dribler_control.pwm(cur_dribler_speed);
       else
         dribler_control.pwm(STOP_DRIBLER_SPEED);
       #else
