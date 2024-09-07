@@ -1,7 +1,8 @@
 .\objects\main.o: main.cpp
 .\objects\main.o: .\src\Robot\Robot.h
 .\objects\main.o: ..\Comma_2023_open\Settings.h
-.\objects\main.o: .\src\main\libs.h
+.\objects\main.o: .\src\main\tools.h
+.\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\global_macros\global_macros.h
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_rcc.h
@@ -41,8 +42,9 @@
 .\objects\main.o: .\src\spl4\inc\stm32f4xx_fsmc.h
 .\objects\main.o: .\src\global_macros\stm32f4xx_global_macros.h
 .\objects\main.o: .\src\main\project_config.h
-.\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: .\src\main\libs.h
+.\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\pin_setup\pin_setup.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\time_service\time_service.h
@@ -60,8 +62,6 @@
 .\objects\main.o: .\src\motor\motor.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\motors\motors.h
-.\objects\main.o: .\src\main\project_config.h
-.\objects\main.o: .\src\main\tools.h
 .\objects\main.o: .\src\main\project_config.h
 .\objects\main.o: .\src\OpenMV\OpenMv.h
 .\objects\main.o: .\src\main\project_config.h

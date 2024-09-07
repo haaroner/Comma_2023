@@ -9,7 +9,8 @@ class Adc
 				uint8_t numberOfChannels,
 				uint8_t curChannel,
 				uint32_t RCC_APB2Periph_ADCx,
-				pin &sig);
+				pin &sig,
+        uint8_t num_of_cycles);
 		void adcInit(uint8_t _num_of_cycles);
 		void startAdc();
 		void setChannel();

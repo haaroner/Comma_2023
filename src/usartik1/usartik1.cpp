@@ -9,7 +9,7 @@ extern "C"
 		{
 			usartik1::rx[usartik1::_rxCnt] = USART1->DR;
 			usartik1::_rxCnt++;
-			if(usartik1::_rxCnt == 25)
+			if(usartik1::_rxCnt == usartik1::_buffer_size)
 			{
 				usartik1::_rxCnt = 0;
 			}
@@ -21,7 +21,7 @@ extern "C"
 			{
 				(USART1->DR) = usartik1::tx[usartik1::_sendCnt];
 				usartik1::_sendCnt++;
-				if(usartik1::_sendCnt == 25)
+				if(usartik1::_sendCnt == usartik1::_buffer_size)
 				{
 					usartik1::_sendCnt = 0;
 				}
@@ -48,15 +48,17 @@ namespace usartik1
   volatile bool flag;
   volatile uint16_t _readCnt;
   volatile uint16_t _sendCnt;
-  
+  volatile uint16_t _buffer_size;
 	
-	void usart1Init(uint32_t speed, uint8_t word_length, float stop_bits)
+	void usart1Init(uint32_t speed, uint8_t word_length, float stop_bits, uint16_t buff_size)
 		{
 		flag = 1;
 		_txCnt = 0;
 		_rxCnt = 0;
 		_readCnt = 0;
 		_sendCnt = 0;
+    if(buff_size <= 25 && buff_size > 0) _buffer_size = buff_size;
+    else _buffer_size = 25;
       
     rx[0] = 0;  
 
@@ -90,7 +92,7 @@ namespace usartik1
 		ENTER_CRITICAL_SECTION();
 		dt = rx[_readCnt];
 		_readCnt++;
-		if(_readCnt == 25)
+		if(_readCnt == _buffer_size)
 		{
 		 _readCnt = 0;
 		}
@@ -114,7 +116,7 @@ namespace usartik1
 		{
 		 tx[_txCnt] = _data;
 		 _txCnt++;
-		 if(_txCnt == 25)
+		 if(_txCnt == _buffer_size)
 		 {
 		 _txCnt = 0;
 		 }

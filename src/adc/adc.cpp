@@ -4,13 +4,16 @@ Adc::Adc(ADC_TypeDef* ADCx,
 				 uint8_t numberOfChannels,
           uint8_t curChannel,          
 				 uint32_t RCC_APB2Periph_ADCx,
-				 pin &sig):m_sig(sig)
+				 pin &sig,
+         uint8_t num_of_cycles):m_sig(sig)
 {
 	m_numberOfChannels = numberOfChannels;
 	m_ADCx = ADCx;
 	m_curChannel = curChannel;
 	m_RCC_APB2Periph_ADCx = RCC_APB2Periph_ADCx;
   cur = 1;
+  sendMeChannel(curChannel);
+  //adcInit(num_of_cycles);
 }
 
 void Adc::adcInit(uint8_t _num_of_cycles)
@@ -31,6 +34,9 @@ void Adc::adcInit(uint8_t _num_of_cycles)
 	cADC.ADC_Prescaler = ADC_Prescaler_Div2;
 	
 	ADC_CommonInit(&cADC);
+ // startAdc();
+  //setChannel();
+  //adcDmaInit();
 }
 
 void Adc::startAdc()

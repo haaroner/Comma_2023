@@ -31,11 +31,24 @@ struct point
   int y;
   int angle;
   uint8_t significanse;
+  uint16_t distance;
+};
+
+struct line
+{
+  float a;
+  float c;
 };
 
 struct polar_vector
 {
   int angle;
   int length;
+};
+
+enum trajectory_type
+{
+  short_trajectory,
+  long_trajectory
 };
 

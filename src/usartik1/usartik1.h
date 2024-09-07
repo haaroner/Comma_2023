@@ -3,7 +3,7 @@
 
 namespace usartik1
 {
-	void usart1Init(uint32_t speed, uint8_t word_length, float stop_bits);
+	void usart1Init(uint32_t speed, uint8_t word_length, float stop_bits, uint16_t buff_size = 25);
 	void write_uart1(uint8_t _byte);
   void abcde(uint8_t _data);
 	uint16_t read();
@@ -15,4 +15,5 @@ namespace usartik1
 	extern volatile bool flag;
 	extern volatile uint16_t _readCnt;
 	extern volatile uint16_t _sendCnt;
+  extern volatile uint16_t _buffer_size;
 }

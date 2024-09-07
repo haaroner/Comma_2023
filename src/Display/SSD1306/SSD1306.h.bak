@@ -132,7 +132,7 @@ class SSD1306 {
 	uint8_t rotation;	//0 - no rotation, 1 - 90 deg, 2 - 180 deg, 3 - 270 deg
 
  private:
-  int dX, dY, x3, y3;
+  int dX, dY, x3, y3, sub;
   volatile double alpha;
   int8_t _vccstate, sid, sclk, spiNum;
 	uint16_t dc/*, rst*/, cs, pwr_en, sck, mosi;

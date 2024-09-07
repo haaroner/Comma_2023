@@ -167,7 +167,28 @@ int map(int num, int min1, int max1, int min2, int max2)
   double k12 = len2 / len1;
   result = ((num - min1) * k12) + min2;
   return result;
+}
 
+line get_line_from_points(point point1, point point2)
+{
+  line sub_line;
+  if(my_abs(point2.x) > my_abs(point1.x))
+  {
+    sub_line.a = float(point2.y - point1.y) / float(point2.x - point1.x);
+    sub_line.c = point1.y - sub_line.a * point1.x;
+  }
+  else
+  {
+    sub_line.a = float(point1.y - point2.y) / float(point1.x - point2.x);
+    sub_line.c = point1.y - sub_line.a * point1.x;
+  }
+  return sub_line;
+}
+
+point find_lines_crosspoint(line line1, line line2)
+{
+  point cross_point;
   
-  
+  cross_point.x = (line2.c - line1.c) / (line1.a - line2.a);
+  cross_point.y = line2.a * cross_point.x + line2.c;
 }

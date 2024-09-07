@@ -1,6 +1,9 @@
 #include "dma.h"
 
-Dma::Dma(uint32_t RCC_AHB1Periph_DMAx,Adc &adcx):m_adcx(adcx){m_RCC_AHB1Periph_DMAx = RCC_AHB1Periph_DMAx;}
+Dma::Dma(uint32_t RCC_AHB1Periph_DMAx,Adc &adcx):m_adcx(adcx)
+{
+  m_RCC_AHB1Periph_DMAx = RCC_AHB1Periph_DMAx;
+}
 
 void Dma::adcInitInDma(uint8_t _num_of_adc_cycles)
 {

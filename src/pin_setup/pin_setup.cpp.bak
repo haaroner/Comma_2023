@@ -202,7 +202,6 @@ void pin::pinInit()
 	{
 		GPIO_PinAFConfig(_GPIOx,_pinSourceGPIO, _AFGPIO);
 	}		
-  ADC_RegularChannelConfig
 }
 
 void pin::setBit()
