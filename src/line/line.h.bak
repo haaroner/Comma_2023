@@ -21,7 +21,7 @@ class line
     
     float _angle_const;
     int _standart_light;
-    int _distances[32];
+    int _distance, _counter, _average_angle;
   
     void read_sensors();
     void set_address(uint8_t _address);

@@ -10,6 +10,8 @@ line::line(pin bit_1, pin bit_2, pin bit_3, pin bit_4, Dma data_1, Dma data_2):
 {
   _angle_const = 11.25;
   _standart_light = 2000;
+  _distance = 0;
+  _counter = 0;
 }
 
 void line::set_address(uint8_t _address)
@@ -57,9 +59,11 @@ int16_t line::get_data()
     if(_data[i] == 1)
     {
       if(_data[i] <= 15)
-        _distances[i] = i * _angle_const + 11.25;
+        _distance += i * _angle_const + 11.25;
       else
-        _distances[i - 15] = (i - 15) * _angle_const * -1;
+        _distance += (i - 15) * _angle_const * -1;
+      _counter++;
     }
   }
+  _average_angle = _distance / _counter;
 }

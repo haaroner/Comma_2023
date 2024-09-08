@@ -8,35 +8,35 @@ callibrate_center = False
 blue_x_test = 0
 blue_y_test = 0
 
-center1 = [160, 120]
-center2 = [156, 113]
+center1 = [164, 115]
+center2 = [160, 113]
 
-robot = 2
+robot = 1
 if robot == 1:#attacker
 
-    yellow_threshold = [(0, 100, -128, 30, 19, 127)]
-    blue_threshold = [(33, 100, -128, 16, -128, -33)]
-    red_threshold = [(0, 100, 36, 127, -128, 81)]
+    yellow_threshold = [(0, 100, -128, 40, 29, 127)]
+    blue_threshold = [(0, 60, -128, 4, -128, -12)]
+    red_threshold = [(0, 100, 34, 127, -128, 127)]
 
-    white = (-4, -8, -4)
+    white = (-2, -6, -1)
 
     center = center1
-    EXPOSURE_TIME_SCALE = 0.8
+    EXPOSURE_TIME_SCALE = 1.2
     img_radius = 145
     robot_radius = 25
-    my_gain = 15
+    my_gain = 10
 else:
-    yellow_threshold = [(0, 100, 0, 31, 13, 127)]
-    blue_threshold = [(0, 100, -128, 22, -128, -31)]
-    red_threshold = [(0, 100, 31, 127, -9, 111)]
+    yellow_threshold = [(0, 100, -20, 18, 16, 127)]
+    blue_threshold = [(32, 52, -128, 100, -128, -26)]
+    red_threshold = [(9, 97, 31, 127, -111, 118)]
 
-    white = (63.7, 60, 63)
+    white = (64, 60, 63)
 
     center = center2
-    EXPOSURE_TIME_SCALE = 0.7
+    EXPOSURE_TIME_SCALE = 0.6
     img_radius = 135
     robot_radius = 16
-    my_gain = 15
+    my_gain = 25
 uart = pyb.UART(3, 230400, timeout = 100, timeout_char = 100)
 uart.init(230400, bits=8, parity=False, stop=1, timeout_char=100) #initialize UART
 

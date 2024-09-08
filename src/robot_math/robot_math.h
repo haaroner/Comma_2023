@@ -191,4 +191,15 @@ point find_lines_crosspoint(line line1, line line2)
   
   cross_point.x = (line2.c - line1.c) / (line1.a - line2.a);
   cross_point.y = line2.a * cross_point.x + line2.c;
+  if(cross_point.x > 100 || cross_point.y > 100)
+  {
+    
+  }
+  return cross_point;
+}
+
+int16_t get_angle_from_points(point pointL, point pointC, point pointR)
+{
+  int _angle = get_angle_to_point(pointC, pointR).angle - get_angle_to_point(pointC, pointL).angle;
+  return lead_to_degree_borders(my_abs(_angle));
 }

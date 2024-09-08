@@ -22,7 +22,8 @@ class motors
                      uint32_t _instant_start_timer);
   //int lead_to_degree_borders(int _num);
   void disableMotors(); 
-  void _move_vector();                     
+  void _move_vector();  
+  void change_smoothness(float _smoothness);
 	private:
     //int calculate_power(int speed);
 		Motor _m1;

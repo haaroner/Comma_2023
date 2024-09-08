@@ -115,6 +115,11 @@ void motors::moveRobot(double _maxPower,
 	_m4.motorMove(opowers);
 }
 
+void motors::change_smoothness(float _smoothness)
+{
+  _dL = _smoothness;
+}
+
 void motors::_move_vector()
 {
   double _x1, _x2, _x3, _x4;

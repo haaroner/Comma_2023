@@ -36,8 +36,8 @@ struct point
 
 struct line
 {
-  float a;
-  float c;
+  double a;
+  double c;
 };
 
 struct polar_vector

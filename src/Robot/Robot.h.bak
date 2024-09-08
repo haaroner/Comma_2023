@@ -14,7 +14,7 @@ namespace Robot
   Motor m3('D', 12, tim4, CHANNEL1, 'D', 13, tim4, CHANNEL2);
   Motor m1('D', 14, tim4, CHANNEL3, 'D', 15, tim4, CHANNEL4);
   Motor m4('B', 10, tim2, CHANNEL3, 'B', 11, tim2, CHANNEL4);
-  motors motors(m1, m2, m3, m4, 100, 1.5);//1.5
+  motors motors(m1, m2, m3, m4, 100, 3);//1.5
   
   pin spi2_sck('B', 13, spi2);
   pin spi2_mosi('B', 15, spi2);
@@ -167,7 +167,7 @@ namespace Robot
     //adc_voltage.sendMeChannel(15);
     #if USE_DISPLAY
       display.begin();
-      display.display();
+      //display.display();
     #endif
     
     #if USE_DRIBLER
@@ -1091,6 +1091,7 @@ namespace Robot
     adc1_sub = ADC1 -> DR;
     if(adc1_sub != 0) voltage = adc1_sub * 0.002625 + 5.55;
     #if USE_DISPLAY
+      //display.begin();
       draw_menu();
     #else
       if(check_button(DOWN_BUTTON))

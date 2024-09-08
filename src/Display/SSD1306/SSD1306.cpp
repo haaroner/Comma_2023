@@ -117,7 +117,7 @@ void SSD1306::begin(uint8_t vccstate, bool reset) {
   //initPin(cs, OUTPUTPP);
 
 	//initSPI(spiNum, MASTER, 8, 2, cs, sck, -1, mosi);
-  initSPI3(1, 8, 256);
+  initSPI3(1, 8, 64);
   
   // Setup reset pin direction (used by both SPI and I2C)
   //initPin(rst, OUTPUTPP);
@@ -222,7 +222,7 @@ void SSD1306::ssd1306_command(uint8_t c) {
   _cs.setBit();
   _dc.resetBit();
   //time_service::delay_ms(1);//????
-  for(int i = 0; i < 10; i++); //35 
+  for(int i = 0; i < 35; i++); //35 
   _cs.resetBit();
   
   fastSPIwrite(c);
@@ -417,7 +417,6 @@ void SSD1306::clear(void) {
 inline void SSD1306::fastSPIwrite(uint8_t d) 
 {
 	writeSPI3(d);
-  
 }
 
 void SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
