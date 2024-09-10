@@ -550,7 +550,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 25, int16_t _min_speed = 16)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 15)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -582,15 +582,15 @@ namespace Robot
         
         if(point_distance > start_point_distance / 2)
         {
-          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 2);
+          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.5);
         }
         else
         {
-          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.2);
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.5);
         }
       }
       else
-        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.2);
+        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.5);
       moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     }
     else
@@ -603,7 +603,7 @@ namespace Robot
       setAngle(_point.angle, 5);
     
     if((point_distance > 8 && _point.significanse == 2) ||
-       (point_distance > 15 && _point.significanse == 1) ||
+       (point_distance > 17  && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
     
@@ -1066,18 +1066,7 @@ namespace Robot
       timer10ms = time;
     }
     
-    if(camera.get_ball_seen_time() + 100 < bluetooth_receive_time || (ball_distance > 150 && ball_bluetooth_dist > 253 && time - bluetooth_receive_time < 100))
-    {
-      ball_abs_x = ball_bluetooth_x;
-      ball_abs_y = ball_bluetooth_y;
-      ball_loc_x = ball_abs_x - robot_x;
-      ball_loc_y = ball_abs_y - robot_y;
-      ball_abs_angle = getAngleToPoint(ball_abs_x, ball_abs_y);
-      ball_loc_angle = lead_to_degree_borders(ball_abs_angle - gyro);
-      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
-    }
-    
-//    if(!is_ball_seen_T(350) && camera.get_ball_seen_time() > bluetooth_receive_time + 1000)
+//    if(camera.get_ball_seen_time() + 100 < bluetooth_receive_time || (ball_distance > 150 && ball_bluetooth_dist > 253 && time - bluetooth_receive_time < 100))
 //    {
 //      ball_abs_x = ball_bluetooth_x;
 //      ball_abs_y = ball_bluetooth_y;

@@ -14,29 +14,29 @@ center2 = [160, 113]
 robot = 1
 if robot == 1:#attacker
 
-    yellow_threshold = [(0, 100, -128, 40, 29, 127)]
-    blue_threshold = [(0, 60, -128, 4, -128, -12)]
-    red_threshold = [(0, 100, 34, 127, -128, 127)]
+    yellow_threshold = [(0, 100, -2, 34, 18, 127)]
+    blue_threshold = [(27, 62, -128, 18, -101, -37)]
+    red_threshold = [(0, 100, 27, 127, 9, 127)]
 
-    white = (-2, -6, -1)
+    white = (-1, -6, -2)
 
     center = center1
-    EXPOSURE_TIME_SCALE = 1.2
+    EXPOSURE_TIME_SCALE = 0.8
     img_radius = 145
     robot_radius = 25
-    my_gain = 10
+    my_gain = 15
 else:
-    yellow_threshold = [(0, 100, -20, 18, 16, 127)]
-    blue_threshold = [(32, 52, -128, 100, -128, -26)]
-    red_threshold = [(9, 97, 31, 127, -111, 118)]
+    yellow_threshold = [(0, 100, -8, 30, 18, 127)]
+    blue_threshold = [(32, 58, -128, 4, -128, -9)]
+    red_threshold = [(0, 100, 27, 127, -128, 127)]
 
-    white = (64, 60, 63)
+    white = (64, 60, 62)
 
     center = center2
     EXPOSURE_TIME_SCALE = 0.6
     img_radius = 135
     robot_radius = 16
-    my_gain = 25
+    my_gain = 20
 uart = pyb.UART(3, 230400, timeout = 100, timeout_char = 100)
 uart.init(230400, bits=8, parity=False, stop=1, timeout_char=100) #initialize UART
 
@@ -263,6 +263,7 @@ while(True):
 
             my_line(-24, 17, -10, 25, 9)#bottom lines
             my_line(-10, 25, 10, 25, 8)
+            my_line(-27, 9, -24, 17, 7)
         else:
             img.draw_circle(center[0], center[1], robot_radius, (0, 0, 0), fill = True)
             my_line(-5, 17, 12, 17, 5)
@@ -319,9 +320,14 @@ while(True):
                 blue_angle -= 360
             elif(blue_angle < 0):
                 blue_angle += 360
+    if(old_area < 50):
+        blue_distance = 0
+    old_area = 0
     my_blobs = []
     old_roundness = 0
     max_area = 0
+
+    ball_distance = 0
     for blob in img.find_blobs(red_threshold, pixels_threshold=5, area_threshold=5, merge=True, margin = 1):
         if blob.area() >= 7 and blob.area() < 320:
             if blob.compactness() > old_roundness:
@@ -341,10 +347,6 @@ while(True):
     #print(max_area)
 
     img.draw_circle(my_blob_x, my_blob_y, 25, (255, 200, 200), 5)
-
-    if(old_area < 50):
-        blue_distance = 0
-    old_area = 0
 
     #img.draw_line(yellow[4], yellow[5], blue[4], blue[5], (255, 255, 255), 2) #line between centers of gates
 
