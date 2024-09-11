@@ -189,6 +189,7 @@ point find_lines_crosspoint(line line1, line line2)
 {
   point cross_point;
   
+  if(line1.a - line2.a == 0) line1.a += 0.1;
   cross_point.x = (line2.c - line1.c) / (line1.a - line2.a);
   cross_point.y = line2.a * cross_point.x + line2.c;
   if(cross_point.x > 100 || cross_point.y > 100)
