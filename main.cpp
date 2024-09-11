@@ -884,9 +884,9 @@ int main()
             if(ball_abs_y <= 60)
             {
               defender_moving_point.x = ball_abs_x;
-              if(my_abs(ball_abs_angle) < 45)
-                defender_moving_point.y = ball_abs_y - 10;
-              else
+//              if(my_abs(ball_abs_angle) < 45)
+//                defender_moving_point.y = ball_abs_y - 10;
+//              else
                 defender_moving_point.y = 45;
             }
             else
@@ -896,11 +896,23 @@ int main()
             }
             
             
+            if(ball_abs_x < middleL.x)
+            {
+              defender_moving_point = middleL;
+              defender_moving_point.x -= 7; 
+            }
+            
+            if(ball_abs_x > middleR.x)
+            {
+              defender_moving_point = middleR;
+              defender_moving_point.x += 7; 
+            }
+            
             defender_moving_point.angle = Robot::getAngleToPoint(defender_moving_point);
             defender_moving_point.distance = Robot::getDistanceToPoint(defender_moving_point);
             
             if(defender_moving_point.distance <= 7)
-              move_speed = constrain(15, 0, 2.8 * defender_moving_point.distance);
+              move_speed = constrain(15, 10, 2.8 * defender_moving_point.distance);
             else
               move_speed = constrain(70, 15, 8 * (defender_moving_point.distance - 5));
             
@@ -936,6 +948,12 @@ int main()
               defender_moving_point = find_lines_crosspoint(get_line_from_points(middleR, sideR), 
               get_line_from_points(backward_gate_center, ball_abs_position));
             
+              if(ball_abs_x < middleR.x)
+               {
+                defender_moving_point = middleR;
+                defender_moving_point.x -= 7; 
+               }
+              
               defender_moving_point.angle = Robot::getAngleToPoint(defender_moving_point);
               defender_moving_point.distance = Robot::getDistanceToPoint(defender_moving_point);
             
@@ -966,9 +984,16 @@ int main()
               defender_moving_point = find_lines_crosspoint(get_line_from_points(middleL, sideL), 
               get_line_from_points(backward_gate_center, ball_abs_position));
             
+               if(ball_abs_x > middleL.x)
+               {
+                defender_moving_point = middleL;
+                defender_moving_point.x += 7; 
+               }
+              
               defender_moving_point.angle = Robot::getAngleToPoint(defender_moving_point);
               defender_moving_point.distance = Robot::getDistanceToPoint(defender_moving_point);
             
+              
               move_angle = defender_moving_point.angle;
               if(defender_moving_point.distance <= 15)
                 move_speed = constrain(10, 0, 2.8 * defender_moving_point.distance);
