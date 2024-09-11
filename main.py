@@ -9,9 +9,9 @@ blue_x_test = 0
 blue_y_test = 0
 
 center1 = [164, 115]
-center2 = [160, 113]
+center2 = [156, 119]
 
-robot = 1
+robot = 2
 if robot == 1:#attacker
 
     yellow_threshold = [(0, 100, -2, 34, 18, 127)]

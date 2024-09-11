@@ -36,7 +36,7 @@ point robot_position, ball_abs_position;
 point forward_gate_center, forward_gate_right_end, forward_gate_left_end; 
 
 float bounds_k = 0;
-
+uint8_t defender_state_debug = 0;
 //attacker values
 volatile uint8_t role, attacker_state = 1, attacker_old_state = 1, attacker_trajectory_type;
 volatile uint32_t out_diving_start_tim = 0, out_diving_stop_tim = 0,
@@ -188,24 +188,24 @@ int main()
   side_keck_angle = 140;
   
   point middleL;
-        middleL.x = -35;
-        middleL.y = 40;
+        middleL.x = -33;
+        middleL.y = 45;
         
         point sideL;
         sideL.x = -40;
         sideL.y = 25;    
         const int16_t L_stop_angle = 128;
-        const uint16_t L_stop_y = 19;
+        const uint16_t L_stop_y = 17;
         
         point middleR;
-        middleR.x = 35;
-        middleR.y = 40;    
+        middleR.x = 33;
+        middleR.y = 45;    
         
         point sideR;
         sideR.x = 40;
         sideR.y = 25;
         const int16_t R_stop_angle = -128;
-        const uint16_t R_stop_y = 19;
+        const uint16_t R_stop_y = 17;
         
         backward_gate_center.x = 0;
         backward_gate_center.y = 0;
@@ -411,14 +411,14 @@ int main()
         
         if(attacker_state == 5)
         {
-          attacker_2_to_1_tim = time;
-          attacker_state = 2;
-          if(ball_distance < 20 && my_abs(ball_loc_angle) < 20) attacker_5_to_1_tim = time;
-          
-          if(time - attacker_5_to_2_tim > 6000) attacker_state = 5;
-          
+//          attacker_2_to_1_tim = time;
+//          attacker_state = 2;
+//          if(ball_distance < 20 && my_abs(ball_loc_angle) < 20) attacker_5_to_1_tim = time;
+//          
+//          if(time - attacker_5_to_2_tim > 6000) attacker_state = 5;
+//          
           if(Robot::is_ball_seen_T(100))
-            if(time - attacker_5_to_1_tim > 100) attacker_state = 1;
+           /* if(time - attacker_5_to_1_tim > 100)*/ attacker_state = 1;
         }
 
         if(attacker_state == 6)
@@ -755,14 +755,14 @@ int main()
       //#######defender role########//
       if(role == 2)
       { 
-        Robot::motors.change_smoothness(3);
+        Robot::motors.change_smoothness(5);
         //***defender change state conditions***//
         if(defender_state == 1)
         {
           //if(backward_distance < 70 && robot_y < 70) defender_1_to_4_tim = time;
           //else if (time - defender_1_to_4_tim > 500) defender_state = 4;
           
-          if(!Robot::is_ball_seen_T(1500) && my_abs(defender_angle_error) < 80) 
+          if(Robot::is_ball_seen_T(1500) == 0) 
           {
             defender_state = 5;
             ball_start_position = ball_abs_position;
@@ -794,8 +794,8 @@ int main()
               ball_position_fixed = false;
             }
             //if ball isnt moving go to keck state
-            else if(time - defender_start_ball_track_tim > 2500 &&
-                    time - defender_end_keck_time > 5000)
+            else if((time - defender_start_ball_track_tim > 2500 &&
+              time - defender_end_keck_time > 5000 && Robot::is_ball_seen_T(100)) )
             {
               if(my_abs(defender_angle_error) < 12)
               {
@@ -862,11 +862,12 @@ int main()
           defender_old_state = 6;
         }
           
-        if(defender_state != 3) defender_state = 1;
+       // if(defender_state != 3) defender_state = 1;
         
         //***defender state bodies***//
         if(defender_state == 1)
         {
+          defender_state_debug = 1;
           Robot::set_dribler_speed(0);
           defender_angle_error = lead_to_degree_borders(
           get_angle_to_point(backward_gate_center, ball_abs_position).angle - 
@@ -874,30 +875,38 @@ int main()
           
           
           if(middleR.x >= robot_x && robot_x >= middleL.x)
-          {       
-            defender_move_y = 40;
+          {    
+            defender_state_debug = 11;            
+            defender_move_y = 45;
             defender_ball_tan = ball_abs_y / ball_abs_x;
             defender_move_x = ball_abs_x - (ball_abs_y - defender_move_y) / defender_ball_tan;
-            defender_move_x = ball_abs_x * (defender_move_y / ball_abs_y);
-            if(ball_abs_y <= 50)
+            defender_move_x = float(ball_abs_x) * float((defender_move_y) / float(ball_abs_y));
+            if(ball_abs_y <= 60)
             {
               defender_moving_point.x = ball_abs_x;
-              defender_moving_point.y = 40;
+              if(my_abs(ball_abs_angle) < 45)
+                defender_moving_point.y = ball_abs_y - 10;
+              else
+                defender_moving_point.y = 45;
             }
             else
             {
               defender_moving_point.x = defender_move_x;
               defender_moving_point.y = defender_move_y;
             }
+            
+            
             defender_moving_point.angle = Robot::getAngleToPoint(defender_moving_point);
             defender_moving_point.distance = Robot::getDistanceToPoint(defender_moving_point);
             
             if(defender_moving_point.distance <= 7)
               move_speed = constrain(15, 0, 2.8 * defender_moving_point.distance);
             else
-              move_speed = constrain(70, 15, 2.3 * (defender_moving_point.distance));
+              move_speed = constrain(70, 15, 8 * (defender_moving_point.distance - 5));
             
-            if(defender_moving_point.distance <= 5) move_speed *= 0;
+            //move_speed = 50;
+            
+            //if(defender_moving_point.distance <= 5) move_speed *= 0;
             
             move_angle = defender_moving_point.angle;
             
@@ -936,6 +945,10 @@ int main()
               else
                 move_speed = constrain(60, 10, 8 * (defender_moving_point.distance - 5));
             
+              if(robot_y <= R_stop_y + 10 && defender_angle_error > 0)
+              {
+                move_speed = 0;
+              }
               
               if(robot_y <= R_stop_y)
               {
@@ -948,7 +961,8 @@ int main()
             }
             
             if(robot_x < middleL.x)
-            {           
+            {    
+              defender_state_debug = 12;
               defender_moving_point = find_lines_crosspoint(get_line_from_points(middleL, sideL), 
               get_line_from_points(backward_gate_center, ball_abs_position));
             
@@ -960,7 +974,12 @@ int main()
                 move_speed = constrain(10, 0, 2.8 * defender_moving_point.distance);
               else
                 move_speed = constrain(60, 10, 8 * (defender_moving_point.distance - 5));
-                         
+                 
+              if(robot_y <= L_stop_y + 10 && defender_angle_error < 0)
+              {
+                move_speed = 0;
+              }
+              
               if(robot_y <= L_stop_y)
               {
                 move_angle = 0;
@@ -973,6 +992,7 @@ int main()
           }
           defender_old_state = 1;
           Robot::setAngle(0, 20, -0.4);
+          
           if(robot_y > 55)
           {
             move_speed = constrain(40, 0, move_speed);
@@ -1063,12 +1083,13 @@ int main()
         
         if(defender_state == 5)
         {
-          if(ball_start_position.x > 20)
-            Robot::moveToPoint(30, 45, -1, 0);
-          else if(ball_start_position.x < -20)
-            Robot::moveToPoint(-30, 45, -1, 0);
+          if(ball_abs_x > 20)
+            Robot::moveToPoint(35, 35, -1, 0);
+          else if(ball_abs_x < -20)
+            Robot::moveToPoint(-35, 35, -1, 0);
           else
             Robot::moveToPoint(0, 45, -1, 0);
+          Robot::setAngle(0, 11, -0.2);
 //          Robot::moveRobotAbs(0, 0);
 //          if(ball_start_position.x > 20)
 //            Robot::moveToPoint(returnR.x, returnR.y, 40, 0);
@@ -1110,30 +1131,12 @@ int main()
           defender_old_state = 6;
           defender_end_keck_time = time;
         }
-        if(robot_x > ROBOT_MAX_X)
-          {
-            bounds_k = constrainf(1, 0, 1 - my_abs(robot_y - 105) / 105);
-            //out_of_bounds_victor = (robot_x - 85 - int(20 * bounds_k)) * 5;
-            out_of_bounds_victor = right_out.calculate_lineary(ROBOT_MAX_X, robot_x/* - int(20 * bounds_k)*/);
-            move_angle = sum_of_vectors(Robot::abs_move_angle, constrain(10, 0, Robot::move_speed),
-              -90, constrain(25, 0, out_of_bounds_victor));
-            move_speed = get_len_from_sum_of_vectors();
-            
-            Robot::moveRobotAbs(move_angle, move_speed);
-          }
-          
-          if(robot_x < ROBOT_MIN_X)
-          {
-            bounds_k = constrainf(1, 0, 1 - my_abs(robot_y - 105) / 105);
-            out_of_bounds_victor = left_out.calculate_lineary(ROBOT_MIN_X, -robot_x/* - int(20 * bounds_k)*/);
-            move_angle = sum_of_vectors(Robot::abs_move_angle, constrain(10, 0, Robot::move_speed),
-              90, constrain(25, 0, out_of_bounds_victor));
-            move_speed = get_len_from_sum_of_vectors();
-            
-            Robot::moveRobotAbs(move_angle, move_speed);
-          }    
+        if(robot_x > 65)
+          Robot::moveRobotAbs(-90, 20);
+        else if(robot_x < -65)
+          Robot::moveRobotAbs(90, 20);
       }
-      Robot::display_data(defender_state, Robot::move_speed);
+      Robot::display_data(Robot::is_ball_seen_T(1500), defender_state);
     } 
     Robot::update();
     //get_line_from_points(backward_gate_center, ball_abs_position)
