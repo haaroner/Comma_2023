@@ -204,3 +204,11 @@ int16_t get_angle_from_points(point pointL, point pointC, point pointR)
   int _angle = get_angle_to_point(pointC, pointR).angle - get_angle_to_point(pointC, pointL).angle;
   return lead_to_degree_borders(my_abs(_angle));
 }
+
+uint16_t calculate_defender_speed(float point_distance)
+{
+  if(point_distance <= 4.5)
+    return constrain(20, 20, 0.6 * point_distance + 28.6);
+  else
+    return constrain(70, 20, 5.5 * (point_distance - 1));
+}

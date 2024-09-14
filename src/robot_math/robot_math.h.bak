@@ -189,6 +189,7 @@ point find_lines_crosspoint(line line1, line line2)
 {
   point cross_point;
   
+  if(line1.a - line2.a == 0) line1.a += 0.1;
   cross_point.x = (line2.c - line1.c) / (line1.a - line2.a);
   cross_point.y = line2.a * cross_point.x + line2.c;
   if(cross_point.x > 100 || cross_point.y > 100)
@@ -202,4 +203,12 @@ int16_t get_angle_from_points(point pointL, point pointC, point pointR)
 {
   int _angle = get_angle_to_point(pointC, pointR).angle - get_angle_to_point(pointC, pointL).angle;
   return lead_to_degree_borders(my_abs(_angle));
+}
+
+uint16_t calculate_defender_speed(int point_distance)
+{
+  if(point_distance <= 4.5)
+    return constrain(20, 20, 4.5 * point_distance);
+  else
+    return constrain(70, 20, 5.5 * (point_distance - 1));
 }

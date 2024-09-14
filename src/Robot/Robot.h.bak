@@ -132,6 +132,8 @@ namespace Robot
   
   bool fast_stop = 0;
   
+  volatile uint16_t robot_position_diff;
+  
   volatile bool side = 0, buttons_data[3] = {1, 1, 1}, buttons_old_data[3] = {1, 1, 1}, 
   pressed_buttons[3] = {0, 0, 0}, blinking_leds[3] = {0, 0, 0}, leds_state = 0, motors_state = 0,
   init_image = true, _game_state = 0, is_callibrated = 0, moving_to_point = false,
@@ -144,10 +146,12 @@ namespace Robot
   float ball_sen_data_soft = 0, ball_sen_data_k = 0.5;
   
   struct point robot_position, robot_move, _sub_point, start_trajectory;
-  point predicted_point;
+  point predicted_point, robot_previous_position;
   struct polar_vector start_trajectory_vector;
   
   volatile uint8_t bluetooth_data[4];
+  
+  uint32_t robot_global_speed_timer = 0;
   
   void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
   { 
@@ -550,7 +554,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 15)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 30, int16_t _min_speed = 15)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -602,7 +606,7 @@ namespace Robot
     if(_point.angle != - 255)
       setAngle(_point.angle, 5);
     
-    if((point_distance > 8 && _point.significanse == 2) ||
+    if((point_distance > 7 && _point.significanse == 2) ||
        (point_distance > 17  && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
@@ -780,7 +784,7 @@ namespace Robot
     is_callibrated = true;
   }
   
-  void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0)
+  void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0, uint8_t _kick_power = 6)
   {
       uint32_t _timeout = 1500;
       uint32_t _start_tim = time;
@@ -825,7 +829,7 @@ namespace Robot
           {
             set_dribler_speed(0);
             wait(10);
-            keck(6);
+            keck(_kick_power);
             _keck_done = true;
           }
           
@@ -1039,7 +1043,7 @@ namespace Robot
     if(sub_adc_data != 0) ball_data = sub_adc_data;
     
     is_ball_captured();
-   if(time - bluetooth_send_timer > 5)
+   if(time - bluetooth_send_timer > 5 && _game_state == 1)
     {
       if(is_ball_seen_T(100))
         send_bluetooth_data(ball_abs_x, ball_abs_y, ball_distance);
@@ -1076,6 +1080,13 @@ namespace Robot
 //      ball_loc_angle = lead_to_degree_borders(ball_abs_angle - gyro);
 //      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
 //    }
+    
+    if(time - robot_global_speed_timer > 100)
+    {
+      robot_position_diff = get_angle_to_point(robot_position, robot_previous_position).length;
+      robot_previous_position = robot_position;
+      robot_global_speed_timer = time;
+    }
     
     adc1_sub = ADC1 -> DR;
     if(adc1_sub != 0) voltage = adc1_sub * 0.002625 + 5.55;
