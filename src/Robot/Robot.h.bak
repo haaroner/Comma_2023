@@ -1081,7 +1081,7 @@ namespace Robot
 //      ball_distance = getDistanceToPoint(ball_loc_x, ball_loc_y);
 //    }
     
-    if(time - robot_global_speed_timer > 100)
+    if(time - robot_global_speed_timer > 500)
     {
       robot_position_diff = get_angle_to_point(robot_position, robot_previous_position).length;
       robot_previous_position = robot_position;

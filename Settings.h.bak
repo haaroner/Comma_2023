@@ -15,16 +15,20 @@
 #define DRIBLER_REVERSE_KICK_SPEED 0
 #define DRIBLER_KICKING_SPEED 0
 
-#define CHALLENGE true
+#define CHALLENGE false
+#define CHALLENGE_NUM 1
 
 #define POWER_SUPPLY 16
 #define STANDART_POWER 13
 #define POWER_K 1
 
 #define ROBOT_MAX_X 50
-#define ROBOT_MIN_X -50
+#define ROBOT_MIN_X -55
 
 #define DEFENDER_MIN_ANGLE_ERR 10
+
+#define ROBOT_MAX_X_DIFF 7
+#define ROBOT_MIN_X_DIFF -7
 
 #define ROBOT_MAX_Y 210
 #define ROBOT_MIN_Y 10
