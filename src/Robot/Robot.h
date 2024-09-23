@@ -486,7 +486,7 @@ namespace Robot
     return trajectory.calculate_distance(robot_position);
   }
   
-  void add_stop_to_route(int _x, int _y, int _angle = -255, uint8_t _significance = 2) //:)
+  void add_stop_to_route(int _x, int _y, int _angle = 255, uint8_t _significance = 2) //:)
   {
     point _point;
     _point.x = _x;
@@ -554,7 +554,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = -255, int16_t _max_speed = 40, int16_t _min_speed = 17)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = 255, int16_t _max_speed = 70, int16_t _min_speed = 20)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -586,15 +586,15 @@ namespace Robot
         
         if(point_distance > start_point_distance / 2)
         {
-          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.5);
+          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.75);
         }
         else
         {
-          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.5);
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.75);
         }
       }
       else
-        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.5);
+        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.75);
       moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     }
     else
@@ -603,11 +603,11 @@ namespace Robot
       moveRobotAbs(move_angle, constrain(_max_speed, _min_speed, move_speed));
     }
     
-    if(_point.angle != - 255)
-      setAngle(_point.angle, 5);
+    if(_point.angle != -255)
+      setAngle(_point.angle, 15, -0.35);
     
     if((point_distance > 7 && _point.significanse == 2) ||
-       (point_distance > 17  && _point.significanse == 1) ||
+       (point_distance > 12  && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
     

@@ -23,7 +23,7 @@
 #define POWER_K 1
 
 #define ROBOT_MAX_X 50
-#define ROBOT_MIN_X -55
+#define ROBOT_MIN_X -50
 
 #define DEFENDER_MIN_ANGLE_ERR 10
 

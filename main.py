@@ -11,17 +11,17 @@ blue_y_test = 0
 center1 = [164, 115]
 center2 = [160, 113]
 
-robot = 2
+robot = 1
 if robot == 1:#attacker
 
-    yellow_threshold = [(0, 100, -10, 51, 31, 127)]
+    yellow_threshold = [(58, 90, 28, 89, 34, 127)]
     blue_threshold = [(0, 100, -128, 127, -128, -26)]
-    red_threshold = [(62, 100, 46, 127, -128, 40)]
+    red_threshold = [(0, 100, 55, 127, -77, 37)]#(62, 100, 46, 127, -128, 40)
 
-    white = (-4, -6, -2)
+    white = (-0.8, -6, -1)
 
     center = center1
-    EXPOSURE_TIME_SCALE = 1
+    EXPOSURE_TIME_SCALE = 0.8
     img_radius = 143
     robot_radius = 25
     my_gain = 10
@@ -58,10 +58,10 @@ sensor.skip_frames(time = 500)
 
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
-sensor.set_auto_gain(False, my_gain)
+#sensor.set_auto_gain(False, my_gain)
 sensor.set_auto_whitebal(False)
 print(sensor.get_rgb_gain_db())
-sensor.set_auto_whitebal(False, white)#(-2.5, -7, -1.47639)
+sensor.set_auto_whitebal(False)#(-2.5, -7, -1.47639)
 sensor.set_auto_exposure(False)
 current_exposure_time_in_microseconds =  sensor.get_exposure_us()
 sensor.set_auto_exposure(False, \
@@ -350,7 +350,7 @@ while(True):
 
     #img.draw_line(yellow[4], yellow[5], blue[4], blue[5], (255, 255, 255), 2) #line between centers of gates
 
-     img.draw_circle(my_blob_x, my_blob_y, 25, (255, 255, 255), 5)
+    img.draw_circle(my_blob_x, my_blob_y, 25, (255, 255, 255), 5)
 
     if yellow_angle > 359:
         yellow_angle -= 360

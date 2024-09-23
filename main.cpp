@@ -343,6 +343,7 @@ int main()
             if(time - ball_grab_timer > 1300)
             {
               debug_state = 11;
+              change_trajectory_tim = time;
               //Robot::wait(200);
               attacker_state = 2;
             }
@@ -366,13 +367,15 @@ int main()
           if(attacker_old_state != 2)
           {
             attacker_start_state_point = robot_position;
-            if(time % 10 <= 6)
+            if(time % 10 <= 4)
             {
+              attacker_trajectory_type = short_trajectory;
               if(robot_x >= 0) attack_side = 1;
               else attack_side = -1;
             }
             else
             {
+              attacker_trajectory_type = long_trajectory;
               if(robot_x >= 0) attack_side = -1;
               else attack_side = 1;
             }
@@ -384,7 +387,7 @@ int main()
           //if(ball_distance <= 20 && my_abs(ball_loc_angle) <= 20) attacker_2_to_1_tim = time;
           
           //if(Robot::is_ball_seen_T(100))
-          if(time - attacker_2_to_1_tim > 1000) attacker_state = 1;
+          if(time - attacker_2_to_1_tim > 250) attacker_state = 1;
           
           out_diving = false;
         }
@@ -505,42 +508,55 @@ int main()
           if(attacker_old_state == 1)
           {
             attacker_start_2_state_tim = time;
-            if(my_sgn(attacker_start_state_point.x) == my_sgn(attack_side))
+            if(attacker_trajectory_type == short_trajectory)
             {
-              if(robot_y <= 120) Robot::add_stop_to_route(35 * my_sgn(attack_side), 135, -255, 0);
-              attacker_trajectory_type = short_trajectory;
+              if(robot_y <= 120)
+              {
+                Robot::add_stop_to_route(70 * my_sgn(attack_side), robot_y, 110 * my_sgn(attack_side), 0);
+                Robot::add_stop_to_route(70 * my_sgn(attack_side), 180, 90 * my_sgn(attack_side), 0);
+              }
             }
-            else
+            else if(attacker_trajectory_type == long_trajectory)
             {
-              Robot::add_stop_to_route(20 * my_sgn(attacker_start_state_point.x), 130, -255, 0/*int(attacker_start_state_point.y / 2)*/);
-              Robot::add_stop_to_route(50 * my_sgn(attack_side), 130, -255, 1);
-              attacker_trajectory_type = long_trajectory;
+              Robot::add_stop_to_route(-20 * my_sgn(attack_side), 120, -120 * my_sgn(attack_side), 0);
+              Robot::add_stop_to_route(50 * my_sgn(attack_side), 120, 120 * my_sgn(attack_side), 0);
+              Robot::add_stop_to_route(60 * my_sgn(attack_side), 180, 90 * my_sgn(attack_side), 0);
             }
-            
+//            if(my_sgn(attacker_start_state_point.x) == my_sgn(attack_side))
+//            {
+//              if(robot_y <= 120) Robot::add_stop_to_route(35 * my_sgn(attack_side), 135, -255, 0);
+//              attacker_trajectory_type = short_trajectory;
+//            }
+//            else
+//            {
+//              Robot::add_stop_to_route(20 * my_sgn(attacker_start_state_point.x), 130, -255, 0/*int(attacker_start_state_point.y / 2)*/);
+//              Robot::add_stop_to_route(50 * my_sgn(attack_side), 130, -255, 1);
+//              attacker_trajectory_type = long_trajectory;
+//            }
+//            
             if(my_sgn(attack_side) == 1)
-              Robot::add_stop_to_route(right_attack_point.x, right_attack_point.y, -255, 1);
+              Robot::add_stop_to_route(right_attack_point.x, right_attack_point.y, 125 * my_sgn(attack_side), 2);
             else
-              Robot::add_stop_to_route(left_attack_point.x, left_attack_point.y, -255, 1);
+              Robot::add_stop_to_route(left_attack_point.x, left_attack_point.y, 125 * my_sgn(attack_side), 2);
             
             Robot::enable_trajectory(true);
           } 
           
-          if(Robot::robot_position_diff > 7) 
+          if(Robot::robot_position_diff > 5) 
             change_trajectory_tim = time;
-          
-          if(time - change_trajectory_tim > 1500)
+          if(time - change_trajectory_tim > 2000)
           {
             Robot::enable_trajectory(false);
             if(robot_x > 0) attack_side = -1;
             else attack_side = 1;
-            Robot::add_stop_to_route(20 * my_sgn(attacker_start_state_point.x), 130, -255, 0/*int(attacker_start_state_point.y / 2)*/);
-            Robot::add_stop_to_route(50 * my_sgn(attack_side), 130, -255, 1);
+            Robot::add_stop_to_route(20 * my_sgn(attacker_start_state_point.x), 130, 120 * my_sgn(attacker_start_state_point.x), 0/*int(attacker_start_state_point.y / 2)*/);
+            Robot::add_stop_to_route(50 * my_sgn(attack_side), 130, 120 * my_sgn(attack_side), 0);
             attacker_trajectory_type = long_trajectory;
             
             if(my_sgn(attack_side) == 1)
-              Robot::add_stop_to_route(right_attack_point.x, right_attack_point.y, -255, 1);
+              Robot::add_stop_to_route(right_attack_point.x, right_attack_point.y, 125 * my_sgn(attack_side), 1);
             else
-              Robot::add_stop_to_route(left_attack_point.x, left_attack_point.y, -255, 1);
+              Robot::add_stop_to_route(left_attack_point.x, left_attack_point.y, 125 * my_sgn(attack_side), 1);
             
             Robot::enable_trajectory(true);
           }
@@ -561,10 +577,11 @@ int main()
 //            Robot::set_dribler_speed(40);
 //          else
 //            Robot::set_dribler_speed(35);
-          if(Robot::trajectory.get_length() > 0)
-              Robot::setAngle(lead_to_degree_borders(Robot::getAngleToPoint(attacker_defence_point) + 180), 8, -0.2);//14
-          else
-            Robot::setAngle(125 * my_sgn(attack_side), 8, -0.2);
+
+//          if(Robot::trajectory.get_length() > 0)
+//              Robot::setAngle(lead_to_degree_borders(Robot::getAngleToPoint(attacker_defence_point) + 180), 8, -0.2);//14
+//          else
+//            Robot::setAngle(125 * my_sgn(attack_side), 8, -0.2);
           //          if(attacker_trajectory_type == short_trajectory || Robot::trajectory.get_length() < 60)
 //            Robot::setAngle(90 * my_sgn(robot_x), 8, -0.3);
 //          else if(attacker_trajectory_type == long_trajectory)
