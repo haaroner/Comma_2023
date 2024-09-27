@@ -49,6 +49,8 @@ struct polar_vector
 enum trajectory_type
 {
   short_trajectory,
-  long_trajectory
+  long_trajectory,
+  detour_trajectory,
+  undefined_trajectory
 };
 

@@ -142,18 +142,21 @@ namespace Robot
   waiting = false, wait_rotating = false;
   
   float k_dSSoft = 0.1;
+  float dribler_acc = 0;
   
   float ball_sen_data_soft = 0, ball_sen_data_k = 0.5;
   
   struct point robot_position, robot_move, _sub_point, start_trajectory;
   point predicted_point, robot_previous_position;
   struct polar_vector start_trajectory_vector;
+
+  uint8_t max_trajectory_linear_speed, min_trajectory_linear_speed, max_trajectory_angular_speed;
   
   volatile uint8_t bluetooth_data[4];
   
   uint32_t robot_global_speed_timer = 0;
   
-  void init_robot(uint8_t _role = STANDART_ROBOTS_ROLE_FROM_FLASH)
+  void init_robot(uint8_t _role = 1)
   { 
     time_service::init();
     time_service::startTime();
@@ -190,7 +193,22 @@ namespace Robot
     else
       role = _role;
     
-    role = 1;
+    if(role == 1)
+    {
+      dribler_acc = ATTACKER_DRIBLER_ACCELERATION;
+      max_trajectory_linear_speed = ATTACKER_MAX_LINEAR_TRAJECTORY_SPEED;
+      min_trajectory_linear_speed = ATTACKER_MIN_LINEAR_TRAJECTORY_SPEED;
+      max_trajectory_angular_speed = ATTACKER_MAX_ANGULAR_TRAJECTORY_SPEED;
+    }
+    else if(role == 2)
+    {
+      dribler_acc = DEFENDER_DRIBLER_ACCELERATION;
+      max_trajectory_linear_speed = DEFENDER_MAX_LINEAR_TRAJECTORY_SPEED;
+      min_trajectory_linear_speed = DEFENDER_MIN_LINEAR_TRAJECTORY_SPEED;
+      max_trajectory_angular_speed = DEFENDER_MAX_ANGULAR_TRAJECTORY_SPEED;
+    }
+
+      
     
     //mpu.init();
     //mpu.update();
@@ -289,7 +307,10 @@ namespace Robot
   
   void set_dribler_speed(uint16_t _speed, bool _fast_stop = true)
   {
-    _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
+    if(role == 1)
+      _speed = constrain(MAX_ATTACKER_DRIBLER_SPEED, 0, _speed);
+    else
+      _speed = constrain(MAX_DEFENDER_DRIBLER_SPEED, 0, _speed);
     dribler_speed = STOP_DRIBLER_SPEED + _speed;
     fast_stop = _fast_stop;
 //    _speed = constrain(MAX_DRIBLER_SPEED, 0, _speed);
@@ -554,7 +575,7 @@ namespace Robot
     wait_rotating = false;
   }
   
-  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = 255, int16_t _max_speed = 70, int16_t _min_speed = 20)
+  bool moveToPoint(point _point, int16_t _speed, int16_t _angle = 255, int16_t _max_speed = max_trajectory_linear_speed, int16_t _min_speed = min_trajectory_linear_speed)
   {
     int d_1_Speed, d_2_speed;
     int accel_1_Length, accel_2_Length, whole_path, start_point_distance; //1.1 - tg of line
@@ -604,18 +625,18 @@ namespace Robot
     }
     
     if(_point.angle != -255)
-      setAngle(_point.angle, 15, -0.35);
+      setAngle(_point.angle, max_trajectory_angular_speed, -0.28);
     
-    if((point_distance > 7 && _point.significanse == 2) ||
+    if((point_distance > 8 && _point.significanse == 2) ||
        (point_distance > 12  && _point.significanse == 1) ||
        (point_distance > 25 && _point.significanse == 0)) 
       point_reached_timer = time_service::getCurTime();
     
-    point_reached = time_service::getCurTime() - point_reached_timer > 200;
+    point_reached = time_service::getCurTime() - point_reached_timer > 150;
     
     otladka1 = int(point_reached_timer / 1000);
     
-    return time_service::getCurTime() - point_reached_timer > 200;
+    return time_service::getCurTime() - point_reached_timer > 150;
   }
   
   bool moveToPoint(int _x, int _y, int16_t _speed,  int16_t _x0_angle = -255)
@@ -1175,16 +1196,18 @@ namespace Robot
     
     if(time_service::getCurTime() - dribler_speed_change_speed > change_speed_time || (dribler_speed == STOP_DRIBLER_SPEED && fast_stop))
     {
-      if(my_abs(cur_dribler_speed - dribler_speed) <= 0.25 || (dribler_speed == STOP_DRIBLER_SPEED && fast_stop)) cur_dribler_speed = dribler_speed;
+      if(my_abs(cur_dribler_speed - dribler_speed) <= dribler_acc || (dribler_speed == STOP_DRIBLER_SPEED && fast_stop)) cur_dribler_speed = dribler_speed;
       else
       {
-        cur_dribler_speed += 0.25 * my_sgn(dribler_speed - cur_dribler_speed);
+        cur_dribler_speed += dribler_acc * my_sgn(dribler_speed - cur_dribler_speed);
       }
       //dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(cur_dribler_speed));
       dribler_speed_change_speed = time_service::getCurTime();
     }
-    
-    cur_dribler_speed = constrainf(STOP_DRIBLER_SPEED + MAX_DRIBLER_SPEED, STOP_DRIBLER_SPEED, cur_dribler_speed);
+    if(role == 1)
+      cur_dribler_speed = constrainf(STOP_DRIBLER_SPEED + MAX_ATTACKER_DRIBLER_SPEED, STOP_DRIBLER_SPEED, cur_dribler_speed);
+    else
+      cur_dribler_speed = constrainf(STOP_DRIBLER_SPEED + MAX_DEFENDER_DRIBLER_SPEED, STOP_DRIBLER_SPEED, cur_dribler_speed);
     //display_data(cur_dribler_speed);
     if(motors_state && !OTLADKA)
     {
