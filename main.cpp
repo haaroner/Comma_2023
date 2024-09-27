@@ -851,7 +851,7 @@ int main()
         if(defender_state == 1) //@ref defender_st1
         {
           defender_state_debug = 1;
-          Robot::set_dribler_speed(30);
+          Robot::set_dribler_speed(0);
           defender_angle_error = lead_to_degree_borders(
           get_angle_to_point(backward_gate_center, ball_abs_position).angle - 
           lead_to_degree_borders(backward_angle + 180));
@@ -1035,32 +1035,33 @@ int main()
         if(defender_state == 3) //@ref defender_st3
         {
           if(ball_distance < 30)
-            Robot::set_dribler_speed(40); 
+            Robot::set_dribler_speed(30);
           else
-            Robot::set_dribler_speed(20);
-            if((my_abs(ball_loc_angle + BALL_THRESHOLD) > 10) || ball_distance > 7) ball_grab_timer = time;
+            Robot::set_dribler_speed(0);
+
+          if((my_abs(ball_loc_angle + BALL_THRESHOLD) > 15) || ball_distance > 10) ball_grab_timer = time;
           
-            if(time - ball_grab_timer > 700) 
+          if(time - ball_grab_timer > 700) 
+          {
+            //Robot::direct_keck();
+            if(ball_distance < 10 || !Robot::is_ball_seen_T(100))
             {
-              //Robot::direct_keck();
-              if(ball_distance < 10 || !Robot::is_ball_seen_T(100))
-              {
-                Robot::set_dribler_speed(100);
-                Robot::wait(500);
-                defender_state = 4;
-              }
-              else
-                defender_state = 1;
-              defender_end_keck_tim = time;
+              Robot::set_dribler_speed(100);
+              Robot::wait(1500);
+              defender_state = 4;
             }
-            
-            
-            Robot::moveRobotAbs(ball_abs_angle, constrain(50, 10, (ball_distance - 8) * 2));
-            if(my_abs(defender_start_3_state_point.x) < 15 && my_abs(ball_abs_x) < 15)
-              Robot::setAngle(forward_angle, 20, -0.3); //turn to ball 0.15
             else
-              Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 20, -0.3); //turn to ball 0.15
-          //}      
+              defender_state = 1;
+            defender_end_keck_tim = time; 
+          }
+
+          Robot::moveRobotAbs(lead_to_degree_borders(backward_angle + 180) + 
+            exponential_detour(lead_to_degree_borders(ball_abs_angle - backward_angle + 180),
+             ball_distance, 0.066, 0.35, 0.0255, 4.1), constrain(30, 12, ball_distance * 1.2));
+          Robot::setAngle(lead_to_degree_borders(constrain(10, -10,
+          lead_to_degree_borders(ball_abs_angle - backward_angle + 180))
+          + (backward_angle + 180)), DEFENDER_MAX_ANGULAR_TRAJECTORY_SPEED, -0.3);
+
           defender_old_state = 3;
         }
         
