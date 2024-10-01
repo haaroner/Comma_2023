@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\aaa.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\aaa.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Sep 27 20:18:58 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Oct 01 20:15:27 2024
 <BR><P>
-<H3>Maximum Stack Usage =       1264 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       1296 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; Robot::side_keck(short, short, unsigned char, short, unsigned char) &rArr; Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 <P>
@@ -261,7 +261,7 @@ Global Symbols
 <P><STRONG><a name="[1d9]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[7f]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1264 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 1296 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; Robot::side_keck(short, short, unsigned char, short, unsigned char) &rArr; Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1979,10 +1979,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[131]"></a>Robot::change_game_state()</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i._ZN5Robot17change_game_stateEv))
+<P><STRONG><a name="[131]"></a>Robot::change_game_state()</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, main.o(i._ZN5Robot17change_game_stateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Robot::change_game_state() &rArr; my_abs(int) &rArr; __aeabi_d2iz
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
+<BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs(int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 </UL>
@@ -2005,6 +2006,7 @@ Global Symbols
 <LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short, unsigned char)
 <LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::change_game_state()
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char, unsigned char)
 </UL>
 
@@ -2074,13 +2076,12 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::side_keck(short, short, unsigned char, short, unsigned char)
-<LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::draw_menu()
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::callibrate_gyro()
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::direct_keck(unsigned char, unsigned char)
 </UL>
 
-<P><STRONG><a name="[134]"></a>Robot::update()</STRONG> (Thumb, 1830 bytes, Stack size 72 bytes, main.o(i._ZN5Robot6updateEv))
+<P><STRONG><a name="[134]"></a>Robot::update()</STRONG> (Thumb, 1820 bytes, Stack size 72 bytes, main.o(i._ZN5Robot6updateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 568<LI>Call Chain = Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usartik1::available()
@@ -2166,7 +2167,7 @@ Global Symbols
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::moveToPoint(point, short, short, short, short)
 </UL>
 
-<P><STRONG><a name="[151]"></a>Robot::draw_menu()</STRONG> (Thumb, 762 bytes, Stack size 16 bytes, main.o(i._ZN5Robot9draw_menuEv))
+<P><STRONG><a name="[151]"></a>Robot::draw_menu()</STRONG> (Thumb, 772 bytes, Stack size 16 bytes, main.o(i._ZN5Robot9draw_menuEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 464<LI>Call Chain = Robot::draw_menu() &rArr; Robot::callibrate_gyro() &rArr; motors::moveRobot(double, double, double, double, unsigned, unsigned) &rArr; Motor::motorMove(double) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306::drawLine(short, short, short, short)
@@ -2177,7 +2178,6 @@ Global Symbols
 <LI><a href="#[159]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_draw_number&lang;int&rang;(T1, unsigned, unsigned, unsigned)
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_data&lang;int&rang;(const char*, unsigned, T1, unsigned, unsigned, unsigned)
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;void Robot::display_data&lang;float&rang;(const char*, unsigned, T1, unsigned, unsigned, unsigned)
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::wait(unsigned, bool, short, unsigned char, short)
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::keck(unsigned char)
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::display_draw_string(const char*, unsigned, unsigned)
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot::set_dribler_speed(unsigned short, bool)
@@ -2660,7 +2660,8 @@ Global Symbols
 <P><STRONG><a name="[175]"></a>__hardfp_atan</STRONG> (Thumb, 622 bytes, Stack size 48 bytes, atan.o(i.__hardfp_atan))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = __hardfp_atan &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2670,7 +2671,6 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan
 </UL>
@@ -2745,7 +2745,8 @@ Global Symbols
 <P><STRONG><a name="[da]"></a>__hardfp_pow</STRONG> (Thumb, 3072 bytes, Stack size 192 bytes, pow.o(i.__hardfp_pow))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_overflow
 <LI><a href="#[17d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan2
@@ -2763,7 +2764,6 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::motorMove(double)
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(double, int)
@@ -2774,13 +2774,13 @@ Global Symbols
 <P><STRONG><a name="[e4]"></a>__hardfp_powf</STRONG> (Thumb, 1606 bytes, Stack size 32 bytes, powf.o(i.__hardfp_powf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __hardfp_powf &rArr; __set_errno
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+<BR>[Calls]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
 <LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_overflow
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_invalid
 <LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_infnan2
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_divzero
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle_to_point(short, short, short, short)
 </UL>
@@ -2806,12 +2806,12 @@ Global Symbols
 <P><STRONG><a name="[15f]"></a>__hardfp_sinf</STRONG> (Thumb, 344 bytes, Stack size 16 bytes, sinf.o(i.__hardfp_sinf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+<BR>[Calls]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_invalid
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_infnan
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera::calculate_pos(short, bool)
 </UL>
@@ -2897,13 +2897,13 @@ Global Symbols
 <P><STRONG><a name="[17f]"></a>__kernel_sin</STRONG> (Thumb, 280 bytes, Stack size 72 bytes, sin_i.o(i.__kernel_sin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = __kernel_sin &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
@@ -2912,7 +2912,8 @@ Global Symbols
 <P><STRONG><a name="[18e]"></a>__kernel_tan</STRONG> (Thumb, 764 bytes, Stack size 128 bytes, tan_i.o(i.__kernel_tan))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = __kernel_tan &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
@@ -2923,7 +2924,6 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_tan
 </UL>
@@ -3090,8 +3090,8 @@ Global Symbols
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 </UL>
 
-<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 9282 bytes, Stack size 656 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1264<LI>Call Chain = main &rArr; Robot::side_keck(short, short, unsigned char, short, unsigned char) &rArr; Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
+<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 9334 bytes, Stack size 688 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1296<LI>Call Chain = main &rArr; Robot::side_keck(short, short, unsigned char, short, unsigned char) &rArr; Robot::update() &rArr; camera::calculate_pos(short, bool) &rArr; camera::get_angle_to_point(short, short, short, short) &rArr; std::pow(double, int) &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors::change_smoothness(float)
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Dma::Dma(unsigned, Adc&)

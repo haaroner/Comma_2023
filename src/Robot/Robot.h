@@ -117,6 +117,8 @@ namespace Robot
   
   double _dxb = 0, _dyb = 0;
   
+  int8_t _test_dribler_mode = 0;
+  
   uint8_t move_speed = 0, role = 2 ,point_significanse, dribbler_mode = 0, image_num = 0;
   
   double _alpha = 0;
@@ -286,25 +288,6 @@ namespace Robot
     side = my_abs(side - 1);
   }
 
-  void change_game_state()
-  {
-    if(is_callibrated)
-      _game_state = my_abs(_game_state - 1);
-  }
-
-  void motors_on_off(bool _state)
-  {
-    motors_state = _state; 
-  }
-  
-  
-  
-//  void set_dribler_speed(int16_t _speed)
-//  {
-//    if(is_in_the_borders(100, 0, _speed)) dribler_speed = 200 + _speed;
-//    else _speed = 200;
-//  }
-  
   void set_dribler_speed(uint16_t _speed, bool _fast_stop = true)
   {
     if(role == 1)
@@ -326,6 +309,26 @@ namespace Robot
 //    }
 //    dribler_speed = STOP_DRIBLER_SPEED + constrain(MAX_DRIBLER_SPEED, 0, int(_speed));
   }
+  
+  void change_game_state()
+  {
+    if(is_callibrated)
+      _game_state = my_abs(_game_state - 1);
+    if(_game_state == 0) set_dribler_speed(0);
+  }
+
+  void motors_on_off(bool _state)
+  {
+    motors_state = _state; 
+  }
+  
+  
+  
+//  void set_dribler_speed(int16_t _speed)
+//  {
+//    if(is_in_the_borders(100, 0, _speed)) dribler_speed = 200 + _speed;
+//    else _speed = 200;
+//  }
   
   void keck(uint8_t _duration = 10)
   {
@@ -607,15 +610,15 @@ namespace Robot
         
         if(point_distance > start_point_distance / 2)
         {
-          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.75);
+          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.6);
         }
         else
         {
-          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.75);
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.6);
         }
       }
       else
-        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.75);
+        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.6);
       moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     }
     else
@@ -625,7 +628,7 @@ namespace Robot
     }
     
     if(_point.angle != -255)
-      setAngle(_point.angle, max_trajectory_angular_speed, -0.28);
+      setAngle(_point.angle, max_trajectory_angular_speed, -0.32);
     
     if((point_distance > 8 && _point.significanse == 2) ||
        (point_distance > 12  && _point.significanse == 1) ||
@@ -836,7 +839,7 @@ namespace Robot
 //          }
         }
       }
-      wait(250);
+      wait(100);
       _start_tim = time;
       int16_t _delta = lead_to_degree_borders(gyro - _keck_angle);
       if(_stop_angle != 255)
@@ -974,11 +977,16 @@ namespace Robot
               select_arrow_y = main_menu_arrow_y;
               break;
             case 2: 
-              set_dribler_speed(40, false);
-              wait(1000);
-              keck(); 
-              wait(10);
-              set_dribler_speed(0, true);
+              _test_dribler_mode = my_abs(_test_dribler_mode - 1);
+              if(_test_dribler_mode == 1)
+              {
+                if(ADC2->DR > BALL_DETECTION_LIGHTNESS)
+                  set_dribler_speed(20);
+                else
+                  set_dribler_speed(20);
+              }
+              else
+                set_dribler_speed(0);
               break;
             case 4:
               if(dribler_speed == 0)
@@ -995,7 +1003,7 @@ namespace Robot
         display_draw_number(robot_y, 1, 12, 1);
         //display_data("Ball abs XY", 11, ball_abs_x, 1, 0, 2);
         //display_draw_number(ball_abs_y, 1, 14, 2);
-        display_draw_string("keck", 0, 2);
+        display_draw_string("dribler", 0, 2);
         display_data("def_data", 8, display_data_1, 1, 0, 3);
         display_draw_number(display_data_2, 1, 14, 3);
         //display_draw_string("on/off dribbler",0, 4);
@@ -1209,6 +1217,16 @@ namespace Robot
     else
       cur_dribler_speed = constrainf(STOP_DRIBLER_SPEED + MAX_DEFENDER_DRIBLER_SPEED, STOP_DRIBLER_SPEED, cur_dribler_speed);
     //display_data(cur_dribler_speed);
+    
+    #if USE_DRIBLER
+      if(_use_dribler)
+        dribler_control.pwm(cur_dribler_speed);
+      else
+        dribler_control.pwm(STOP_DRIBLER_SPEED);
+    #else
+      dribler_control.pwm(0);
+    #endif
+    
     if(motors_state && !OTLADKA)
     {
       #if USE_MOTORS
@@ -1217,25 +1235,17 @@ namespace Robot
       motors.disableMotors();
       #endif
       
-      #if USE_DRIBLER
-      if(_use_dribler)
-        dribler_control.pwm(cur_dribler_speed);
-      else
-        dribler_control.pwm(STOP_DRIBLER_SPEED);
-      #else
-        dribler_control.pwm(0);
-      #endif
 //      if(dribler_speed < 300 && dribler_speed >= 200) //unnecessary if will delete it later haha 
 //        dribler_control.pwm(dribler_speed);
     }
     else
     {
       motors.disableMotors();
-      #if USE_DRIBLER
-        dribler_control.pwm(STOP_DRIBLER_SPEED);
-      #else
-        dribler_control.pwm(0);
-      #endif
+      //#if USE_DRIBLER
+        //dribler_control.pwm(STOP_DRIBLER_SPEED);
+      //#else
+        //dribler_control.pwm(0);
+      //#endif
     }  
   }
 }

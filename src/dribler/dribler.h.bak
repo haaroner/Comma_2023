@@ -16,7 +16,7 @@ enum dribler_speed
 int _cur_speed = 300, change_speed_const = 1;
 uint32_t _cur_time = 0;
 
-int change_speed(int _speed, uint32_t _time)
+int change_dribler_speed(int _speed)
 {
   if(my_abs(_speed - _cur_speed) < change_speed_const )
     _cur_speed = _speed;
@@ -28,7 +28,7 @@ int change_speed(int _speed, uint32_t _time)
       _cur_time = time_service::getCurTime();
     }
   }
-  if(_cur_speed > 350) _cur_speed = 350;
-  else if(_cur_speed < 235) _cur_speed = 235;
+  if(_cur_speed > 300) _cur_speed = 300;
+  else if(_cur_speed < 200) _cur_speed = 200;
   return _cur_speed;
 }

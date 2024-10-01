@@ -109,6 +109,3 @@
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\typeinfo
 .\objects\main.o: D:\keil\sys_files\ARM\ARMCC\Bin\..\include\exception
 .\objects\main.o: .\src\dribler\dribler.h
-.\objects\main.o: .\src\main\project_config.h
-.\objects\main.o: .\src\time_service\time_service.h
-.\objects\main.o: .\src\main\project_config.h
