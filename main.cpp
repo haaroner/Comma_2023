@@ -5,7 +5,6 @@
 #define TEST_DRIBLER false
 #define TEST_MOTORS false
 #define TEST_BLUETOOTH false
-#define BALL_THRESHOLD 2
 
 volatile double a = 0, b = 1, c = 10;
 volatile int Putin = 0, Medved = 0;
@@ -83,14 +82,14 @@ volatile uint16_t dribler_speed = 0, debug_state = 0;
 volatile uint8_t to_keck = 0; 
 volatile uint32_t pinok_delay = 20, pinok_wait = 7;
 
-PID forward_out(0.25, 0, -2);
-PID backward_out(0.25, 0, -2);
-PID left_out(0.4, 0, -3);
+PID forward_out(0.3, 0, -2); //0.25
+PID backward_out(0.3, 0, -2);
+PID left_out(0.4, 0, -3); 
 PID right_out(0.4, 0, -3);
 
 int main()
 {
-  role = 1;/////////////////////////////////////////////////
+  role = 2;/////////////////////////////////////////////////
   Robot::init_robot(role);
   Robot::wait(2000);
   
@@ -304,7 +303,9 @@ int main()
       //disable all motors as a safety precoution
       Robot::motors_on_off(OFF);
       Robot::use_dribler(true);
-     // Robot::set_dribler_speed(0);
+      
+      if(Robot::_test_dribler_mode != 1)
+        Robot::set_dribler_speed(0);
       
       Robot::set_blinking(2, 0); //disable blinking of middle LED
       
@@ -332,7 +333,7 @@ int main()
       //attacker role
       if(role == 1) // atacker
       {
-        Robot::motors.change_smoothness(4.5);
+        Robot::motors.change_smoothness(3);
         int16_t max_robotx[2] = {87, -72};
         uint16_t max_forward_depth[2] = {193, 35};   
         
@@ -350,7 +351,7 @@ int main()
           if(time - attacker_angry_tim > 400) attacker_angry = true;
           else attacker_angry = false;
           
-          if(ball_data < BALL_DETECTION_LIGHTNESS)
+          if(ball_data < ATTACKER_BALL_DETECTION_LIGHTNESS)
             ball_grab_timer = time;
           
           if(time - ball_grab_timer > 100 && attacker_old_state == 1)
@@ -398,11 +399,11 @@ int main()
           }
           
           //if ball moved out of dribler accidentally go to state 1
-          if(ball_data > BALL_DETECTION_LIGHTNESS)
+          if(ball_data > ATTACKER_BALL_DETECTION_LIGHTNESS)
             attacker_2_to_1_tim = time;
           
           //if(Robot::is_ball_seen_T(100))
-          if(time - attacker_2_to_1_tim > 250) attacker_state = 1;
+          if(time - attacker_2_to_1_tim > 1000) attacker_state = 1;
           
           out_diving = false;
         }
@@ -411,11 +412,11 @@ int main()
         {
           Robot::enable_delay();
 
-          if(ball_data > BALL_DETECTION_LIGHTNESS)
+          if(!Robot::is_ball_captured(5))
             attacker_3_to_1_tim = time;
           
           //if(Robot::is_ball_seen_T(100))
-          if(time - attacker_3_to_1_tim > 250) attacker_state = 1;
+          if(!Robot::is_ball_captured(350)) attacker_state = 1;
         }
 
         if(attacker_state == 4) //@ref attacker_st4
@@ -457,15 +458,15 @@ int main()
               Robot::set_dribler_speed(0, false);
           }
           
-          if(ball_data > BALL_DETECTION_LIGHTNESS)
+          if(Robot::is_ball_captured(5))
           {
-            Robot::set_dribler_speed(30, false);
+            Robot::set_dribler_speed(20, false);
           }
           
           if(time - ball_grab_timer > 100)
           {
             Robot::moveRobot(0, 14); 
-            Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 10, -0.3);
+            Robot::setAngle(ball_abs_angle, 10, -0.3);
           }
           else
           {
@@ -479,7 +480,7 @@ int main()
               move_speed = constrain(70, 30, 1.7 * (ball_distance - 1));
             
             Robot::moveRobotAbs(ball_abs_angle, move_speed);
-            Robot::setAngle(ball_abs_angle + BALL_THRESHOLD, 17, -0.3); //turn to ball 0.15
+            Robot::setAngle(ball_abs_angle, 17, -0.3); //turn to ball 0.15
           }
 //          if(!Robot::is_ball_seen_T(100))
 //            Robot::constrainRobotSpeed(20, 0);
@@ -553,7 +554,7 @@ int main()
             Robot::enable_trajectory(true);
           } 
           
-          if(Robot::robot_position_diff > 10) 
+          if(Robot::robot_position_diff > 7) 
             change_trajectory_tim = time;
           if(time - change_trajectory_tim > 1500)
           {
@@ -573,11 +574,11 @@ int main()
             Robot::enable_trajectory(true);
           }
           
-          if(Robot::trajectory.calculate_distance(robot_position) < 60 ||
-             time - ball_grab_timer < 2000)
-            Robot::set_dribler_speed(35);
-          else
+          if(Robot::trajectory.calculate_distance(robot_position) < 40 ||
+             time - ball_grab_timer < 1000)
             Robot::set_dribler_speed(25);
+          else
+            Robot::set_dribler_speed(20);
           
           if(Robot::trajectory_finished && attacker_trajectory_type != detour_trajectory)
           { 
@@ -622,16 +623,17 @@ int main()
             Robot::enable_trajectory(true);
           }
           if(time - ball_grab_timer < 1000)
-            Robot::set_dribler_speed(30);
+            Robot::set_dribler_speed(20);
           else
             Robot::set_dribler_speed(20);
           //if(point_reached)
           if(Robot::trajectory_finished)
           {
-            Robot::set_dribler_speed(20);
+            Robot::set_dribler_speed(40);
+            Robot::wait(1000);
             Robot::enable_trajectory(false);
             Robot::ball_distance_disable_delay(true);
-            Robot::side_keck(95 * my_sgn(robot_x), forward_angle - 50 * my_sgn(robot_x), 35, -160 * my_sgn(robot_x), 12);
+            Robot::side_keck(95 * my_sgn(robot_x), forward_angle - 50 * my_sgn(robot_x), 30, -160 * my_sgn(robot_x), 12);
             attacker_state = 1;
           }
           attacker_old_state = 3;
@@ -675,27 +677,24 @@ int main()
             Robot::moveRobotAbs(move_angle,constrain(13, 0, move_speed));
           }
         }
-
-          if(robot_y > 220)
-            Robot::moveRobotAbs(180, 12);
           
           if(robot_y > 180)
           {
             move_speed = Robot::move_speed;
             move_angle = Robot::abs_move_angle;
             
-            if(my_abs(robot_x) <= 30 && my_abs(move_angle) <= 95)
+            if(my_abs(robot_x) <= 35 && my_abs(move_angle) <= 95)
             {
-              out_of_bounds_victor = forward_out.calculate_lineary(182, robot_y/* - int(20 * bounds_k)*/);
-              move_angle = sum_of_vectors(move_angle, constrain(15, 0, move_speed),
-              180, constrain(35, 0, out_of_bounds_victor));
+              out_of_bounds_victor = forward_out.calculate_lineary(180, robot_y/* - int(20 * bounds_k)*/);
+              move_angle = sum_of_vectors(move_angle, constrain(20, 0, move_speed),
+              180, constrain(40, 0, out_of_bounds_victor));
               move_speed = get_len_from_sum_of_vectors();
             }
-            else if(forward_distance < 45 && my_abs(move_angle) <= 95)
+            else if(forward_distance < 55 && my_abs(move_angle) <= 95)
             {
-              out_of_bounds_victor = forward_out.calculate_lineary(0, 45 - forward_distance/* - int(20 * bounds_k)*/);
-              move_angle = sum_of_vectors(move_angle, constrain(15, 0, move_speed),
-              lead_to_degree_borders(forward_angle + 180), constrain(35, 0, out_of_bounds_victor));
+              out_of_bounds_victor = forward_out.calculate_lineary(0, 55 - forward_distance/* - int(20 * bounds_k)*/);
+              move_angle = sum_of_vectors(move_angle, constrain(20, 0, move_speed),
+              lead_to_degree_borders(forward_angle + 180), constrain(40, 0, out_of_bounds_victor));
               move_speed = get_len_from_sum_of_vectors();
             }
             else if((robot_y > ROBOT_MAX_RIGHT_Y && robot_x > 0) || (robot_y > ROBOT_MAX_LEFT_Y && robot_x <= 0))
@@ -711,6 +710,9 @@ int main()
                      
             Robot::moveRobotAbs(move_angle, move_speed);
           }
+          
+          if(robot_y > 220 && my_abs(robot_x) > 35)
+            Robot::moveRobotAbs(180, 15);
 
           
           //back gate
@@ -810,20 +812,20 @@ int main()
           defender_state = 1;
           if(Robot::predict()) defender_2_to_1_tim = time;
           else if(time - defender_2_to_1_tim > 750) attacker_state = 1;
-        }
+        } 
           
         if(defender_state == 3) //@ref defender_st3
         {
           defender_end_keck_tim = time;
-          if(ball_abs_y < 45 || my_abs(ball_abs_angle) > 75) defender_state = 1;
+          if((ball_abs_y < 45 || my_abs(ball_abs_angle) > 75) && 
+            !Robot::is_ball_captured(0)) defender_state = 1;
           
-          if(!Robot::is_ball_seen_T(1000))
+          if(!Robot::is_ball_seen_T(1000) && !Robot::is_ball_captured(50))
           {
             defender_end_keck_time = time;
             defender_state = 1;
           }
-          if(((time - defender_3_to_1_tim > 6500) && (!Robot::is_ball_captured(500))) ||
-            ((time - defender_3_to_1_tim > 8500) && (Robot::is_ball_captured(500))))
+          if(time - defender_3_to_1_tim > 7500 && !Robot::is_ball_captured(50))
           {
             defender_state = 1;
             Robot::direct_keck();
@@ -838,16 +840,17 @@ int main()
             defender_state = 1;
           }
           
-          if(get_angle_to_point(ball_track_position, ball_abs_position).length > 50)
+          if(get_angle_to_point(ball_track_position, ball_abs_position).length > 70)
           {
             defender_state = 1;
             defender_end_keck_time = time;
           }
+          if(Robot::is_ball_captured(20)) defender_state = 3;
         }
         
         if(defender_state == 4) //@ref defender_st4
         {
-          if(Robot::is_ball_seen_T(200) && ball_distance > 30)
+          if(!Robot::is_ball_captured(1250))
           {
             defender_state = 1;
             defender_end_keck_time = time;
@@ -1057,59 +1060,75 @@ int main()
         
         if(defender_state == 3) //@ref defender_st3
         {
-          if(ball_distance < 30)
+          if(ball_distance < 40 || Robot::is_ball_captured(20))
             Robot::set_dribler_speed(30);
           else
             Robot::set_dribler_speed(0);
 
-          if((my_abs(ball_loc_angle + BALL_THRESHOLD) > 15) || ball_distance > 10) ball_grab_timer = time;
-          
-          if(time - ball_grab_timer > 700) 
+          if((my_abs(ball_loc_angle) > 15) || ball_distance > 10) ball_grab_timer = time;
+          if(Robot::is_ball_captured(200))
           {
-            //Robot::direct_keck();
-            if(ball_distance < 10 || !Robot::is_ball_seen_T(100))
+            Robot::set_dribler_speed(60);
+            if(Robot::is_ball_captured(1250)) 
             {
-              Robot::set_dribler_speed(100);
-              Robot::wait(1500);
-              defender_state = 4;
+              //Robot::direct_keck();
+                //Robot::set_dribler_speed(100);
+                Robot::wait(600);
+                defender_state = 4;
+              defender_end_keck_tim = time; 
             }
-            else
-              defender_state = 1;
-            defender_end_keck_tim = time; 
           }
 
           Robot::moveRobotAbs(lead_to_degree_borders(backward_angle + 180) + 
             exponential_detour(lead_to_degree_borders(ball_abs_angle - backward_angle + 180),
-             ball_distance, 0.066, 0.35, 0.0255, 4.1), constrain(30, 12, ball_distance * 1.2));
+             ball_distance, 0.08, 0.4, 0.028, 4.2), constrain(30, 12, (ball_distance - 7) * 1.2));
           Robot::setAngle(lead_to_degree_borders(constrain(10, -10,
           lead_to_degree_borders(ball_abs_angle - backward_angle + 180))
-          + (backward_angle + 180)), DEFENDER_MAX_ANGULAR_TRAJECTORY_SPEED, -0.3);
+          + (backward_angle + 180)), 15, -0.35);
 
           defender_old_state = 3;
         }
         
         if(defender_state == 4) //@ref defender_st4
         {
-          Robot::set_dribler_speed(100);
+          Robot::set_dribler_speed(60);
           if(defender_old_state != 4)
           {
-             Robot::enable_trajectory(false);
-             Robot::add_stop_to_route(robot_x, 45, 120 * my_sgn(robot_x), 1);
-             Robot::add_stop_to_route(-30 * my_sgn(robot_x), 45, 180, 1);
-             Robot::enable_trajectory(true);
+            Robot::enable_trajectory(false);
+            if(robot_y < 65)
+            {
+              Robot::add_stop_to_route(robot_x, 45, 120 * my_sgn(robot_x), 1);
+              Robot::add_stop_to_route(-30 * my_sgn(robot_x), 45, 180, 1);
+              Robot::enable_trajectory(true);
+            }
+            else
+            {
+              Robot::set_dribler_speed(120);
+              Robot::wait(350);
+              if(robot_x > 0)
+              {
+                Robot::side_keck(-170, 25, 15, 165, 6, 7);
+              }
+              else
+              {
+                Robot::side_keck(-180, -20, 15, -160, 6, 7);
+              }
+              defender_state = 1;
+            }
           }
 
           if(Robot::trajectory_finished)
           {
             Robot::enable_trajectory(false);
+            Robot::set_dribler_speed(120);
             Robot::ball_distance_disable_delay(false);
-            Robot::wait(50);
-            if(my_abs(backward_angle) < 70)
-              Robot::side_keck(lead_to_degree_borders(backward_angle + 180), 10 * my_sgn(robot_x), 15,
-               lead_to_degree_borders(backward_angle + 180 - 20 * my_sgn(robot_x)), 4);
-            else
+            Robot::wait(750);
+//            if(my_abs(backward_angle) < 80)
+//              Robot::side_keck(lead_to_degree_borders(forward_angle + 180 + 10 * my_sgn(robot_x)), 10 * my_sgn(robot_x), 15,
+//             lead_to_degree_borders(forward_angle + 180 - 15 * my_sgn(robot_x)), 4);
+//            else
               Robot::side_keck(180, 10 * my_sgn(robot_x), 15, 160 * my_sgn(robot_x), 4);
-            defender_state = 1;
+           defender_state = 1;
 
           }
 
@@ -1164,7 +1183,7 @@ int main()
         else if(robot_x < -65)
           Robot::moveRobotAbs(90, 20);
       }
-      Robot::display_data(Robot::is_ball_seen_T(1500), defender_state);
+      Robot::display_data(Robot::is_ball_captured(250), defender_state);
     } 
     Robot::update();
     a = get_line_from_points(backward_gate_center, ball_abs_position).a;

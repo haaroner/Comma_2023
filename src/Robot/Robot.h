@@ -97,6 +97,8 @@ namespace Robot
   timer_1000ms = 0, display_update_time = 0, ball_data = 0, sub_adc_data = 0,
   adc1_sub = 0;
   
+  bool test_dribler = 0;
+  
   volatile uint32_t otladka1 = 0;
   volatile int otladka2 = 0;
   
@@ -158,6 +160,8 @@ namespace Robot
   
   uint32_t robot_global_speed_timer = 0;
   
+  int16_t ball_threshold = 0;
+  
   void init_robot(uint8_t _role = 1)
   { 
     time_service::init();
@@ -201,6 +205,8 @@ namespace Robot
       max_trajectory_linear_speed = ATTACKER_MAX_LINEAR_TRAJECTORY_SPEED;
       min_trajectory_linear_speed = ATTACKER_MIN_LINEAR_TRAJECTORY_SPEED;
       max_trajectory_angular_speed = ATTACKER_MAX_ANGULAR_TRAJECTORY_SPEED;
+      
+      ball_threshold = ATTACKER_BALL_THRESHOLD;
     }
     else if(role == 2)
     {
@@ -208,6 +214,8 @@ namespace Robot
       max_trajectory_linear_speed = DEFENDER_MAX_LINEAR_TRAJECTORY_SPEED;
       min_trajectory_linear_speed = DEFENDER_MIN_LINEAR_TRAJECTORY_SPEED;
       max_trajectory_angular_speed = DEFENDER_MAX_ANGULAR_TRAJECTORY_SPEED;
+      
+      ball_threshold = DEFENDER_BALL_THRESHOLD;
     }
 
       
@@ -610,15 +618,15 @@ namespace Robot
         
         if(point_distance > start_point_distance / 2)
         {
-          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.6);
+          move_speed = constrain(_max_speed, _min_speed, my_abs(start_point_distance - point_distance) * 1.5);
         }
         else
         {
-          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.6);
+          move_speed = constrain(_max_speed, _min_speed, (point_distance) * 1.5);
         }
       }
       else
-        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.6);
+        move_speed = constrain(_max_speed, _min_speed, point_distance * 1.5);
       moveRobotAbs(move_angle,constrain(_max_speed, _min_speed, move_speed));
     }
     else
@@ -628,7 +636,7 @@ namespace Robot
     }
     
     if(_point.angle != -255)
-      setAngle(_point.angle, max_trajectory_angular_speed, -0.32);
+      setAngle(_point.angle, max_trajectory_angular_speed, -0.29);
     
     if((point_distance > 8 && _point.significanse == 2) ||
        (point_distance > 12  && _point.significanse == 1) ||
@@ -808,16 +816,16 @@ namespace Robot
     is_callibrated = true;
   }
   
-  void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0, uint8_t _kick_power = 6)
+  void side_keck(int16_t _start_angle = 255, int16_t _stop_angle = 255, uint8_t _speed = 30, int16_t _keck_angle = 0, uint8_t _kick_power = 6, uint8_t turn_speed = 8)
   {
       uint32_t _timeout = 1500;
       uint32_t _start_tim = time;
       bool _keck_done = false;
       if(_start_angle != 255)
       {
-        while(my_abs(gyro - _start_angle) > 7 && time - _start_tim < _timeout)
+        while(my_abs(lead_to_degree_borders(gyro - _start_angle)) > 7 && time - _start_tim < _timeout)
         {
-          setAngle(_start_angle, 6);
+          setAngle(_start_angle, turn_speed);
           update();
           
 //          if(!use_delays || ball_distance_delay_disable)
@@ -888,10 +896,9 @@ namespace Robot
     wait(100);
   }
   
-  bool is_ball_captured(uint16_t wait_duration = 2000)
+  bool is_ball_captured(uint32_t wait_duration = 1000)
   {
-    if((ball_distance > 10 || my_abs(ball_loc_angle) > 10) && (Robot::is_ball_seen_T(75))) ball_grab_timer = time;
-    return time - ball_grab_timer > wait_duration;
+    return (time - ball_grab_timer) > wait_duration;
   }
   
   void enable_delay()
@@ -980,10 +987,10 @@ namespace Robot
               _test_dribler_mode = my_abs(_test_dribler_mode - 1);
               if(_test_dribler_mode == 1)
               {
-                if(ADC2->DR > BALL_DETECTION_LIGHTNESS)
-                  set_dribler_speed(20);
+                if(role == 1)
+                  set_dribler_speed(40);
                 else
-                  set_dribler_speed(20);
+                  set_dribler_speed(130);
               }
               else
                 set_dribler_speed(0);
@@ -1044,8 +1051,8 @@ namespace Robot
     robot_position.x = robot_x;
     robot_position.y = robot_y;
     
-    ball_loc_angle = camera.get_ball_angle();
-    ball_abs_angle = camera.get_abs_ball_angle();
+    ball_loc_angle = lead_to_degree_borders(ball_threshold + camera.get_ball_angle());
+    ball_abs_angle = lead_to_degree_borders(ball_threshold + camera.get_abs_ball_angle());
     ball_distance = camera.get_ball_distance();
     
     ball_loc_x = camera.get_ball_loc_x();
@@ -1071,7 +1078,15 @@ namespace Robot
     sub_adc_data = ADC2 -> DR;
     if(sub_adc_data != 0) ball_data = sub_adc_data;
     
-    is_ball_captured();
+    if(role == 1)
+    {
+      if(ball_data < ATTACKER_BALL_DETECTION_LIGHTNESS) ball_grab_timer = time;
+    }
+    else
+    {
+      if(ball_data < DEFENDER_BALL_DETECTION_LIGHTNESS) ball_grab_timer = time;
+    }
+    
    if(time - bluetooth_send_timer > 5 && _game_state == 1)
     {
       if(is_ball_seen_T(100))

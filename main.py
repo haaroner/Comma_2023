@@ -11,32 +11,32 @@ blue_y_test = 0
 center1 = [164, 115]
 center2 = [160, 113]
 
-robot = 1
+robot = 2
 if robot == 1:#attacker
 
-    yellow_threshold = [(58, 90, 28, 89, 34, 127)]
+    yellow_threshold = [(0, 100, -128, 127, 19, 127)]
     blue_threshold = [(0, 100, -128, 127, -128, -26)]
-    red_threshold = [(0, 100, 55, 127, -77, 37)]#(62, 100, 46, 127, -128, 40)
+    red_threshold = [(0, 100, 34, 127, -128, 127)]#(62, 100, 46, 127, -128, 40)
 
-    white = (-0.8, -6, -1)
+    white = (-1, -6, -1.6)
 
     center = center1
-    EXPOSURE_TIME_SCALE = 0.8
+    EXPOSURE_TIME_SCALE = 0.5
     img_radius = 143
     robot_radius = 25
-    my_gain = 10
+    my_gain = 15
 else:
-    yellow_threshold = [(0, 100, -10, 18, 22, 127)]
+    yellow_threshold = [(0, 100, -6, 20, 21, 127)]
     blue_threshold = [(32, 58, -128, 4, -128, -9)]
-    red_threshold = [(0, 100, 22, 127, -74, 127)]
+    red_threshold = [(0, 100, 20, 127, -128, 127)]
 
-    white = (61, 60, 62.7)
+    white = (64, 60, 62)
 
     center = center2
-    EXPOSURE_TIME_SCALE = 1.2
+    EXPOSURE_TIME_SCALE = 1.4
     img_radius = 135
     robot_radius = 16
-    my_gain = 15
+    my_gain = 20
 uart = pyb.UART(3, 230400, timeout = 100, timeout_char = 100)
 uart.init(230400, bits=8, parity=False, stop=1, timeout_char=100) #initialize UART
 
@@ -58,10 +58,9 @@ sensor.skip_frames(time = 500)
 
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
-#sensor.set_auto_gain(False, my_gain)
-sensor.set_auto_whitebal(False)
+sensor.set_auto_gain(False, gain_db = my_gain)
 print(sensor.get_rgb_gain_db())
-sensor.set_auto_whitebal(False)#(-2.5, -7, -1.47639)
+sensor.set_auto_whitebal(False, rgb_gain_db = white)#(-2.5, -7, -1.47639)
 sensor.set_auto_exposure(False)
 current_exposure_time_in_microseconds =  sensor.get_exposure_us()
 sensor.set_auto_exposure(False, \
@@ -77,9 +76,9 @@ yellow_y = 0
 blue_x = 0
 blue_y = 0
 
-yellow = [0]*6
-blue = [0]*6
-ball = [0] * 6
+yellow = [0]*9
+blue = [0]*9
+ball = [0] * 8
 old_area = 0
 
 old_i = 0
@@ -263,7 +262,7 @@ while(True):
             my_line(-26, -17, -27, -8, 7)
 
             my_line(-24, 17, -10, 25, 9)#bottom lines
-            my_line(-10, 25, 10, 25, 8)
+            my_line(-10, 25, 10, 25, 9)
             my_line(-27, 9, -24, 17, 7)
         else:
             img.draw_circle(center[0], center[1], robot_radius, (0, 0, 0), fill = True)
@@ -280,11 +279,9 @@ while(True):
         if(blob[2] * blob[3] > old_area):
             old_area = blob[2] * blob[3]
             #print(blob)
-            img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (200, 200, 0), 2)
-            #yellow = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3], blob.cx(), blob.cy()]
-            yellow = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3],(blob[0] + int(blob[2] / 2)), (blob[1] + int(blob[3] / 2))]
-            yellow_x = -(yellow[4] - center[0])
-            yellow_y = -(yellow[5] - center[1])
+            yellow = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3],(blob[0] + int(blob[2] / 2)), (blob[1] + int(blob[3] / 2)), blob[2], blob[3]]
+            yellow_x = -(blob.cx() - center[0])
+            yellow_y = -(blob.cy() - center[1])
             yellow_distance = linearize(get_distance(yellow_x, yellow_y))
             yellow_angle = math.floor(math.atan2(yellow_x, yellow_y) * 57.3) - 90
             yellow_smth = blob.solidity()
@@ -306,9 +303,9 @@ while(True):
     for blob in img.find_blobs(blue_threshold, pixels_threshold=50, area_threshold=50, merge=True, margin = 10): #finding gates
         if(blob[2] * blob[3] > old_area and blob[2] * blob[3] > 60):
             old_area = blob[2] * blob[3]
-            img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (0, 0, 200), 2)
+            #img.draw_rectangle(blob[0], blob[1], blob[2], blob[3], (0, 0, 200), 2)
             #blue = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3], blob.cx(), blob.cy()]
-            blue = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3],(blob[0] + int(blob[2] / 2)), (blob[1] + int(blob[3] / 2))]
+            blue = [blob[0], blob[1], blob[0] + blob[2], blob[1] + blob[3],(blob[0] + int(blob[2] / 2)), (blob[1] + int(blob[3] / 2)), blob[2], blob[3]]
             #blue_x = -(blue[4] - center[0])
             #blue_y = -(blue[5] - center[1])
             blue_x = -(blob.cx() - center[0])
@@ -363,6 +360,8 @@ while(True):
     send_data(yellow_angle, yellow_distance, blue_angle, blue_distance, ball_angle, ball_distance)
     img.draw_circle(blue_x_test, blue_y_test, 3, (255, 255, 255))
     img.draw_circle(yellow[4], yellow[5], 3, (255, 255, 255))
+    img.draw_rectangle(blue[0], blue[1], blue[6], blue[7], (0, 0, 200), 2)
+    img.draw_rectangle(yellow[0], yellow[1], yellow[6], yellow[7], (200, 200, 0), 2)
     #if callibrate_center == False:
         #img.draw_circle(ball[4], ball[5], 3, (255, 255, 255))
     img.draw_circle(center[0], center[1], 3, (255, 255, 255))
